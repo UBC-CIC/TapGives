@@ -1,0 +1,34 @@
+type Administrator @model {
+  id: ID!
+  name: String!
+  sites: [Site] @connection(keyName: "byAdmin", fields: ["id"])
+}
+
+type Customer @model {
+  id: ID!
+  name: String!
+  weeklyJerryCans: String!
+  remainingJerryCans: ID!
+}
+
+type CustomerSiteLinker @model
+@key(name: "byCustomer", fields: ["customerID", "siteID"])
+@key(name: "bySite", fields: ["siteID", "customerID"]){
+  id: ID!
+  customerID: ID!
+  siteID: ID!
+  customer: Customer! @connection(fields: ["customerID"])
+  site: Site! @connection(fields: ["siteID"])
+}
+
+type Site @model @key(name: "byAdmin", fields: ["adminID"])
+{
+  id: ID!
+  administrator: Administrator! @connection(fields: ["adminID"])
+  adminID: ID!
+  pricePerJerryCan: Float
+  description: String
+  serviceRadius: Float
+  latitude: Float
+  longitude: Float
+}

@@ -1,0 +1,43 @@
+/*.map{*/
+/*    position: inherit;*/
+/*    width: 75%;*/
+/*    height: 50%;*/
+/*}*/
+
+.mapboxgl-map{
+    position: absolute;
+    width: auto;
+    height: auto;
+}
+/*.mapboxgl-canvas {*/
+/*    position: inherit;*/
+/*    width: auto;*/
+/*    height: auto;*/
+/*}*/
+#textInput{
+    width: 300px;
+    margin: 5px;
+
+}
+.mapboxgl-canvas {
+    position: inherit;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+.mapboxgl-canvas-container {
+
+    height: 80vh;
+    width: 98vw;
+}
+#navBtn{
+    margin: 20px;
+}
+
+.sbContainer {
+    overflow: auto
+}
+.mapboxgl-ctrl-logo{
+    visibility: hidden;
+}
