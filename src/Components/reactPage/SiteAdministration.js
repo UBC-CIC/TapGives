@@ -104,7 +104,7 @@ class siteAdministration extends React.Component {
 
     render() {
         return (
-            <div style={{ height: {}, width: '100%' }}>
+            <div style={{ height: "80vh", width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
