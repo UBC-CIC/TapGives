@@ -20,7 +20,7 @@ const AWS = require("aws-sdk");
 const placeIndex = process.env.REACT_APP_PLACE_INDEX_NAME;
 const locationHelper = new LocationServiceHelper()
 Amplify.configure(amplifyConfig);
-mapboxgl.accessToken = 'pk.eyJ1Ijoiampycnl5YWEiLCJhIjoiY2t1c3hibG40MDByaTJubGZrdDk1bzVrOCJ9.O6j5dPECPW8YWjBOb8eR6w';//process.env.accessToken
+mapboxgl.accessToken = process.env.accessToken
 
 //Getting current user credentials
 async function getLocationService(){
