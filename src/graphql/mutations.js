@@ -9,20 +9,6 @@ export const createAdministrator = /* GraphQL */ `
     createAdministrator(input: $input, condition: $condition) {
       id
       name
-      sites {
-        items {
-          id
-          adminID
-          pricePerJerryCan
-          description
-          serviceRadius
-          latitude
-          longitude
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -36,20 +22,6 @@ export const updateAdministrator = /* GraphQL */ `
     updateAdministrator(input: $input, condition: $condition) {
       id
       name
-      sites {
-        items {
-          id
-          adminID
-          pricePerJerryCan
-          description
-          serviceRadius
-          latitude
-          longitude
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -63,20 +35,6 @@ export const deleteAdministrator = /* GraphQL */ `
     deleteAdministrator(input: $input, condition: $condition) {
       id
       name
-      sites {
-        items {
-          id
-          adminID
-          pricePerJerryCan
-          description
-          serviceRadius
-          latitude
-          longitude
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -90,8 +48,6 @@ export const createCustomer = /* GraphQL */ `
     createCustomer(input: $input, condition: $condition) {
       id
       name
-      weeklyJerryCans
-      remainingJerryCans
       createdAt
       updatedAt
     }
@@ -105,8 +61,6 @@ export const updateCustomer = /* GraphQL */ `
     updateCustomer(input: $input, condition: $condition) {
       id
       name
-      weeklyJerryCans
-      remainingJerryCans
       createdAt
       updatedAt
     }
@@ -120,8 +74,57 @@ export const deleteCustomer = /* GraphQL */ `
     deleteCustomer(input: $input, condition: $condition) {
       id
       name
-      weeklyJerryCans
-      remainingJerryCans
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createSite = /* GraphQL */ `
+  mutation CreateSite(
+    $input: CreateSiteInput!
+    $condition: ModelSiteConditionInput
+  ) {
+    createSite(input: $input, condition: $condition) {
+      id
+      pricePerJerryCan
+      description
+      serviceRadius
+      latitude
+      longitude
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSite = /* GraphQL */ `
+  mutation UpdateSite(
+    $input: UpdateSiteInput!
+    $condition: ModelSiteConditionInput
+  ) {
+    updateSite(input: $input, condition: $condition) {
+      id
+      pricePerJerryCan
+      description
+      serviceRadius
+      latitude
+      longitude
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSite = /* GraphQL */ `
+  mutation DeleteSite(
+    $input: DeleteSiteInput!
+    $condition: ModelSiteConditionInput
+  ) {
+    deleteSite(input: $input, condition: $condition) {
+      id
+      pricePerJerryCan
+      description
+      serviceRadius
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -136,23 +139,16 @@ export const createCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
+      weeklyJerryCans
+      remainingJerryCans
       customer {
         id
         name
-        weeklyJerryCans
-        remainingJerryCans
         createdAt
         updatedAt
       }
       site {
         id
-        administrator {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        adminID
         pricePerJerryCan
         description
         serviceRadius
@@ -175,23 +171,16 @@ export const updateCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
+      weeklyJerryCans
+      remainingJerryCans
       customer {
         id
         name
-        weeklyJerryCans
-        remainingJerryCans
         createdAt
         updatedAt
       }
       site {
         id
-        administrator {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        adminID
         pricePerJerryCan
         description
         serviceRadius
@@ -214,23 +203,16 @@ export const deleteCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
+      weeklyJerryCans
+      remainingJerryCans
       customer {
         id
         name
-        weeklyJerryCans
-        remainingJerryCans
         createdAt
         updatedAt
       }
       site {
         id
-        administrator {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        adminID
         pricePerJerryCan
         description
         serviceRadius
@@ -244,82 +226,91 @@ export const deleteCustomerSiteLinker = /* GraphQL */ `
     }
   }
 `;
-export const createSite = /* GraphQL */ `
-  mutation CreateSite(
-    $input: CreateSiteInput!
-    $condition: ModelSiteConditionInput
+export const createAdminSiteLinker = /* GraphQL */ `
+  mutation CreateAdminSiteLinker(
+    $input: CreateAdminSiteLinkerInput!
+    $condition: ModelAdminSiteLinkerConditionInput
   ) {
-    createSite(input: $input, condition: $condition) {
+    createAdminSiteLinker(input: $input, condition: $condition) {
       id
-      administrator {
+      adminID
+      siteID
+      admin {
         id
         name
-        sites {
-          nextToken
-        }
         createdAt
         updatedAt
       }
-      adminID
-      pricePerJerryCan
-      description
-      serviceRadius
-      latitude
-      longitude
+      site {
+        id
+        pricePerJerryCan
+        description
+        serviceRadius
+        latitude
+        longitude
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const updateSite = /* GraphQL */ `
-  mutation UpdateSite(
-    $input: UpdateSiteInput!
-    $condition: ModelSiteConditionInput
+export const updateAdminSiteLinker = /* GraphQL */ `
+  mutation UpdateAdminSiteLinker(
+    $input: UpdateAdminSiteLinkerInput!
+    $condition: ModelAdminSiteLinkerConditionInput
   ) {
-    updateSite(input: $input, condition: $condition) {
+    updateAdminSiteLinker(input: $input, condition: $condition) {
       id
-      administrator {
+      adminID
+      siteID
+      admin {
         id
         name
-        sites {
-          nextToken
-        }
         createdAt
         updatedAt
       }
-      adminID
-      pricePerJerryCan
-      description
-      serviceRadius
-      latitude
-      longitude
+      site {
+        id
+        pricePerJerryCan
+        description
+        serviceRadius
+        latitude
+        longitude
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteSite = /* GraphQL */ `
-  mutation DeleteSite(
-    $input: DeleteSiteInput!
-    $condition: ModelSiteConditionInput
+export const deleteAdminSiteLinker = /* GraphQL */ `
+  mutation DeleteAdminSiteLinker(
+    $input: DeleteAdminSiteLinkerInput!
+    $condition: ModelAdminSiteLinkerConditionInput
   ) {
-    deleteSite(input: $input, condition: $condition) {
+    deleteAdminSiteLinker(input: $input, condition: $condition) {
       id
-      administrator {
+      adminID
+      siteID
+      admin {
         id
         name
-        sites {
-          nextToken
-        }
         createdAt
         updatedAt
       }
-      adminID
-      pricePerJerryCan
-      description
-      serviceRadius
-      latitude
-      longitude
+      site {
+        id
+        pricePerJerryCan
+        description
+        serviceRadius
+        latitude
+        longitude
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }

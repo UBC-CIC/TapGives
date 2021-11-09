@@ -8,7 +8,7 @@ import LocationServiceHelper from '../Helpers/LocationServiceHelper'
 import {Button, Grid, TextField} from "@material-ui/core";
 import * as turf from "@turf/turf";
 import {createAdministrator} from "../../graphql/mutations";
-import {getAdministrator, getSite, listAdministrators} from "../../graphql/queries";
+import {getAdministrator, getSite, listAdministrators, listAdminSiteLinkers, listSites} from "../../graphql/queries";
 
 
 let map;
@@ -136,11 +136,40 @@ function searchAndUpdateMapview(map, text){
 }
 
 function locateAllWells (data){
-    const wells = data.getAdministrator.sites.items
+    console.log(data)
+    const wells = data
     for (const well in wells) {
         console.log(JSON.stringify(wells[well]))
         createMarker(wells[well].longitude, wells[well].latitude, wells[well].description, wells[well].serviceRadius)
     }
+
+}
+
+// Calls API to grab all sites hosted by the admin, and the list of sites.  Then filters for all of the sites belonging
+// to the admin, and sends those to be plotted by locateAllWells
+async function extractSiteID (email) {
+    // site ids related to admin
+    const admin = API.graphql(graphqlOperation(listAdminSiteLinkers, {filter: {adminID: {eq: email}}}))
+    // all sites
+    const wells = API.graphql(graphqlOperation(listSites))
+
+    // wait for both to return
+    Promise.all([admin, wells]).then(([adminOut,wellsOut])=>{
+        // get rid of all the fluff around returned site IDs
+        const data = (adminOut.data.listAdminSiteLinkers.items)
+        let siteIDs = []
+        for (const entry in data) {
+            siteIDs.push(data[entry].siteID)
+        }
+        const allSites = wellsOut.data.listSites.items
+        let adminstratedSites = []
+        for (const site in allSites) {
+            if (siteIDs.includes(allSites[site].id)) {
+                adminstratedSites.push(allSites[site])
+            }
+        }
+        locateAllWells(adminstratedSites)
+    })
 
 }
 class mapComponent extends React.Component {
@@ -159,8 +188,8 @@ class mapComponent extends React.Component {
         map.resize();
 
         const returnedUser = await Auth.currentAuthenticatedUser();
-        const admin = await API.graphql(graphqlOperation(getAdministrator, {id: returnedUser.attributes.email}))
-        locateAllWells(admin.data)
+        extractSiteID(returnedUser.attributes.email)
+
     }
 
     updateInputText=(e)=>{

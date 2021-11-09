@@ -6,20 +6,6 @@ export const getAdministrator = /* GraphQL */ `
     getAdministrator(id: $id) {
       id
       name
-      sites {
-        items {
-          id
-          adminID
-          pricePerJerryCan
-          description
-          serviceRadius
-          latitude
-          longitude
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -35,9 +21,6 @@ export const listAdministrators = /* GraphQL */ `
       items {
         id
         name
-        sites {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -50,8 +33,6 @@ export const getCustomer = /* GraphQL */ `
     getCustomer(id: $id) {
       id
       name
-      weeklyJerryCans
-      remainingJerryCans
       createdAt
       updatedAt
     }
@@ -67,8 +48,41 @@ export const listCustomers = /* GraphQL */ `
       items {
         id
         name
-        weeklyJerryCans
-        remainingJerryCans
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getSite = /* GraphQL */ `
+  query GetSite($id: ID!) {
+    getSite(id: $id) {
+      id
+      pricePerJerryCan
+      description
+      serviceRadius
+      latitude
+      longitude
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSites = /* GraphQL */ `
+  query ListSites(
+    $filter: ModelSiteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSites(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        pricePerJerryCan
+        description
+        serviceRadius
+        latitude
+        longitude
         createdAt
         updatedAt
       }
@@ -82,23 +96,16 @@ export const getCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
+      weeklyJerryCans
+      remainingJerryCans
       customer {
         id
         name
-        weeklyJerryCans
-        remainingJerryCans
         createdAt
         updatedAt
       }
       site {
         id
-        administrator {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        adminID
         pricePerJerryCan
         description
         serviceRadius
@@ -127,25 +134,8 @@ export const listCustomerSiteLinkers = /* GraphQL */ `
         id
         customerID
         siteID
-        customer {
-          id
-          name
-          weeklyJerryCans
-          remainingJerryCans
-          createdAt
-          updatedAt
-        }
-        site {
-          id
-          adminID
-          pricePerJerryCan
-          description
-          serviceRadius
-          latitude
-          longitude
-          createdAt
-          updatedAt
-        }
+        weeklyJerryCans
+        remainingJerryCans
         createdAt
         updatedAt
       }
@@ -153,51 +143,48 @@ export const listCustomerSiteLinkers = /* GraphQL */ `
     }
   }
 `;
-export const getSite = /* GraphQL */ `
-  query GetSite($id: ID!) {
-    getSite(id: $id) {
+export const getAdminSiteLinker = /* GraphQL */ `
+  query GetAdminSiteLinker($id: ID!) {
+    getAdminSiteLinker(id: $id) {
       id
-      administrator {
+      adminID
+      siteID
+      admin {
         id
         name
-        sites {
-          nextToken
-        }
         createdAt
         updatedAt
       }
-      adminID
-      pricePerJerryCan
-      description
-      serviceRadius
-      latitude
-      longitude
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listSites = /* GraphQL */ `
-  query ListSites(
-    $filter: ModelSiteFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listSites(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
+      site {
         id
-        administrator {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        adminID
         pricePerJerryCan
         description
         serviceRadius
         latitude
         longitude
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listAdminSiteLinkers = /* GraphQL */ `
+  query ListAdminSiteLinkers(
+    $filter: ModelAdminSiteLinkerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAdminSiteLinkers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        adminID
+        siteID
         createdAt
         updatedAt
       }

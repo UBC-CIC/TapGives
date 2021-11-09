@@ -116,7 +116,7 @@ function PageContainer(props) {
             with your app's contents */}
             <Switch>
                 <Route exact path={"/"} component={MapComponent} />
-                <Route exact path={"/home"} component={MapComponent}/>
+                <Route exact path={"/home"} component={MapComponent} />
                 <Route exact path={"/siteAdmin"} component={SiteAdministration} />
             </Switch>
         </main>

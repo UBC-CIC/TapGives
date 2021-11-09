@@ -6,20 +6,6 @@ export const onCreateAdministrator = /* GraphQL */ `
     onCreateAdministrator {
       id
       name
-      sites {
-        items {
-          id
-          adminID
-          pricePerJerryCan
-          description
-          serviceRadius
-          latitude
-          longitude
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -30,20 +16,6 @@ export const onUpdateAdministrator = /* GraphQL */ `
     onUpdateAdministrator {
       id
       name
-      sites {
-        items {
-          id
-          adminID
-          pricePerJerryCan
-          description
-          serviceRadius
-          latitude
-          longitude
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -54,20 +26,6 @@ export const onDeleteAdministrator = /* GraphQL */ `
     onDeleteAdministrator {
       id
       name
-      sites {
-        items {
-          id
-          adminID
-          pricePerJerryCan
-          description
-          serviceRadius
-          latitude
-          longitude
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -78,8 +36,6 @@ export const onCreateCustomer = /* GraphQL */ `
     onCreateCustomer {
       id
       name
-      weeklyJerryCans
-      remainingJerryCans
       createdAt
       updatedAt
     }
@@ -90,8 +46,6 @@ export const onUpdateCustomer = /* GraphQL */ `
     onUpdateCustomer {
       id
       name
-      weeklyJerryCans
-      remainingJerryCans
       createdAt
       updatedAt
     }
@@ -102,8 +56,48 @@ export const onDeleteCustomer = /* GraphQL */ `
     onDeleteCustomer {
       id
       name
-      weeklyJerryCans
-      remainingJerryCans
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateSite = /* GraphQL */ `
+  subscription OnCreateSite {
+    onCreateSite {
+      id
+      pricePerJerryCan
+      description
+      serviceRadius
+      latitude
+      longitude
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSite = /* GraphQL */ `
+  subscription OnUpdateSite {
+    onUpdateSite {
+      id
+      pricePerJerryCan
+      description
+      serviceRadius
+      latitude
+      longitude
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSite = /* GraphQL */ `
+  subscription OnDeleteSite {
+    onDeleteSite {
+      id
+      pricePerJerryCan
+      description
+      serviceRadius
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -115,23 +109,16 @@ export const onCreateCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
+      weeklyJerryCans
+      remainingJerryCans
       customer {
         id
         name
-        weeklyJerryCans
-        remainingJerryCans
         createdAt
         updatedAt
       }
       site {
         id
-        administrator {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        adminID
         pricePerJerryCan
         description
         serviceRadius
@@ -151,23 +138,16 @@ export const onUpdateCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
+      weeklyJerryCans
+      remainingJerryCans
       customer {
         id
         name
-        weeklyJerryCans
-        remainingJerryCans
         createdAt
         updatedAt
       }
       site {
         id
-        administrator {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        adminID
         pricePerJerryCan
         description
         serviceRadius
@@ -187,23 +167,16 @@ export const onDeleteCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
+      weeklyJerryCans
+      remainingJerryCans
       customer {
         id
         name
-        weeklyJerryCans
-        remainingJerryCans
         createdAt
         updatedAt
       }
       site {
         id
-        administrator {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        adminID
         pricePerJerryCan
         description
         serviceRadius
@@ -217,73 +190,82 @@ export const onDeleteCustomerSiteLinker = /* GraphQL */ `
     }
   }
 `;
-export const onCreateSite = /* GraphQL */ `
-  subscription OnCreateSite {
-    onCreateSite {
+export const onCreateAdminSiteLinker = /* GraphQL */ `
+  subscription OnCreateAdminSiteLinker {
+    onCreateAdminSiteLinker {
       id
-      administrator {
+      adminID
+      siteID
+      admin {
         id
         name
-        sites {
-          nextToken
-        }
         createdAt
         updatedAt
       }
-      adminID
-      pricePerJerryCan
-      description
-      serviceRadius
-      latitude
-      longitude
+      site {
+        id
+        pricePerJerryCan
+        description
+        serviceRadius
+        latitude
+        longitude
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateSite = /* GraphQL */ `
-  subscription OnUpdateSite {
-    onUpdateSite {
+export const onUpdateAdminSiteLinker = /* GraphQL */ `
+  subscription OnUpdateAdminSiteLinker {
+    onUpdateAdminSiteLinker {
       id
-      administrator {
+      adminID
+      siteID
+      admin {
         id
         name
-        sites {
-          nextToken
-        }
         createdAt
         updatedAt
       }
-      adminID
-      pricePerJerryCan
-      description
-      serviceRadius
-      latitude
-      longitude
+      site {
+        id
+        pricePerJerryCan
+        description
+        serviceRadius
+        latitude
+        longitude
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteSite = /* GraphQL */ `
-  subscription OnDeleteSite {
-    onDeleteSite {
+export const onDeleteAdminSiteLinker = /* GraphQL */ `
+  subscription OnDeleteAdminSiteLinker {
+    onDeleteAdminSiteLinker {
       id
-      administrator {
+      adminID
+      siteID
+      admin {
         id
         name
-        sites {
-          nextToken
-        }
         createdAt
         updatedAt
       }
-      adminID
-      pricePerJerryCan
-      description
-      serviceRadius
-      latitude
-      longitude
+      site {
+        id
+        pricePerJerryCan
+        description
+        serviceRadius
+        latitude
+        longitude
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
