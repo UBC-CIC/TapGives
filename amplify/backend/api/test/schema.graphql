@@ -5,6 +5,8 @@ type Administrator @model {
 
 type Customer @model {
   id: ID!
+  pin: Int!
+  phoneNumber: Int!
   name: String!
 }
 
@@ -18,24 +20,29 @@ type Site @model
   longitude: Float
 }
 
-type CustomerSiteLinker @model
-@key(name: "byCustomer", fields: ["customerID", "siteID"])
-@key(name: "bySite", fields: ["siteID", "customerID"]){
+type CustomerSiteLinker @model{
   id: ID!
   customerID: ID!
   siteID: ID!
   weeklyJerryCans: Int!
   remainingJerryCans: Int!
-  customer: Customer! @connection(fields: ["customerID"])
-  site: Site! @connection(fields: ["siteID"])
 }
 
-type AdminSiteLinker @model
-@key(name: "byAdmin", fields: ["adminID", "siteID"])
-@key(name: "bySite", fields: ["siteID", "adminID"]){
+type AdminSiteLinker @model{
   id: ID!
   adminID: ID!
   siteID: ID!
-  admin: Administrator! @connection(fields: ["adminID"])
-  site: Site! @connection(fields: ["siteID"])
+}
+
+type Language @model
+{
+  id: ID!
+  code: String!
+  language: String!
+}
+
+type Phrase @model {
+  id: ID!
+  code: String!
+  data: String!
 }

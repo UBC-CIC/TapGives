@@ -92,7 +92,7 @@ function createMarker(lng, lat, description, radius) {
         lng = map.getCenter().lng
         lat = map.getCenter().lat
     }
-    console.log(String(lng)+String(lat)+String(description)+String(radius))
+    // console.log(String(lng)+String(lat)+String(description)+String(radius))
     createCircle(lng, lat, radius ?radius:5)
     const marker2 = new mapboxgl.Marker({ color: 'black'})
         .setLngLat([lng, lat])
@@ -136,10 +136,10 @@ function searchAndUpdateMapview(map, text){
 }
 
 function locateAllWells (data){
-    console.log(data)
+    // console.log(data)
     const wells = data
     for (const well in wells) {
-        console.log(JSON.stringify(wells[well]))
+        // console.log(JSON.stringify(wells[well]))
         createMarker(wells[well].longitude, wells[well].latitude, wells[well].description, wells[well].serviceRadius)
     }
 
@@ -189,7 +189,8 @@ class mapComponent extends React.Component {
 
         const returnedUser = await Auth.currentAuthenticatedUser();
         extractSiteID(returnedUser.attributes.email)
-
+        console.log(process.env.accessToken)
+        console.log(process.env.REACT_APP_PLACE_INDEX_NAME)
     }
 
     updateInputText=(e)=>{

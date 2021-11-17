@@ -9,6 +9,9 @@ export const createAdministrator = /* GraphQL */ `
     createAdministrator(input: $input, condition: $condition) {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -22,6 +25,9 @@ export const updateAdministrator = /* GraphQL */ `
     updateAdministrator(input: $input, condition: $condition) {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -35,6 +41,9 @@ export const deleteAdministrator = /* GraphQL */ `
     deleteAdministrator(input: $input, condition: $condition) {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -47,7 +56,12 @@ export const createCustomer = /* GraphQL */ `
   ) {
     createCustomer(input: $input, condition: $condition) {
       id
+      pin
+      phoneNumber
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -60,7 +74,12 @@ export const updateCustomer = /* GraphQL */ `
   ) {
     updateCustomer(input: $input, condition: $condition) {
       id
+      pin
+      phoneNumber
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -73,7 +92,12 @@ export const deleteCustomer = /* GraphQL */ `
   ) {
     deleteCustomer(input: $input, condition: $condition) {
       id
+      pin
+      phoneNumber
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -91,6 +115,9 @@ export const createSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -108,6 +135,9 @@ export const updateSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -125,6 +155,9 @@ export const deleteSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -141,22 +174,9 @@ export const createCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
-      customer {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -173,22 +193,9 @@ export const updateCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
-      customer {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -205,22 +212,9 @@ export const deleteCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
-      customer {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -235,22 +229,9 @@ export const createAdminSiteLinker = /* GraphQL */ `
       id
       adminID
       siteID
-      admin {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -265,22 +246,9 @@ export const updateAdminSiteLinker = /* GraphQL */ `
       id
       adminID
       siteID
-      admin {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -295,22 +263,111 @@ export const deleteAdminSiteLinker = /* GraphQL */ `
       id
       adminID
       siteID
-      admin {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createLanguage = /* GraphQL */ `
+  mutation CreateLanguage(
+    $input: CreateLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    createLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLanguage = /* GraphQL */ `
+  mutation UpdateLanguage(
+    $input: UpdateLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    updateLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLanguage = /* GraphQL */ `
+  mutation DeleteLanguage(
+    $input: DeleteLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    deleteLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPhrase = /* GraphQL */ `
+  mutation CreatePhrase(
+    $input: CreatePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    createPhrase(input: $input, condition: $condition) {
+      id
+      code
+      data
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePhrase = /* GraphQL */ `
+  mutation UpdatePhrase(
+    $input: UpdatePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    updatePhrase(input: $input, condition: $condition) {
+      id
+      code
+      data
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePhrase = /* GraphQL */ `
+  mutation DeletePhrase(
+    $input: DeletePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    deletePhrase(input: $input, condition: $condition) {
+      id
+      code
+      data
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }

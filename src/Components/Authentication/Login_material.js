@@ -31,6 +31,7 @@ import {updateLoginState} from "../../Actions/loginActions";
 import TextFieldStartAdornment from "./TextFieldStartAdornment";
 import "./Login.css";
 import LocalizedStrings from 'react-localization';
+import { DataStore } from 'aws-amplify';
 
 
 

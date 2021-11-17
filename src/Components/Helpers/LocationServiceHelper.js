@@ -31,6 +31,7 @@ function transformRequest(url, resourceType) {
 class LocationServiceHelper {
     //create a map instance with center location, then return it
     async constructMapWithCenter(container, center) {
+        console.log(process.env.REACT_APP_MAP_NAME)
         credentials = await Auth.currentCredentials();
         if(container){
             return new mapboxgl.Map({

@@ -6,6 +6,9 @@ export const onCreateAdministrator = /* GraphQL */ `
     onCreateAdministrator {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -16,6 +19,9 @@ export const onUpdateAdministrator = /* GraphQL */ `
     onUpdateAdministrator {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -26,6 +32,9 @@ export const onDeleteAdministrator = /* GraphQL */ `
     onDeleteAdministrator {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -35,7 +44,12 @@ export const onCreateCustomer = /* GraphQL */ `
   subscription OnCreateCustomer {
     onCreateCustomer {
       id
+      pin
+      phoneNumber
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -45,7 +59,12 @@ export const onUpdateCustomer = /* GraphQL */ `
   subscription OnUpdateCustomer {
     onUpdateCustomer {
       id
+      pin
+      phoneNumber
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -55,7 +74,12 @@ export const onDeleteCustomer = /* GraphQL */ `
   subscription OnDeleteCustomer {
     onDeleteCustomer {
       id
+      pin
+      phoneNumber
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -70,6 +94,9 @@ export const onCreateSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -84,6 +111,9 @@ export const onUpdateSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -98,6 +128,9 @@ export const onDeleteSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -111,22 +144,9 @@ export const onCreateCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
-      customer {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -140,22 +160,9 @@ export const onUpdateCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
-      customer {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -169,22 +176,9 @@ export const onDeleteCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
-      customer {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -196,22 +190,9 @@ export const onCreateAdminSiteLinker = /* GraphQL */ `
       id
       adminID
       siteID
-      admin {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -223,22 +204,9 @@ export const onUpdateAdminSiteLinker = /* GraphQL */ `
       id
       adminID
       siteID
-      admin {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -250,22 +218,93 @@ export const onDeleteAdminSiteLinker = /* GraphQL */ `
       id
       adminID
       siteID
-      admin {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      site {
-        id
-        pricePerJerryCan
-        description
-        serviceRadius
-        latitude
-        longitude
-        createdAt
-        updatedAt
-      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateLanguage = /* GraphQL */ `
+  subscription OnCreateLanguage {
+    onCreateLanguage {
+      id
+      code
+      language
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLanguage = /* GraphQL */ `
+  subscription OnUpdateLanguage {
+    onUpdateLanguage {
+      id
+      code
+      language
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLanguage = /* GraphQL */ `
+  subscription OnDeleteLanguage {
+    onDeleteLanguage {
+      id
+      code
+      language
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePhrase = /* GraphQL */ `
+  subscription OnCreatePhrase {
+    onCreatePhrase {
+      id
+      code
+      data
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePhrase = /* GraphQL */ `
+  subscription OnUpdatePhrase {
+    onUpdatePhrase {
+      id
+      code
+      data
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePhrase = /* GraphQL */ `
+  subscription OnDeletePhrase {
+    onDeletePhrase {
+      id
+      code
+      data
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }

@@ -8,8 +8,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import HomeIcon from '@material-ui/icons/Home';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,6 +16,8 @@ import { connect } from "react-redux";
 import {updateMenuState} from "../../Actions/menuActions";
 import MapComponent from '../../Components/reactPage/MapComponent'
 import SiteAdministration from '../../Components/reactPage/SiteAdministration'
+import AccessManager from '../../Components/reactPage/AccessManager'
+import DataStoreTest from '../../Components/reactPage/DataStoreTest'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -73,15 +73,23 @@ function PageContainer(props) {
         >
             <List>
                 <ListItem button key={"home"} onClick={() => history.push("/home")}>
-                    <ListItemIcon><HomeIcon /></ListItemIcon>
-                    <ListItemText primary={"Home"} />
+                    <ListItemIcon><HomeIcon/></ListItemIcon>
+                    <ListItemText primary={"Home"}/>
                 </ListItem>
                 <ListItem button key={"siteAdmin"} onClick={() => history.push("/siteAdmin")}>
+                    <ListItemIcon><DashboardIcon/></ListItemIcon>
+                    <ListItemText primary={"Site Administration"}/>
+                </ListItem>
+                <ListItem button key={"accessManager"} onClick={() => history.push("/accessManager")}>
+                    <ListItemIcon><DashboardIcon/></ListItemIcon>
+                    <ListItemText primary={"Access Manager"}/>
+                </ListItem>
+                <ListItem button key={"dataStoreTest"} onClick={() => history.push("/dataStoreTest")}>
                     <ListItemIcon><DashboardIcon /></ListItemIcon>
-                    <ListItemText primary={"Site Administration"} />
+                    <ListItemText primary={"DataStore Test"} />
                 </ListItem>
             </List>
-            <Divider />
+            <Divider/>
             {/*<List>*/}
             {/*    {['Inactive', 'Inactive', 'Inactive'].map((text, index) => (*/}
             {/*        <ListItem button key={text}>*/}
@@ -118,6 +126,8 @@ function PageContainer(props) {
                 <Route exact path={"/"} component={MapComponent} />
                 <Route exact path={"/home"} component={MapComponent} />
                 <Route exact path={"/siteAdmin"} component={SiteAdministration} />
+                <Route exact path={"/accessManager"} component={AccessManager} />
+                <Route exact path={"/dataStoreTest"} component={DataStoreTest} />
             </Switch>
         </main>
     </Grid>)
