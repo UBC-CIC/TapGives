@@ -424,6 +424,7 @@ export const syncPhrases = /* GraphQL */ `
       items {
         id
         code
+        phrase
         data
         _version
         _deleted
@@ -441,6 +442,7 @@ export const getPhrase = /* GraphQL */ `
     getPhrase(id: $id) {
       id
       code
+      phrase
       data
       _version
       _deleted
@@ -460,6 +462,7 @@ export const listPhrases = /* GraphQL */ `
       items {
         id
         code
+        phrase
         data
         _version
         _deleted

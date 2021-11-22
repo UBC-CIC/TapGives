@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import {DataGrid} from "@mui/x-data-grid";
 import { GridRowParams } from '@mui/x-data-grid';
 import {listAdministrators, listAdminSiteLinkers, listCustomerSiteLinkers, listSites} from "../../graphql/queries";
-import {createAdminSiteLinker} from "../../graphql/mutations";
+import {createAdminSiteLinker, deleteAdminSiteLinker} from "../../graphql/mutations";
 
 const siteColumns = [
     {
@@ -115,13 +115,28 @@ class AccessManager extends React.Component {
     }
     async updateSites() {
         let newAdminSiteLinkers = []
+        let removedAdminSiteLinkers = []
+        const selectedAdminID = this.state.selectedAdmin[0]
+        // Get currently linked sites to admin
         const linkedSites = this.state.adminSiteLinkers.map((adminSiteLinker)=>{
-            console.log(adminSiteLinker)
+            if (adminSiteLinker.adminID == selectedAdminID)
+                return adminSiteLinker.siteID
         })
-        for (const selectedSite in this.state.selected) {
-            newAdminSiteLinkers.push(API.graphql(graphqlOperation(createAdminSiteLinker, {input: {adminID: this.state.selectedAdmin[0], siteID: this.state.selected[selectedSite]}})))
+        console.log(linkedSites)
+        // Unlink removed sites
+        // We traverse in reverse so removal of sites will work (removing indices at the back is fine, removing from the front causes issues)
+        for (const selectedSite in linkedSites.slice().reverse()) {
+            const selectedSiteID = linkedSites.slice().reverse()[selectedSite]
+            if (!this.state.selected.includes(selectedSiteID))
+                removedAdminSiteLinkers.push(API.graphql(graphqlOperation(deleteAdminSiteLinker, {input: {id: selectedAdminID+selectedSiteID, _version: 1}})))
         }
-        await Promise.all(newAdminSiteLinkers)
+        // Link new sites
+        for (const selectedSite in this.state.selected) {
+            const selectedSiteID = this.state.selected[selectedSite]
+            if (!linkedSites.includes(selectedSiteID))
+                newAdminSiteLinkers.push(API.graphql(graphqlOperation(createAdminSiteLinker, {input: {id: selectedAdminID+selectedSiteID, adminID: selectedAdminID, siteID: selectedSiteID}})))
+        }
+        await Promise.all([newAdminSiteLinkers, removedAdminSiteLinkers] )
     }
     render() {
         return (

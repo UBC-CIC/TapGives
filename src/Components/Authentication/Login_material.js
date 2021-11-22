@@ -32,6 +32,7 @@ import TextFieldStartAdornment from "./TextFieldStartAdornment";
 import "./Login.css";
 import LocalizedStrings from 'react-localization';
 import { DataStore } from 'aws-amplify';
+import {Language, Phrase} from "../../models";
 
 
 
@@ -107,94 +108,7 @@ const SubmitButton = withStyles((theme) => ({
         },
     },
 }))(DefaultButton);
-const strings = new LocalizedStrings({
-    en:{
-        signIn:"Sign In",
-        email:"Email",
-        password:"Password",
-        forgot:"Forgot your password?",
-        forgotQuery:"Enter your email address and we'll send you a code to help you reset your password.",
-        reset:"Send reset code",
-        back:"Back",
-        createAccount:"Create an account",
-        uppercase: 'At least one uppercase letter' ,
-        lowercase: 'At least one lowercase letter' ,
-        digit: 'At least one digit' ,
-        special: 'At least one special character' ,
-        minLength: 'Should be more than 8 characters' ,
-        maxLength: 'Should be less than 16 characters',
-        enterValidEmail: "Please enter a valid email or create an account",
-        enterReset:"Enter received code",
-        checkEmail:"Please check your email",
-        forCode:"for a reset code and create a new password.",
-        verificationError:"Please enter correct reset code.",
-        createPassword:"Create new password",
-        reenter:"Re-enter the password",
-        noMatch:"Passwords do not match",
-        helperText:"Your password must have the following:",
-        firstName:"First Name",
-        lastName:"Last Name",
-        passwordRequirements: "Your password must have the following:",
-        confirmPassword: "Confirm Password",
-        signUp: "Sign Up",
-        verifyAccount: "Verify Account",
-        emailCheck: "Please check your email for a confirmation code. This may take several minutes.",
-        invalidCode: "Invalid verification code provided, please try again.",
-        newCode: "New verification code sent successfully.",
-        noCode: "Didn't receive your verification code?",
-        resend: "Resend Code",
-        verify: "Verify",
-        enterPassword: "Enter new password",
-        setPassword: "Set Password",
-        accountExists: "An account with the given email already exists.",
-        validEmail: "Please enter a valid email.",
-        passwordReset: "Password Reset",
-        setNewPassword: "Set New Password"
-    },
-    sw: {
-        signIn:"Weka sahihi ",
-        email:"Barua pepe",
-        password:"Nenosiri",
-        forgot:"Umesahau nenosiri yako?",
-        forgotQuery:"Weka barua pepe yako na tutakutumia msimbo ili kukusaidia kuweka upya nenosiri lako.",
-        reset:"Tuma msimbo wa kuweka upya",
-        back:"Nyuma",
-        createAccount:"Fungua akaunti",
-        uppercase: 'Angalau herufi kubwa moja' ,
-        lowercase: 'Angalau herufi ndogo moja' ,
-        digit: 'Angalau tarakimu moja' ,
-        special: 'Angalau mhusika mmoja maalum' ,
-        minLength: 'Inapaswa kuwa zaidi ya herufi 8' ,
-        maxLength: 'Inapaswa kuwa chini ya herufi 16',
-        enterValidEmail: "Tafadhali ingiza barua pepe halali au ufungue akaunti",
-        enterReset:"Weka msimbo uliopokelewa",
-        checkEmail:"Tafadhali angalia barua pepe yako ",
-        forCode:"kwa msimbo wa kuweka upya na unda nenosiri mpya.",
-        verificationError:"Tafadhali weka msimbo sahihi wa kuweka upya.",
-        createPassword:"Unda nenosiri mpya",
-        reenter:"Ingiza tena nenosiri",
-        noMatch:"Manenosiri hayalingani",
-        helperText:"Nenosiri lako lazima liwe na yafuatayo:",
-        firstName:"Jina la kwanza",
-        lastName:"Jina la familia",
-        passwordRequirements: "Nenosiri lako lazima liwe na yafuatayo:",
-        confirmPassword: "Thibitisha Nenosiri",
-        signUp: "Jisajili",
-        verifyAccount: "Thibitisha Akaunti",
-        emailCheck: "Tafadhali angalia barua pepe yako kwa nambari ya kuthibitisha. Hii inaweza kuchukua dakika kadhaa.",
-        invalidCode: "Nambari ya kuthibitisha imetolewa, tafadhali jaribu tena.",
-        newCode: "Nambari mpya ya uthibitishaji imetumwa kwa mafanikio.",
-        noCode: "Hukupokea nambari yako ya kuthibitisha?",
-        resend: "Tuma tena Msimbo",
-        verify: "Thibitisha",
-        enterPassword: "Weka nenosiri jipya",
-        setPassword: "Weka Nenosiri",
-        accountExists: "Akaunti iliyo na barua pepe uliyopewa tayari ipo.",
-        validEmail: "Tafadhali weka barua pepe halali.",
-        passwordReset: "Weka Upya Nenosiri",
-        setNewPassword: "Weka Nenosiri Jipya"
-    }
-});
+// const strings ;
 function Login(props) {
     const {loginState, updateLoginState, animateTitle, type, title, darkMode, logo, themeColor, disableSignUp} = props;
     const [formState, updateFormState] = useState(initialFormState);
@@ -211,6 +125,10 @@ function Login(props) {
     const [invalidEmailError, setInvalidEmailError] = useState(false);
     const [timeLimitError, setTimeLimitError] = useState("");
     const [currentLanguage, setCurrentLanguage] = useState("");
+    const [strings, setStrings] = useState(new LocalizedStrings({
+        en: {},
+
+    }));
     // strings.setLanguage("sw")
     // password check
     const [passwordRequirements, setPasswordRequirements] = useState({
@@ -241,6 +159,21 @@ function Login(props) {
             }
         }
         retrieveUser();
+        async function queryLanguages () {
+            const languageRaw = await DataStore.query(Language)
+            let languageProcessed = {}
+            for (const language in languageRaw){
+                const code = languageRaw[language].code
+                languageProcessed[code] = {}
+                const languagePhrases = await DataStore.query(Phrase, phrase=>phrase.code("eq", code))
+                for (const val in languagePhrases) {
+                    languageProcessed[code][languagePhrases[val].phrase] = languagePhrases[val].data
+                }
+            }
+            setStrings(new LocalizedStrings(languageProcessed))
+
+        }
+        queryLanguages()
     }, []);
 
     function clearErrors() {
@@ -570,7 +503,7 @@ function Login(props) {
                                     <span>{strings.signIn}</span>
                                     : 
                                     (loginState === "signUp") ? <span>{strings.createAccount}</span> :
-                                                                (loginState === "confirmSignUp") ? <span>strings.verifyAccount</span> :
+                                                                (loginState === "confirmSignUp") ? <span>{strings.verifyAccount}</span> :
                                                                     (loginState === "forgotPassword") ? <span>{strings.forgot}</span> :
                                                                         (loginState === "resetPassword") ? <span>{strings.passwordReset}</span> :
                                                                             (loginState === "newUserPassword") ? <span>{strings.setNewPassword}</span> : <span>Welcome</span>
@@ -644,7 +577,9 @@ function Login(props) {
                                             </span>
                                         </Grid>
                                     }
-                                    <BackAndSubmitButtons backAction={()=>resetStates("signIn")} submitAction={forgotPassword} submitMessage={strings.reset} loadingState={loading}/>
+                                    <BackAndSubmitButtons backAction={()=>resetStates("signIn")} submitAction={forgotPassword} submitMessage={strings.reset} loadingState={loading} back = {strings.back}/>
+
+
                                 </Grid>
                             )
                         }
@@ -704,7 +639,8 @@ function Login(props) {
                                         }}
                                     />
                                     <BackAndSubmitButtons 
-                                        backAction={()=>resetStates("signIn")} 
+                                        backAction={()=>resetStates("signIn")}
+                                        back = {strings.back}
                                         submitAction={resetPassword} 
                                         submitMessage={"Update Password"} 
                                         loadingState={loading}
@@ -775,7 +711,7 @@ function Login(props) {
                                             e.target.value === formState.password ? setPasswordUnmatchError(false) : setPasswordUnmatchError(true)
                                         }}
                                     />
-                                    <BackAndSubmitButtons backAction={()=>resetStates("signIn")} submitAction={signUp} submitMessage={strings.signUp} loadingState={loading}/>
+                                    <BackAndSubmitButtons backAction={()=>resetStates("signIn")} back = {strings.back} submitAction={signUp} submitMessage={strings.signUp} loadingState={loading}/>
                                 </Grid>
                             )
                         }
@@ -805,7 +741,8 @@ function Login(props) {
                                         </Button>
                                     </Grid>
                                     <BackAndSubmitButtons 
-                                        backAction={()=>resetStates("signUp")} 
+                                        backAction={()=>resetStates("signUp")}
+                                        back = {strings.back}
                                         submitAction={confirmSignUp} 
                                         submitMessage={strings.verify}
                                         loadingState={loading}
@@ -855,7 +792,8 @@ function Login(props) {
                                         />
                                     </Grid>
                                     <BackAndSubmitButtons 
-                                        backAction={()=>resetStates("signIn")} 
+                                        backAction={()=>resetStates("signIn")}
+                                        back = {strings.back}
                                         submitAction={setNewPassword} 
                                         submitMessage={"Set Password"} 
                                         loadingState={loading}
@@ -924,12 +862,12 @@ const SubmitButtonWithLoading = (props) => {
     )
 }
 
-const BackAndSubmitButtons = ({backAction, ...others}) => {
+const BackAndSubmitButtons = ({backAction, back, ...others}) => {
     return (
         <Grid container item xs={12} justify="space-between" spacing={1}>
             <Grid container item xs>
                 <DefaultButton variant="contained" startIcon={<ArrowBackIcon />} onClick={backAction}>
-                    {strings.back}
+                    {back}
                 </DefaultButton>
             </Grid>
             <Grid container item md={7} justify={"flex-end"}>
@@ -938,6 +876,7 @@ const BackAndSubmitButtons = ({backAction, ...others}) => {
         </Grid>
     )
 };
+
 
 const PasswordRequirements = ({requirements}) => {
     const styles = makeStyles((theme) => ({

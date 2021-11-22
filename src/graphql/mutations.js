@@ -330,6 +330,7 @@ export const createPhrase = /* GraphQL */ `
     createPhrase(input: $input, condition: $condition) {
       id
       code
+      phrase
       data
       _version
       _deleted
@@ -347,6 +348,7 @@ export const updatePhrase = /* GraphQL */ `
     updatePhrase(input: $input, condition: $condition) {
       id
       code
+      phrase
       data
       _version
       _deleted
@@ -364,6 +366,7 @@ export const deletePhrase = /* GraphQL */ `
     deletePhrase(input: $input, condition: $condition) {
       id
       code
+      phrase
       data
       _version
       _deleted

@@ -273,6 +273,7 @@ export const onCreatePhrase = /* GraphQL */ `
     onCreatePhrase {
       id
       code
+      phrase
       data
       _version
       _deleted
@@ -287,6 +288,7 @@ export const onUpdatePhrase = /* GraphQL */ `
     onUpdatePhrase {
       id
       code
+      phrase
       data
       _version
       _deleted
@@ -301,6 +303,7 @@ export const onDeletePhrase = /* GraphQL */ `
     onDeletePhrase {
       id
       code
+      phrase
       data
       _version
       _deleted

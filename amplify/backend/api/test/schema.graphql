@@ -6,18 +6,18 @@ type Administrator @model {
 type Customer @model {
   id: ID!
   pin: Int!
-  phoneNumber: Int!
+  phoneNumber: String!
   name: String!
 }
 
 type Site @model
 {
   id: ID!
-  pricePerJerryCan: Float
+  pricePerJerryCan: Float!
   description: String
-  serviceRadius: Float
-  latitude: Float
-  longitude: Float
+  serviceRadius: Float!
+  latitude: Float!
+  longitude: Float!
 }
 
 type CustomerSiteLinker @model{
@@ -44,5 +44,6 @@ type Language @model
 type Phrase @model {
   id: ID!
   code: String!
+  phrase: String!
   data: String!
 }
