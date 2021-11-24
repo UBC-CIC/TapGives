@@ -38,7 +38,15 @@
               "userPoolId": "authtestaca05af7"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 7,
+                "description": ""
+              }
+            }
+          ]
         }
       }
     }

@@ -34,7 +34,13 @@ async function getLocationService(){
 //Construct a container to render a map, add navigation (zoom in and out button),
 //geolocate(top right button to locate user location) control and drawl tools
 async function constructMap(container){
-    map = await locationHelper.constructMapWithCenter(container,[-123.14229959999999, 49.2194576 ])
+    try {
+        map = await locationHelper.constructMapWithCenter(container,[-123.14229959999999, 49.2194576 ])
+    } catch (error) {
+        console.log("Error print map: " + error)
+        return
+    }
+
     map.addControl(new mapboxgl.NavigationControl(), "top-right");
     map.addControl(
         new mapboxgl.GeolocateControl({

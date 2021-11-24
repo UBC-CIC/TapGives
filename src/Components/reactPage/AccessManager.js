@@ -86,18 +86,8 @@ class AccessManager extends React.Component {
         super(props);
         this.state = {
             selected: [],
-            siteData : [
-                // {id: "site0", name: "Site 0"},
-                // {id: "site1", name: "Site 1"},
-                // {id: "site2", name: "Site 2"},
-                // {id: "site3", name: "Site 3"},
-            ],
-            adminData : [
-                // {id: "admin0", name: "Admin 0"},
-                // {id: "admin1", name: "Admin 1"},
-                // {id: "admin2", name: "Admin 2"},
-                // {id: "admin3", name: "Admin 3"},
-            ],
+            siteData : [],
+            adminData : [],
             selectedAdmin : null
         }
     }
@@ -133,10 +123,15 @@ class AccessManager extends React.Component {
         // Link new sites
         for (const selectedSite in this.state.selected) {
             const selectedSiteID = this.state.selected[selectedSite]
-            if (!linkedSites.includes(selectedSiteID))
+            if (!linkedSites.includes(selectedSiteID)) {
                 newAdminSiteLinkers.push(API.graphql(graphqlOperation(createAdminSiteLinker, {input: {id: selectedAdminID+selectedSiteID, adminID: selectedAdminID, siteID: selectedSiteID}})))
+            }
         }
         await Promise.all([newAdminSiteLinkers, removedAdminSiteLinkers] )
+        // const adminSiteLinker = await API.graphql(graphqlOperation(listAdminSiteLinkers))
+        // this.setState({
+        //     adminSiteLinkers: adminSiteLinker.data.listAdminSiteLinkers.items
+        // })
     }
     render() {
         return (

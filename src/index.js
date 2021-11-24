@@ -3,16 +3,22 @@ import ReactDOM from 'react-dom';
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
-import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import reducers from "./Reducers";
 import 'semantic-ui-css/semantic.min.css';
+import Amplify, { AuthModeStrategyType } from 'aws-amplify';
+
 
 Amplify.configure(awsExports);
+Amplify.configure({
 
+    DataStore: {
+        authModeStrategyType: AuthModeStrategyType.MULTI_AUTH
+    }
+})
 const store = createStore(
     reducers, applyMiddleware(thunk)
 );

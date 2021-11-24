@@ -35,13 +35,21 @@ type AdminSiteLinker @model{
 }
 
 type Language @model
-{
+@auth(
+  rules: [
+    { allow: public, provider: apiKey, operations: [read] }
+  ]
+) {
   id: ID!
   code: String!
   language: String!
 }
 
-type Phrase @model {
+type Phrase @model @auth(
+  rules: [
+    { allow: public, provider: apiKey, operations: [read] }
+  ]
+) {
   id: ID!
   code: String!
   phrase: String!

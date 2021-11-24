@@ -344,34 +344,6 @@ export const listAdminSiteLinkers = /* GraphQL */ `
     }
   }
 `;
-export const syncLanguages = /* GraphQL */ `
-  query SyncLanguages(
-    $filter: ModelLanguageFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLanguages(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        code
-        language
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getLanguage = /* GraphQL */ `
   query GetLanguage($id: ID!) {
     getLanguage(id: $id) {
@@ -408,14 +380,14 @@ export const listLanguages = /* GraphQL */ `
     }
   }
 `;
-export const syncPhrases = /* GraphQL */ `
-  query SyncPhrases(
-    $filter: ModelPhraseFilterInput
+export const syncLanguages = /* GraphQL */ `
+  query SyncLanguages(
+    $filter: ModelLanguageFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncPhrases(
+    syncLanguages(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -424,8 +396,7 @@ export const syncPhrases = /* GraphQL */ `
       items {
         id
         code
-        phrase
-        data
+        language
         _version
         _deleted
         _lastChangedAt
@@ -459,6 +430,35 @@ export const listPhrases = /* GraphQL */ `
     $nextToken: String
   ) {
     listPhrases(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        code
+        phrase
+        data
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncPhrases = /* GraphQL */ `
+  query SyncPhrases(
+    $filter: ModelPhraseFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPhrases(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
       items {
         id
         code

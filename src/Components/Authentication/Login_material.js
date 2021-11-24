@@ -24,7 +24,7 @@ import { green, red } from '@material-ui/core/colors';
 
 
 import {makeStyles, withStyles} from '@material-ui/core/styles';
-import {Auth} from "aws-amplify";
+import Amplify, {Auth, AuthModeStrategyType} from "aws-amplify";
 import React, {useState, useEffect} from "react";
 import { connect } from "react-redux";
 import {updateLoginState} from "../../Actions/loginActions";
@@ -33,8 +33,6 @@ import "./Login.css";
 import LocalizedStrings from 'react-localization';
 import { DataStore } from 'aws-amplify';
 import {Language, Phrase} from "../../models";
-
-
 
 const initialFormState = {
     email: "", password: "", given_name: "", family_name: "", authCode: "", resetCode: ""
@@ -125,6 +123,7 @@ function Login(props) {
     const [invalidEmailError, setInvalidEmailError] = useState(false);
     const [timeLimitError, setTimeLimitError] = useState("");
     const [currentLanguage, setCurrentLanguage] = useState("");
+    const [languageCode, setLanguageCode] = useState([{code: "en", language: "English"}])
     const [strings, setStrings] = useState(new LocalizedStrings({
         en: {},
 
@@ -161,6 +160,7 @@ function Login(props) {
         retrieveUser();
         async function queryLanguages () {
             const languageRaw = await DataStore.query(Language)
+            console.log(languageRaw)
             let languageProcessed = {}
             for (const language in languageRaw){
                 const code = languageRaw[language].code
@@ -171,7 +171,11 @@ function Login(props) {
                 }
             }
             setStrings(new LocalizedStrings(languageProcessed))
-
+            let listForSelection = []
+            for (const rawData in languageRaw) {
+                listForSelection.push({code: languageRaw[rawData].code, language: languageRaw[rawData].language})
+            }
+            setLanguageCode(listForSelection)
         }
         queryLanguages()
     }, []);
@@ -463,17 +467,19 @@ function Login(props) {
                         <InputLabel variant="standard" htmlFor="uncontrolled-native">
                             Language
                         </InputLabel>
-                        <NativeSelect
-                            defaultValue={strings.getLanguage()}
-                            inputProps={{
-                                name: "Language",
-                                id: "selectLanguage"
-                            }}
-                            onChange={changeLanguage}
-                        >
-                            <option value={"en"}>English</option>
-                            <option value={"sw"}>Swahili</option>
-                        </NativeSelect>
+                        {/*<NativeSelect*/}
+                        {/*    defaultValue={strings.getLanguage()}*/}
+                        {/*    inputProps={{*/}
+                        {/*        name: "Language",*/}
+                        {/*        id: "selectLanguage"*/}
+                        {/*    }}*/}
+                        {/*    onChange={changeLanguage}*/}
+                        {/*>*/}
+                        {/*    <option value={"en"}>English</option>*/}
+                        {/*    <option value={"sw"}>Swahili</option>*/}
+                        {/*</NativeSelect>*/}
+                        <ReturnLanguageList selectedLanguage={strings.getLanguage()} list={languageCode} changeLanguage={changeLanguage}/>
+
                     </FormControl>
                 </Grid>
                 <Grid container item xs={12} md={6} className={`page-info ${classes.centerBox}`}>
@@ -920,6 +926,26 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     updateLoginState,
 };
+
+const ReturnLanguageList = ({selectedLanguage, list, changeLanguage}) => {
+    // const languages = list.map(val=>val.language)
+    let selectBox = <NativeSelect
+        defaultValue={selectedLanguage}
+        inputProps={{
+            name: "Language",
+            id: "selectLanguage"
+        }}
+        onChange={changeLanguage}
+    >
+        {list.map(val => {
+            return(
+                <option value={val.code}>{val.language}</option>
+            )
+        })}
+    </NativeSelect>;
+    return selectBox
+
+}
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
