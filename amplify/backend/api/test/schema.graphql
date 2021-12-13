@@ -1,55 +1,75 @@
-type Administrator @model {
+# Designed to be compatable with Datastore
+# Key notes:
+# 1. primary keys MUST be id: ID!
+# 2. does not support circle references (referencing something that has references the original item)
+# This is an issue because it prevents proper queries which would allow
+
+# Issues
+# 1. Due to Datastore's nature of downloading everything, people will have access to all customers, which is not secure
+# May be combated with better use of @auth (unsure), or seperating Datastore from sensitive information entirely
+
+type Administrator @model @auth(rules:[{ allow: private }]) {
   id: ID!
   name: String!
 }
 
-type Customer @model {
+type SiteManager @model @auth(rules:[{ allow: private }]) {
+  id: ID!
+  name: String!
+}
+
+type Customer @model @auth(rules:[{ allow: private }]) {
   id: ID!
   pin: Int!
   phoneNumber: String!
   name: String!
 }
 
-type Site @model
-{
+type Site @model @auth(rules:[{ allow: private }]) {
   id: ID!
-  pricePerJerryCan: Float!
-  description: String
-  serviceRadius: Float!
+  name: String!
+  description: String # Can be error message too (?) error can be abstracted away
+  serviceRadius: Float! # Measured in KM
   latitude: Float!
   longitude: Float!
+  subs: [Sub]! @hasMany
+  averageWait: Int! # Measured in seconds
+  averageLine: Int! # Measured in people
+  online: Boolean!
 }
 
-type CustomerSiteLinker @model{
+# Should in theory be a one to one relationship (or directly have siteManager-site multi-multi), but datastore
+# Does not support that, and it would just be this in the background
+type ManagerSiteLinker @model @auth(rules:[{ allow: private }]) {
+  id: ID!
+  siteManagerID: ID!
+  siteID: ID!
+}
+
+# Same as above
+type CustomerSiteLinker @model @auth(rules:[{ allow: private }]) {
   id: ID!
   customerID: ID!
   siteID: ID!
   weeklyJerryCans: Int!
   remainingJerryCans: Int!
+  sub: Int
 }
 
-type AdminSiteLinker @model{
-  id: ID!
-  adminID: ID!
-  siteID: ID!
+# Perhaps some description would be nice for future reference
+type Sub @model @auth(rules:[{ allow: private }]) {
+  id: ID! @primaryKey
+  name : String!
+  pricePerMonth: Float!
 }
 
-type Language @model
-@auth(
-  rules: [
-    { allow: public, provider: apiKey, operations: [read] }
-  ]
-) {
+type Language @model @auth(rules: [{allow: public, provider: apiKey, operations: [read]}]) {
   id: ID!
   code: String!
   language: String!
 }
 
-type Phrase @model @auth(
-  rules: [
-    { allow: public, provider: apiKey, operations: [read] }
-  ]
-) {
+type Phrase @model @auth(rules: [{allow: public, provider: apiKey, operations: [read]}]) {
   id: ID!
   code: String!
   phrase: String!

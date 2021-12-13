@@ -8,7 +8,7 @@ import LocationServiceHelper from '../Helpers/LocationServiceHelper'
 import {Button, Grid, TextField} from "@material-ui/core";
 import * as turf from "@turf/turf";
 import {createAdministrator} from "../../graphql/mutations";
-import {getAdministrator, getSite, listAdministrators, listAdminSiteLinkers, listSites} from "../../graphql/queries";
+import {listManagerSiteLinkers, listSites} from "../../graphql/queries";
 
 
 let map;
@@ -35,7 +35,9 @@ async function getLocationService(){
 //geolocate(top right button to locate user location) control and drawl tools
 async function constructMap(container){
     try {
-        map = await locationHelper.constructMapWithCenter(container,[-123.14229959999999, 49.2194576 ])
+        // UBC Coords -123.14229959999999, 49.2194576
+        // Ghana -1.6555773994213594, 9.91574634807085
+        map = await locationHelper.constructMapWithCenter(container,[-1.6555773994213594, 9.91574634807085])
     } catch (error) {
         console.log("Error print map: " + error)
         return
@@ -155,7 +157,7 @@ function locateAllWells (data){
 // to the admin, and sends those to be plotted by locateAllWells
 async function extractSiteID (email) {
     // site ids related to admin
-    const admin = API.graphql(graphqlOperation(listAdminSiteLinkers, {filter: {adminID: {eq: email}}}))
+    const admin = API.graphql(graphqlOperation(listManagerSiteLinkers, {filter: {adminID: {eq: email}}}))
     // all sites
     const wells = API.graphql(graphqlOperation(listSites))
 

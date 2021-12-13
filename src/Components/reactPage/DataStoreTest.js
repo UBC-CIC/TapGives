@@ -153,18 +153,20 @@ class DataStoreTest extends React.Component {
     }
 
     async syncData() {
-        const languageRaw = await DataStore.query(Language)
-        let languageProcessed = {}
-        for (const language in languageRaw){
-            const code = languageRaw[language].code
-            languageProcessed[code] = {}
-            const languagePhrases = await DataStore.query(Phrase, phrase=>phrase.code("eq", code))
-            for (const val in languagePhrases) {
-                languageProcessed[code][languagePhrases[val].phrase] = languagePhrases[val].data
-            }
-
-        }
-        console.log(languageProcessed)
+        // const languageRaw = await DataStore.query(Language)
+        // let languageProcessed = {}
+        // for (const language in languageRaw){
+        //     const code = languageRaw[language].code
+        //     languageProcessed[code] = {}
+        //     const languagePhrases = await DataStore.query(Phrase, phrase=>phrase.code("eq", code))
+        //     for (const val in languagePhrases) {
+        //         languageProcessed[code][languagePhrases[val].phrase] = languagePhrases[val].data
+        //     }
+        //
+        // }
+        // console.log(languageProcessed)
+        await DataStore.stop()
+        DataStore.start()
     }
     async addBaseData() {
         let phraseList = []

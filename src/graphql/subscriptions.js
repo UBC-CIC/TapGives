@@ -1,16 +1,103 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateLanguage = /* GraphQL */ `
+  subscription OnCreateLanguage {
+    onCreateLanguage {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateLanguage = /* GraphQL */ `
+  subscription OnUpdateLanguage {
+    onUpdateLanguage {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteLanguage = /* GraphQL */ `
+  subscription OnDeleteLanguage {
+    onDeleteLanguage {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreatePhrase = /* GraphQL */ `
+  subscription OnCreatePhrase {
+    onCreatePhrase {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdatePhrase = /* GraphQL */ `
+  subscription OnUpdatePhrase {
+    onUpdatePhrase {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeletePhrase = /* GraphQL */ `
+  subscription OnDeletePhrase {
+    onDeletePhrase {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const onCreateAdministrator = /* GraphQL */ `
   subscription OnCreateAdministrator {
     onCreateAdministrator {
       id
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -19,11 +106,11 @@ export const onUpdateAdministrator = /* GraphQL */ `
     onUpdateAdministrator {
       id
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -32,11 +119,50 @@ export const onDeleteAdministrator = /* GraphQL */ `
     onDeleteAdministrator {
       id
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
+    }
+  }
+`;
+export const onCreateSiteManager = /* GraphQL */ `
+  subscription OnCreateSiteManager {
+    onCreateSiteManager {
+      id
+      name
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateSiteManager = /* GraphQL */ `
+  subscription OnUpdateSiteManager {
+    onUpdateSiteManager {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteSiteManager = /* GraphQL */ `
+  subscription OnDeleteSiteManager {
+    onDeleteSiteManager {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -47,11 +173,11 @@ export const onCreateCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -62,11 +188,11 @@ export const onUpdateCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -77,11 +203,11 @@ export const onDeleteCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -89,16 +215,23 @@ export const onCreateSite = /* GraphQL */ `
   subscription OnCreateSite {
     onCreateSite {
       id
-      pricePerJerryCan
+      name
       description
       serviceRadius
       latitude
       longitude
+      subs {
+        nextToken
+        startedAt
+      }
+      averageWait
+      averageLine
+      online
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -106,16 +239,23 @@ export const onUpdateSite = /* GraphQL */ `
   subscription OnUpdateSite {
     onUpdateSite {
       id
-      pricePerJerryCan
+      name
       description
       serviceRadius
       latitude
       longitude
+      subs {
+        nextToken
+        startedAt
+      }
+      averageWait
+      averageLine
+      online
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -123,16 +263,65 @@ export const onDeleteSite = /* GraphQL */ `
   subscription OnDeleteSite {
     onDeleteSite {
       id
-      pricePerJerryCan
+      name
       description
       serviceRadius
       latitude
       longitude
+      subs {
+        nextToken
+        startedAt
+      }
+      averageWait
+      averageLine
+      online
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
+    }
+  }
+`;
+export const onCreateManagerSiteLinker = /* GraphQL */ `
+  subscription OnCreateManagerSiteLinker {
+    onCreateManagerSiteLinker {
+      id
+      siteManagerID
+      siteID
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateManagerSiteLinker = /* GraphQL */ `
+  subscription OnUpdateManagerSiteLinker {
+    onUpdateManagerSiteLinker {
+      id
+      siteManagerID
+      siteID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteManagerSiteLinker = /* GraphQL */ `
+  subscription OnDeleteManagerSiteLinker {
+    onDeleteManagerSiteLinker {
+      id
+      siteManagerID
+      siteID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -144,11 +333,12 @@ export const onCreateCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
+      sub
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -160,11 +350,12 @@ export const onUpdateCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
+      sub
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -176,140 +367,57 @@ export const onDeleteCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
+      sub
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
-export const onCreateAdminSiteLinker = /* GraphQL */ `
-  subscription OnCreateAdminSiteLinker {
-    onCreateAdminSiteLinker {
+export const onCreateSub = /* GraphQL */ `
+  subscription OnCreateSub {
+    onCreateSub {
       id
-      adminID
-      siteID
+      name
+      pricePerMonth
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
+      siteSubsId
     }
   }
 `;
-export const onUpdateAdminSiteLinker = /* GraphQL */ `
-  subscription OnUpdateAdminSiteLinker {
-    onUpdateAdminSiteLinker {
+export const onUpdateSub = /* GraphQL */ `
+  subscription OnUpdateSub {
+    onUpdateSub {
       id
-      adminID
-      siteID
+      name
+      pricePerMonth
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
+      siteSubsId
     }
   }
 `;
-export const onDeleteAdminSiteLinker = /* GraphQL */ `
-  subscription OnDeleteAdminSiteLinker {
-    onDeleteAdminSiteLinker {
+export const onDeleteSub = /* GraphQL */ `
+  subscription OnDeleteSub {
+    onDeleteSub {
       id
-      adminID
-      siteID
+      name
+      pricePerMonth
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateLanguage = /* GraphQL */ `
-  subscription OnCreateLanguage {
-    onCreateLanguage {
-      id
-      code
-      language
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateLanguage = /* GraphQL */ `
-  subscription OnUpdateLanguage {
-    onUpdateLanguage {
-      id
-      code
-      language
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteLanguage = /* GraphQL */ `
-  subscription OnDeleteLanguage {
-    onDeleteLanguage {
-      id
-      code
-      language
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreatePhrase = /* GraphQL */ `
-  subscription OnCreatePhrase {
-    onCreatePhrase {
-      id
-      code
-      phrase
-      data
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdatePhrase = /* GraphQL */ `
-  subscription OnUpdatePhrase {
-    onUpdatePhrase {
-      id
-      code
-      phrase
-      data
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeletePhrase = /* GraphQL */ `
-  subscription OnDeletePhrase {
-    onDeletePhrase {
-      id
-      code
-      phrase
-      data
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      siteSubsId
     }
   }
 `;

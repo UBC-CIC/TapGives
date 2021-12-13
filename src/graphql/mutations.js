@@ -1,6 +1,111 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createLanguage = /* GraphQL */ `
+  mutation CreateLanguage(
+    $input: CreateLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    createLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateLanguage = /* GraphQL */ `
+  mutation UpdateLanguage(
+    $input: UpdateLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    updateLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteLanguage = /* GraphQL */ `
+  mutation DeleteLanguage(
+    $input: DeleteLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    deleteLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createPhrase = /* GraphQL */ `
+  mutation CreatePhrase(
+    $input: CreatePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    createPhrase(input: $input, condition: $condition) {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updatePhrase = /* GraphQL */ `
+  mutation UpdatePhrase(
+    $input: UpdatePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    updatePhrase(input: $input, condition: $condition) {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deletePhrase = /* GraphQL */ `
+  mutation DeletePhrase(
+    $input: DeletePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    deletePhrase(input: $input, condition: $condition) {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const createAdministrator = /* GraphQL */ `
   mutation CreateAdministrator(
     $input: CreateAdministratorInput!
@@ -9,11 +114,11 @@ export const createAdministrator = /* GraphQL */ `
     createAdministrator(input: $input, condition: $condition) {
       id
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -25,11 +130,11 @@ export const updateAdministrator = /* GraphQL */ `
     updateAdministrator(input: $input, condition: $condition) {
       id
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -41,11 +146,59 @@ export const deleteAdministrator = /* GraphQL */ `
     deleteAdministrator(input: $input, condition: $condition) {
       id
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
+    }
+  }
+`;
+export const createSiteManager = /* GraphQL */ `
+  mutation CreateSiteManager(
+    $input: CreateSiteManagerInput!
+    $condition: ModelSiteManagerConditionInput
+  ) {
+    createSiteManager(input: $input, condition: $condition) {
+      id
+      name
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateSiteManager = /* GraphQL */ `
+  mutation UpdateSiteManager(
+    $input: UpdateSiteManagerInput!
+    $condition: ModelSiteManagerConditionInput
+  ) {
+    updateSiteManager(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteSiteManager = /* GraphQL */ `
+  mutation DeleteSiteManager(
+    $input: DeleteSiteManagerInput!
+    $condition: ModelSiteManagerConditionInput
+  ) {
+    deleteSiteManager(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -59,11 +212,11 @@ export const createCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -77,11 +230,11 @@ export const updateCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -95,11 +248,11 @@ export const deleteCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -110,16 +263,23 @@ export const createSite = /* GraphQL */ `
   ) {
     createSite(input: $input, condition: $condition) {
       id
-      pricePerJerryCan
+      name
       description
       serviceRadius
       latitude
       longitude
+      subs {
+        nextToken
+        startedAt
+      }
+      averageWait
+      averageLine
+      online
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -130,16 +290,23 @@ export const updateSite = /* GraphQL */ `
   ) {
     updateSite(input: $input, condition: $condition) {
       id
-      pricePerJerryCan
+      name
       description
       serviceRadius
       latitude
       longitude
+      subs {
+        nextToken
+        startedAt
+      }
+      averageWait
+      averageLine
+      online
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -150,16 +317,74 @@ export const deleteSite = /* GraphQL */ `
   ) {
     deleteSite(input: $input, condition: $condition) {
       id
-      pricePerJerryCan
+      name
       description
       serviceRadius
       latitude
       longitude
+      subs {
+        nextToken
+        startedAt
+      }
+      averageWait
+      averageLine
+      online
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
+    }
+  }
+`;
+export const createManagerSiteLinker = /* GraphQL */ `
+  mutation CreateManagerSiteLinker(
+    $input: CreateManagerSiteLinkerInput!
+    $condition: ModelManagerSiteLinkerConditionInput
+  ) {
+    createManagerSiteLinker(input: $input, condition: $condition) {
+      id
+      siteManagerID
+      siteID
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateManagerSiteLinker = /* GraphQL */ `
+  mutation UpdateManagerSiteLinker(
+    $input: UpdateManagerSiteLinkerInput!
+    $condition: ModelManagerSiteLinkerConditionInput
+  ) {
+    updateManagerSiteLinker(input: $input, condition: $condition) {
+      id
+      siteManagerID
+      siteID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteManagerSiteLinker = /* GraphQL */ `
+  mutation DeleteManagerSiteLinker(
+    $input: DeleteManagerSiteLinkerInput!
+    $condition: ModelManagerSiteLinkerConditionInput
+  ) {
+    deleteManagerSiteLinker(input: $input, condition: $condition) {
+      id
+      siteManagerID
+      siteID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -174,11 +399,12 @@ export const createCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
+      sub
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -193,11 +419,12 @@ export const updateCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
+      sub
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -212,167 +439,66 @@ export const deleteCustomerSiteLinker = /* GraphQL */ `
       siteID
       weeklyJerryCans
       remainingJerryCans
+      sub
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
-export const createAdminSiteLinker = /* GraphQL */ `
-  mutation CreateAdminSiteLinker(
-    $input: CreateAdminSiteLinkerInput!
-    $condition: ModelAdminSiteLinkerConditionInput
+export const createSub = /* GraphQL */ `
+  mutation CreateSub(
+    $input: CreateSubInput!
+    $condition: ModelSubConditionInput
   ) {
-    createAdminSiteLinker(input: $input, condition: $condition) {
+    createSub(input: $input, condition: $condition) {
       id
-      adminID
-      siteID
+      name
+      pricePerMonth
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
+      siteSubsId
     }
   }
 `;
-export const updateAdminSiteLinker = /* GraphQL */ `
-  mutation UpdateAdminSiteLinker(
-    $input: UpdateAdminSiteLinkerInput!
-    $condition: ModelAdminSiteLinkerConditionInput
+export const updateSub = /* GraphQL */ `
+  mutation UpdateSub(
+    $input: UpdateSubInput!
+    $condition: ModelSubConditionInput
   ) {
-    updateAdminSiteLinker(input: $input, condition: $condition) {
+    updateSub(input: $input, condition: $condition) {
       id
-      adminID
-      siteID
+      name
+      pricePerMonth
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
+      siteSubsId
     }
   }
 `;
-export const deleteAdminSiteLinker = /* GraphQL */ `
-  mutation DeleteAdminSiteLinker(
-    $input: DeleteAdminSiteLinkerInput!
-    $condition: ModelAdminSiteLinkerConditionInput
+export const deleteSub = /* GraphQL */ `
+  mutation DeleteSub(
+    $input: DeleteSubInput!
+    $condition: ModelSubConditionInput
   ) {
-    deleteAdminSiteLinker(input: $input, condition: $condition) {
+    deleteSub(input: $input, condition: $condition) {
       id
-      adminID
-      siteID
+      name
+      pricePerMonth
+      createdAt
+      updatedAt
       _version
       _deleted
       _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createLanguage = /* GraphQL */ `
-  mutation CreateLanguage(
-    $input: CreateLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    createLanguage(input: $input, condition: $condition) {
-      id
-      code
-      language
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateLanguage = /* GraphQL */ `
-  mutation UpdateLanguage(
-    $input: UpdateLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    updateLanguage(input: $input, condition: $condition) {
-      id
-      code
-      language
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteLanguage = /* GraphQL */ `
-  mutation DeleteLanguage(
-    $input: DeleteLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    deleteLanguage(input: $input, condition: $condition) {
-      id
-      code
-      language
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createPhrase = /* GraphQL */ `
-  mutation CreatePhrase(
-    $input: CreatePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    createPhrase(input: $input, condition: $condition) {
-      id
-      code
-      phrase
-      data
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updatePhrase = /* GraphQL */ `
-  mutation UpdatePhrase(
-    $input: UpdatePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    updatePhrase(input: $input, condition: $condition) {
-      id
-      code
-      phrase
-      data
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deletePhrase = /* GraphQL */ `
-  mutation DeletePhrase(
-    $input: DeletePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    deletePhrase(input: $input, condition: $condition) {
-      id
-      code
-      phrase
-      data
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      siteSubsId
     }
   }
 `;

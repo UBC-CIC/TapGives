@@ -15,7 +15,7 @@ import Navbar from "../../Components/Navbar/Navbar";
 import { connect } from "react-redux";
 import {updateMenuState} from "../../Actions/menuActions";
 import MapComponent from '../../Components/reactPage/MapComponent'
-import SiteAdministration from '../../Components/reactPage/SiteAdministration'
+import SiteAdministration from '../../Components/reactPage/SiteManagement'
 import AccessManager from '../../Components/reactPage/AccessManager'
 import DataStoreTest from '../../Components/reactPage/DataStoreTest'
 

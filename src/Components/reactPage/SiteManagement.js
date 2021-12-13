@@ -11,14 +11,14 @@ import {
     TextField
 } from "@material-ui/core";
 import { DataGrid } from '@mui/x-data-grid';
-import {API, Auth, graphqlOperation} from "aws-amplify";
+import {API, Auth, DataStore, graphqlOperation} from "aws-amplify";
 import {
     getAdministrator,
-    listAdminSiteLinkers,
     listCustomers,
     listCustomerSiteLinkers,
     listSites
 } from "../../graphql/queries";
+import {Customer, CustomerSiteLinker, ManagerSiteLinker, Site} from "../../models";
 
 const columns = [
         {
@@ -50,31 +50,32 @@ const columns = [
             editable: true,
         },
     ]
-let rows = []
+
 async function handleChange() {
 
 }
 
 
-class siteAdministration extends React.Component {
+class siteManagement extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            rows: []
+        }
     }
     async extractCustomers(siteList){
         let custList = []
         for (const site in siteList) {
-            custList.push(...siteList[site].data.listCustomerSiteLinkers.items)
+            custList.push(...siteList[site])
         }
-        let customerList = []
-        for (const customer in custList) {
-            customerList.push({id: {eq: custList[customer].customerID}})
-        }
-        customerList = (await API.graphql(graphqlOperation(listCustomers, {filter: {or: customerList}}))).data.listCustomers.items;
+        let customerList = DataStore.query(Customer, (c) =>
+            c.or((c) => custList.reduce((c, person) => c.id('eq', person.customerID), c))
+        )
         // console.log(customerList)
         for (const customer in custList) { // Iterating through list of customer id + site info
             try {
                 custList[customer].name = customerList.find((custInfo)=>{
-                    return custList[customer].customerID === custInfo.id
+                    return custList[customer].customerID == custInfo.id
                 }).name
             } catch (err) {
                 console.log("Failed to match connection to customer: " + err.message)
@@ -85,18 +86,17 @@ class siteAdministration extends React.Component {
     async getlist() {
         const email = (await Auth.currentAuthenticatedUser()).attributes.email; //username of current user
         // site ids related to admin
-        const admin = await API.graphql(graphqlOperation(listAdminSiteLinkers, {filter: {adminID: {eq: email}}}))
-        const data = (admin.data.listAdminSiteLinkers.items)
+        let data = await DataStore.query(ManagerSiteLinker, (linker) => linker.siteManagerID("eq", email))
         let siteCustomersPromises = []
         for (const entry in data) {
-            console.log(data[entry].siteID)
-            siteCustomersPromises.push(API.graphql(graphqlOperation(listCustomerSiteLinkers, {filter: {siteID: {eq: data[entry].siteID}}})))
+            siteCustomersPromises.push(DataStore.query(CustomerSiteLinker, csl => csl.siteID("eq",data[entry].siteID)))
             // TODO: Handle request when over max limit (unknown limit, but was told its 11 000, or 10mb)
         }
         const out = await Promise.all(siteCustomersPromises)
-        rows = await this.extractCustomers(out)
-        console.log(rows)
-        this.forceUpdate()
+
+        this.setState({
+            rows: await this.extractCustomers(out)
+        })
     }
     async componentDidMount() {
         await this.getlist()
@@ -106,7 +106,7 @@ class siteAdministration extends React.Component {
         return (
             <div style={{ height: "80vh", width: '100%' }}>
                 <DataGrid
-                    rows={rows}
+                    rows={this.state.rows}
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[10]}
@@ -117,4 +117,4 @@ class siteAdministration extends React.Component {
         );
     }
 }
-export default siteAdministration
+export default siteManagement

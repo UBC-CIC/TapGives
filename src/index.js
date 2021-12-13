@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { applyMiddleware, createStore } from "redux";
+import {applyMiddleware, compose, createStore} from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import awsExports from "./aws-exports";
@@ -10,7 +10,8 @@ import reportWebVitals from './reportWebVitals';
 import reducers from "./Reducers";
 import 'semantic-ui-css/semantic.min.css';
 import Amplify, { AuthModeStrategyType } from 'aws-amplify';
-
+import { offline } from '@redux-offline/redux-offline';
+import offlineConfig from '@redux-offline/redux-offline/lib/defaults';
 
 Amplify.configure(awsExports);
 Amplify.configure({
@@ -19,8 +20,9 @@ Amplify.configure({
         authModeStrategyType: AuthModeStrategyType.MULTI_AUTH
     }
 })
+const enhancers = compose(offline(offlineConfig), applyMiddleware(thunk))
 const store = createStore(
-    reducers, applyMiddleware(thunk)
+    reducers, enhancers
 );
 
 

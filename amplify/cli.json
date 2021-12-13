@@ -4,10 +4,12 @@
       "addmissingownerfields": true,
       "improvepluralization": false,
       "validatetypenamereservedwords": true,
-      "useexperimentalpipelinedtransformer": false,
+      "useexperimentalpipelinedtransformer": true,
       "enableiterativegsiupdates": true,
       "secondarykeyasgsi": true,
-      "skipoverridemutationinputtypes": true
+      "skipoverridemutationinputtypes": true,
+      "transformerversion": 2,
+      "suppressschemamigrationprompt": true
     },
     "frontend-ios": {
       "enablexcodeintegration": true
@@ -40,6 +42,9 @@
       "rekognition": 1,
       "textract": 1,
       "comprehend": 1
+    },
+    "project": {
+      "overrides": true
     }
   }
 }
