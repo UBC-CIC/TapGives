@@ -1,111 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createLanguage = /* GraphQL */ `
-  mutation CreateLanguage(
-    $input: CreateLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    createLanguage(input: $input, condition: $condition) {
-      id
-      code
-      language
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateLanguage = /* GraphQL */ `
-  mutation UpdateLanguage(
-    $input: UpdateLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    updateLanguage(input: $input, condition: $condition) {
-      id
-      code
-      language
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteLanguage = /* GraphQL */ `
-  mutation DeleteLanguage(
-    $input: DeleteLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    deleteLanguage(input: $input, condition: $condition) {
-      id
-      code
-      language
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const createPhrase = /* GraphQL */ `
-  mutation CreatePhrase(
-    $input: CreatePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    createPhrase(input: $input, condition: $condition) {
-      id
-      code
-      phrase
-      data
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updatePhrase = /* GraphQL */ `
-  mutation UpdatePhrase(
-    $input: UpdatePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    updatePhrase(input: $input, condition: $condition) {
-      id
-      code
-      phrase
-      data
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deletePhrase = /* GraphQL */ `
-  mutation DeletePhrase(
-    $input: DeletePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    deletePhrase(input: $input, condition: $condition) {
-      id
-      code
-      phrase
-      data
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
 export const createAdministrator = /* GraphQL */ `
   mutation CreateAdministrator(
     $input: CreateAdministratorInput!
@@ -269,8 +164,14 @@ export const createSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        nextToken
-        startedAt
+        id
+        name
+        pricePerMonth
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       averageWait
       averageLine
@@ -296,8 +197,14 @@ export const updateSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        nextToken
-        startedAt
+        id
+        name
+        pricePerMonth
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       averageWait
       averageLine
@@ -323,8 +230,14 @@ export const deleteSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        nextToken
-        startedAt
+        id
+        name
+        pricePerMonth
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       averageWait
       averageLine
@@ -462,7 +375,6 @@ export const createSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;
@@ -480,7 +392,6 @@ export const updateSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;
@@ -498,7 +409,111 @@ export const deleteSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
+    }
+  }
+`;
+export const createLanguage = /* GraphQL */ `
+  mutation CreateLanguage(
+    $input: CreateLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    createLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateLanguage = /* GraphQL */ `
+  mutation UpdateLanguage(
+    $input: UpdateLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    updateLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteLanguage = /* GraphQL */ `
+  mutation DeleteLanguage(
+    $input: DeleteLanguageInput!
+    $condition: ModelLanguageConditionInput
+  ) {
+    deleteLanguage(input: $input, condition: $condition) {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createPhrase = /* GraphQL */ `
+  mutation CreatePhrase(
+    $input: CreatePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    createPhrase(input: $input, condition: $condition) {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updatePhrase = /* GraphQL */ `
+  mutation UpdatePhrase(
+    $input: UpdatePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    updatePhrase(input: $input, condition: $condition) {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deletePhrase = /* GraphQL */ `
+  mutation DeletePhrase(
+    $input: DeletePhraseInput!
+    $condition: ModelPhraseConditionInput
+  ) {
+    deletePhrase(input: $input, condition: $condition) {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;

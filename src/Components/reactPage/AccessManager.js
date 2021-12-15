@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {API, Auth, DataStore, graphqlOperation} from "aws-amplify";
+import amplifyConfig from "../../aws-exports";
+import Amplify, { Hub, DataStore } from 'aws-amplify';
 import {
     Box,
     Button,
@@ -114,6 +115,10 @@ const subscriptionRequirements = [
         type: "number",
     }
 ]
+// Configure Amplify to allow network connectivity
+Amplify.configure(amplifyConfig)
+// Enable Hub to debug datatore connectivity
+// Hub.listen("datastore", (test) => {console.log(test.payload)})
 /* TODO:
     1. Add new site
     2. Change admins for each site

@@ -1,15 +1,15 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-test-dev-104425-authRole",
-      "UnauthRoleArn": "arn:aws:iam::324707760390:role/amplify-test-dev-104425-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::324707760390:role/amplify-test-dev-104425-authRole",
+      "AuthRoleName": "amplify-tapgive-dev-114804-authRole",
+      "UnauthRoleArn": "arn:aws:iam::324707760390:role/amplify-tapgive-dev-114804-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::324707760390:role/amplify-tapgive-dev-114804-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-test-dev-104425-deployment",
-      "UnauthRoleName": "amplify-test-dev-104425-unauthRole",
-      "StackName": "amplify-test-dev-104425",
-      "StackId": "arn:aws:cloudformation:us-east-1:324707760390:stack/amplify-test-dev-104425/5d2b1410-3684-11ec-a676-0eef6f3489db",
-      "AmplifyAppId": "d2b8wcaffvsrmb"
+      "DeploymentBucketName": "amplify-tapgive-dev-114804-deployment",
+      "UnauthRoleName": "amplify-tapgive-dev-114804-unauthRole",
+      "StackName": "amplify-tapgive-dev-114804",
+      "StackId": "arn:aws:cloudformation:us-east-1:324707760390:stack/amplify-tapgive-dev-114804/c1caf490-5d16-11ec-aae6-123c16fe5a07",
+      "AmplifyAppId": "djlgwultmhj2n"
     },
     "categories": {
       "auth": {

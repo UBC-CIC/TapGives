@@ -1,137 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getLanguage = /* GraphQL */ `
-  query GetLanguage($id: ID!) {
-    getLanguage(id: $id) {
-      id
-      code
-      language
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listLanguages = /* GraphQL */ `
-  query ListLanguages(
-    $filter: ModelLanguageFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listLanguages(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        code
-        language
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncLanguages = /* GraphQL */ `
-  query SyncLanguages(
-    $filter: ModelLanguageFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLanguages(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        code
-        language
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getPhrase = /* GraphQL */ `
-  query GetPhrase($id: ID!) {
-    getPhrase(id: $id) {
-      id
-      code
-      phrase
-      data
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listPhrases = /* GraphQL */ `
-  query ListPhrases(
-    $filter: ModelPhraseFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPhrases(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        code
-        phrase
-        data
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncPhrases = /* GraphQL */ `
-  query SyncPhrases(
-    $filter: ModelPhraseFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncPhrases(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        code
-        phrase
-        data
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getAdministrator = /* GraphQL */ `
   query GetAdministrator($id: ID!) {
     getAdministrator(id: $id) {
@@ -331,8 +200,14 @@ export const getSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        nextToken
-        startedAt
+        id
+        name
+        pricePerMonth
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       averageWait
       averageLine
@@ -563,7 +438,6 @@ export const getSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;
@@ -583,7 +457,6 @@ export const listSubs = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        siteSubsId
       }
       nextToken
       startedAt
@@ -612,7 +485,137 @@ export const syncSubs = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        siteSubsId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getLanguage = /* GraphQL */ `
+  query GetLanguage($id: ID!) {
+    getLanguage(id: $id) {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listLanguages = /* GraphQL */ `
+  query ListLanguages(
+    $filter: ModelLanguageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLanguages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        code
+        language
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncLanguages = /* GraphQL */ `
+  query SyncLanguages(
+    $filter: ModelLanguageFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncLanguages(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        code
+        language
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getPhrase = /* GraphQL */ `
+  query GetPhrase($id: ID!) {
+    getPhrase(id: $id) {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listPhrases = /* GraphQL */ `
+  query ListPhrases(
+    $filter: ModelPhraseFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPhrases(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        code
+        phrase
+        data
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncPhrases = /* GraphQL */ `
+  query SyncPhrases(
+    $filter: ModelPhraseFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPhrases(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        code
+        phrase
+        data
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       nextToken
       startedAt

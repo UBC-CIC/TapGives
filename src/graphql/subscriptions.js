@@ -1,93 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateLanguage = /* GraphQL */ `
-  subscription OnCreateLanguage {
-    onCreateLanguage {
-      id
-      code
-      language
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateLanguage = /* GraphQL */ `
-  subscription OnUpdateLanguage {
-    onUpdateLanguage {
-      id
-      code
-      language
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteLanguage = /* GraphQL */ `
-  subscription OnDeleteLanguage {
-    onDeleteLanguage {
-      id
-      code
-      language
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onCreatePhrase = /* GraphQL */ `
-  subscription OnCreatePhrase {
-    onCreatePhrase {
-      id
-      code
-      phrase
-      data
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdatePhrase = /* GraphQL */ `
-  subscription OnUpdatePhrase {
-    onUpdatePhrase {
-      id
-      code
-      phrase
-      data
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeletePhrase = /* GraphQL */ `
-  subscription OnDeletePhrase {
-    onDeletePhrase {
-      id
-      code
-      phrase
-      data
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
 export const onCreateAdministrator = /* GraphQL */ `
   subscription OnCreateAdministrator {
     onCreateAdministrator {
@@ -221,8 +134,14 @@ export const onCreateSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        nextToken
-        startedAt
+        id
+        name
+        pricePerMonth
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       averageWait
       averageLine
@@ -245,8 +164,14 @@ export const onUpdateSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        nextToken
-        startedAt
+        id
+        name
+        pricePerMonth
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       averageWait
       averageLine
@@ -269,8 +194,14 @@ export const onDeleteSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        nextToken
-        startedAt
+        id
+        name
+        pricePerMonth
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       averageWait
       averageLine
@@ -387,7 +318,6 @@ export const onCreateSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;
@@ -402,7 +332,6 @@ export const onUpdateSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;
@@ -417,7 +346,93 @@ export const onDeleteSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
+    }
+  }
+`;
+export const onCreateLanguage = /* GraphQL */ `
+  subscription OnCreateLanguage {
+    onCreateLanguage {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateLanguage = /* GraphQL */ `
+  subscription OnUpdateLanguage {
+    onUpdateLanguage {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteLanguage = /* GraphQL */ `
+  subscription OnDeleteLanguage {
+    onDeleteLanguage {
+      id
+      code
+      language
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreatePhrase = /* GraphQL */ `
+  subscription OnCreatePhrase {
+    onCreatePhrase {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdatePhrase = /* GraphQL */ `
+  subscription OnUpdatePhrase {
+    onUpdatePhrase {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeletePhrase = /* GraphQL */ `
+  subscription OnDeletePhrase {
+    onDeletePhrase {
+      id
+      code
+      phrase
+      data
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;

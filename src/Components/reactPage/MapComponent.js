@@ -157,14 +157,14 @@ function locateAllWells (data){
 // to the admin, and sends those to be plotted by locateAllWells
 async function extractSiteID (email) {
     // site ids related to admin
-    const admin = API.graphql(graphqlOperation(listManagerSiteLinkers, {filter: {adminID: {eq: email}}}))
+    const admin = API.graphql(graphqlOperation(listManagerSiteLinkers, {filter: {siteManagerID: {eq: email}}}))
     // all sites
     const wells = API.graphql(graphqlOperation(listSites))
 
     // wait for both to return
     Promise.all([admin, wells]).then(([adminOut,wellsOut])=>{
         // get rid of all the fluff around returned site IDs
-        const data = (adminOut.data.listAdminSiteLinkers.items)
+        const data = (adminOut.data.listManagerSiteLinkers.items)
         let siteIDs = []
         for (const entry in data) {
             siteIDs.push(data[entry].siteID)
