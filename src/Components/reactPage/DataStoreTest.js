@@ -1,9 +1,11 @@
 import React from "react";
-import Amplify, {DataStore} from "aws-amplify";
+import {Hub, DataStore} from "aws-amplify";
 import {Language, Phrase} from "../../models";
 import {Button, TextField} from "@material-ui/core";
-import amplifyConfig from "../../aws-exports";
-Amplify.configure(amplifyConfig);
+
+
+// Amplify.configure(amplifyConfig);
+Hub.listen("datastore", (test) => {console.log(test.payload)})
 const baseLanguages  = {
     en:{
         signIn:"Sign In",
@@ -130,8 +132,6 @@ class DataStoreTest extends React.Component {
     async clearDataStore () {
         try {
             await DataStore.clear()
-            const posts = await DataStore.query(Language);
-            console.log("Posts retrieved successfully!", JSON.stringify(posts, null,    2));
         } catch (error) {
             console.log("Error retrieving posts", error);
         }

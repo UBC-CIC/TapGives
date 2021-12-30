@@ -33,7 +33,9 @@ import "./Login.css";
 import LocalizedStrings from 'react-localization';
 import { DataStore } from 'aws-amplify';
 import {Language, Phrase} from "../../models";
+import amplifyConfig from "../../aws-exports";
 
+Amplify.configure(amplifyConfig)
 const initialFormState = {
     email: "", password: "", given_name: "", family_name: "", authCode: "", resetCode: ""
 }
@@ -55,18 +57,18 @@ const useStyles = makeStyles((theme) => ({
         display: "flex"
     },
     forgetPassword: {
-        justifyContent: "flex-end", 
+        justifyContent: "flex-end",
         fontFamily: "'Roboto', 'Helvetica', 'Arial', 'sans-serif'",
-        fontWeight: 500, 
-        lineHeight: 1.75, 
+        fontWeight: 500,
+        lineHeight: 1.75,
     },
     activeButton: {
-        borderRadius: 50, 
-        width: "100%", 
+        borderRadius: 50,
+        width: "100%",
         fontSize: "1em"
     },
     themeColor: {
-        backgroundColor: "#012144", 
+        backgroundColor: "#012144",
     },
     errorMessage: {
         color: "red",
@@ -89,8 +91,8 @@ const useStyles = makeStyles((theme) => ({
 
 const DefaultButton = withStyles((theme) => ({
     root: {
-        borderRadius: 50, 
-        width: "100%", 
+        borderRadius: 50,
+        width: "100%",
         fontSize: "1em",
         padding: theme.spacing(1.5),
         margin: theme.spacing(2, 'auto')
@@ -323,7 +325,7 @@ function Login(props) {
 
             setLoading(true);
             await Auth.signUp({
-                username: email, 
+                username: email,
                 password: password,
                 attributes: {
                     given_name: given_name,
@@ -588,7 +590,7 @@ function Login(props) {
                 </Grid>
                 <Grid container item xs={12} md={6} className={`page-info ${classes.centerBox}`}>
                     <Grid container item justify={"space-evenly"} alignItems={"center"} /*style={{height: "60vh"}}*/>
-                        <Grid xs item className={`typewriter ${classes.marginHorizontal}`}> 
+                        <Grid xs item className={`typewriter ${classes.marginHorizontal}`}>
                             <p className={`${classes.textAlignCenter} ${(animateTitle) ? 
                                 (darkMode) ? "line anim-typewriter" : "line anim-typewriter-light lightMode" 
                                 :
@@ -609,9 +611,9 @@ function Login(props) {
                     <Grid container item direction={"column"} xs={12} sm={11} md={9} className={"login-box"}>
                         <Grid className={"login-wrapper-top"}>
                             <span className={"login-wrapper-top-header"}>
-                                {(loginState === "signIn") ? 
+                                {(loginState === "signIn") ?
                                     <span>{strings.signIn}</span>
-                                    : 
+                                    :
                                     (loginState === "signUp") ? <span>{strings.createAccount}</span> :
                                                                 (loginState === "confirmSignUp") ? <span>{strings.verifyAccount}</span> :
                                                                     (loginState === "forgotPassword") ? <span>{strings.forgot}</span> :
@@ -651,7 +653,7 @@ function Login(props) {
                                             </Grid>
                                         </Grid>
                                         {/* create an account button */}
-                                        <Grid className={`input-box`}> 
+                                        <Grid className={`input-box`}>
                                             <DefaultButton variant="contained" type="button" onClick={() => resetStates("signUp")}>
                                                 {strings.createAccount}
                                             </DefaultButton>
@@ -669,17 +671,17 @@ function Login(props) {
                                             {strings.forgotQuery}
                                         </span>
                                     </Grid>
-                                    <TextFieldStartAdornment 
-                                        startIcon={<AlternateEmailIcon/>} 
+                                    <TextFieldStartAdornment
+                                        startIcon={<AlternateEmailIcon/>}
                                         placeholder={strings.email}
-                                        name={"email"} 
-                                        type="email" 
-                                        autoComplete={"new-password"} 
-                                        variant="outlined" 
+                                        name={"email"}
+                                        type="email"
+                                        autoComplete={"new-password"}
+                                        variant="outlined"
                                         error={forgotPasswordError}
-                                        onChange={onChange} 
+                                        onChange={onChange}
                                     />
-                                    {!!forgotPasswordError && 
+                                    {!!forgotPasswordError &&
                                         <Grid container item xs={12} className={classes.errorMessage}>
                                             <span>{strings.enterValidEmail}
                                             <span className={`${classes.cursor} ${classes.underlineText}`} onClick={() => updateLoginState("signUp")}><strong>here</strong></span>
@@ -706,38 +708,38 @@ function Login(props) {
                                     <BannerMessage type={"error"} typeCheck={emptyInputError||timeLimitError}>
                                         {(!!emptyInputError && "Please fill in all fields.") || (timeLimitError!=='' && timeLimitError)}
                                     </BannerMessage>
-                                    <TextFieldStartAdornment 
-                                        startIcon={<DialpadIcon/>} 
+                                    <TextFieldStartAdornment
+                                        startIcon={<DialpadIcon/>}
                                         placeholder={strings.enterReset}
-                                        variant="outlined" 
-                                        name={"resetCode"} 
-                                        type="text" 
+                                        variant="outlined"
+                                        name={"resetCode"}
+                                        type="text"
                                         error={verificationError}
                                         helperText={
                                             !!verificationError && strings.verificationError
                                         }
-                                        onChange={onChange} 
+                                        onChange={onChange}
                                     />
-                                    <TextFieldStartAdornment 
-                                        startIcon={<LockIcon/>} 
+                                    <TextFieldStartAdornment
+                                        startIcon={<LockIcon/>}
                                         placeholder={strings.createPassword}
-                                        name={"password"} 
-                                        type="password" 
+                                        name={"password"}
+                                        type="password"
                                         error={newPasswordError}
                                         helperText={
                                             strings.helperText
                                         }
-                                        autoComplete={"new-password"} 
-                                        onChange={onChangePassword} 
+                                        autoComplete={"new-password"}
+                                        onChange={onChangePassword}
                                     />
                                     <Grid container item xs={12} className={!!newPasswordError ? classes.passwordReq : null}>
                                         <PasswordRequirements requirements={passwordRequirements}/>
                                     </Grid>
-                                    <TextFieldStartAdornment 
-                                        startIcon={<LockIcon/>} 
+                                    <TextFieldStartAdornment
+                                        startIcon={<LockIcon/>}
                                         placeholder={strings.reenter}
-                                        name={"confirm-password"} 
-                                        type="password" 
+                                        name={"confirm-password"}
+                                        type="password"
                                         error={passwordUnmatchError}
                                         helperText={!!passwordUnmatchError && strings.noMatch}
                                         autoComplete={"new-password"}
@@ -748,11 +750,11 @@ function Login(props) {
                                             e.target.value === formState.password ? setPasswordUnmatchError(false) : setPasswordUnmatchError(true)
                                         }}
                                     />
-                                    <BackAndSubmitButtons 
+                                    <BackAndSubmitButtons
                                         backAction={()=>resetStates("signIn")}
                                         back = {strings.back}
-                                        submitAction={resetPassword} 
-                                        submitMessage={"Update Password"} 
+                                        submitAction={resetPassword}
+                                        submitMessage={"Update Password"}
                                         loadingState={loading}
                                     />
                                 </Grid>
@@ -762,55 +764,55 @@ function Login(props) {
                             loginState === "signUp" && (
                                 <Grid>
                                     <BannerMessage type={"error"} typeCheck={emptyInputError}>Please fill in all fields.</BannerMessage>
-                                    <TextFieldStartAdornment 
-                                        startIcon={false} 
+                                    <TextFieldStartAdornment
+                                        startIcon={false}
                                         label={strings.firstName}
-                                        name={"given_name"} 
-                                        type="text" 
+                                        name={"given_name"}
+                                        type="text"
                                         autoComplete={"new-password"}
-                                        onChange={onChange} 
+                                        onChange={onChange}
                                     />
-                                    <TextFieldStartAdornment 
-                                        startIcon={false} 
+                                    <TextFieldStartAdornment
+                                        startIcon={false}
                                         label={strings.lastName}
-                                        name={"family_name"} 
-                                        type="text" 
+                                        name={"family_name"}
+                                        type="text"
                                         autoComplete={"new-password"}
-                                        onChange={onChange} 
+                                        onChange={onChange}
                                     />
-                                    <TextFieldStartAdornment 
-                                        startIcon={false} 
+                                    <TextFieldStartAdornment
+                                        startIcon={false}
                                         label={strings.email}
-                                        name={"email"} 
-                                        type="email" 
-                                        autoComplete={"new-password"} 
-                                        error={accountCreationEmailExistError || invalidEmailError} 
+                                        name={"email"}
+                                        type="email"
+                                        autoComplete={"new-password"}
+                                        error={accountCreationEmailExistError || invalidEmailError}
                                         helperText={
                                             (!!accountCreationEmailExistError && strings.accountExists) ||
                                             (!!invalidEmailError && strings.validEmail)
                                         }
-                                        onChange={onChange} 
+                                        onChange={onChange}
                                     />
-                                    <TextFieldStartAdornment 
-                                        startIcon={false} 
+                                    <TextFieldStartAdornment
+                                        startIcon={false}
                                         label={strings.password}
-                                        name={"password"} 
-                                        type="password" 
+                                        name={"password"}
+                                        type="password"
                                         error={accountCreationPasswordError}
                                         helperText={
                                             strings.passwordRequirements
                                         }
-                                        autoComplete={"new-password"} 
-                                        onChange={onChangePassword} 
+                                        autoComplete={"new-password"}
+                                        onChange={onChangePassword}
                                     />
                                     <Grid container item xs={12} className={!!accountCreationPasswordError ? classes.passwordReq : null}>
                                         <PasswordRequirements requirements={passwordRequirements}/>
                                     </Grid>
-                                    <TextFieldStartAdornment 
-                                        startIcon={false} 
+                                    <TextFieldStartAdornment
+                                        startIcon={false}
                                         label={strings.confirmPassword}
-                                        name={"confirm-password"} 
-                                        type="password" 
+                                        name={"confirm-password"}
+                                        type="password"
                                         error={passwordUnmatchError}
                                         helperText={!!passwordUnmatchError && strings.noMatch}
                                         autoComplete={"new-password"}
@@ -835,13 +837,13 @@ function Login(props) {
                                     <BannerMessage type={"error"} typeCheck={timeLimitError!==''}>{timeLimitError}</BannerMessage>
                                     <BannerMessage type={"success"} typeCheck={newVerification}>{strings.newCode}</BannerMessage>
                                     <Grid container item direction={"column"} xs={12} className={"input-box"}>
-                                        <TextFieldStartAdornment 
-                                            startIcon={<DialpadIcon/>} 
+                                        <TextFieldStartAdornment
+                                            startIcon={<DialpadIcon/>}
                                             placeholder= {strings.enterReset}
-                                            name={"authCode"} 
-                                            type="text" 
-                                            autoComplete={"new-password"} 
-                                            onChange={onChange} 
+                                            name={"authCode"}
+                                            type="text"
+                                            autoComplete={"new-password"}
+                                            onChange={onChange}
                                         />
                                     </Grid>
                                     <Grid>
@@ -850,10 +852,10 @@ function Login(props) {
                                             <span className={classes.underlineText}>Resend Code</span>
                                         </Button>
                                     </Grid>
-                                    <BackAndSubmitButtons 
+                                    <BackAndSubmitButtons
                                         backAction={()=>resetStates("signUp")}
                                         back = {strings.back}
-                                        submitAction={confirmSignUp} 
+                                        submitAction={confirmSignUp}
                                         submitMessage={strings.verify}
                                         loadingState={loading}
                                     />
@@ -870,26 +872,26 @@ function Login(props) {
                                     </Grid>
                                     <BannerMessage type={"error"} typeCheck={timeLimitError!==''}>{timeLimitError}</BannerMessage>
                                     <Grid className={`input-box`}>
-                                        <TextFieldStartAdornment 
-                                            startIcon={false} 
+                                        <TextFieldStartAdornment
+                                            startIcon={false}
                                             placeholder={strings.enterPassword }
                                             label={"Password"}
-                                            name={"password"} 
-                                            type="password" 
-                                            autoComplete={"new-password"} 
-                                            error={(newPasswordError || emptyInputError)} 
+                                            name={"password"}
+                                            type="password"
+                                            autoComplete={"new-password"}
+                                            error={(newPasswordError || emptyInputError)}
                                             helperText={"Your password must have the following:"}
-                                            onChange={onChangePassword} 
+                                            onChange={onChangePassword}
                                         />
                                         <Grid container item xs={12} className={(!!newPasswordError || !!emptyInputError) ? classes.passwordReq : null}>
                                             <PasswordRequirements requirements={passwordRequirements}/>
                                         </Grid>
-                                        <TextFieldStartAdornment 
-                                            startIcon={false} 
+                                        <TextFieldStartAdornment
+                                            startIcon={false}
                                             placeholder={strings.enterPassword}
                                             label={"Confirm Password"}
-                                            name={"confirm-password"} 
-                                            type="password" 
+                                            name={"confirm-password"}
+                                            type="password"
                                             error={passwordUnmatchError}
                                             helperText={!!passwordUnmatchError && strings.noMatch}
                                             autoComplete={"new-password"}
@@ -901,11 +903,11 @@ function Login(props) {
                                             }}
                                         />
                                     </Grid>
-                                    <BackAndSubmitButtons 
+                                    <BackAndSubmitButtons
                                         backAction={()=>resetStates("signIn")}
                                         back = {strings.back}
-                                        submitAction={setNewPassword} 
-                                        submitMessage={"Set Password"} 
+                                        submitAction={setNewPassword}
+                                        submitMessage={"Set Password"}
                                         loadingState={loading}
                                     />
                                 </Grid>
@@ -922,7 +924,7 @@ function Login(props) {
 
 const BannerMessage = (props) => {
     const {type, typeCheck, children} = props
-    
+
     const styles = makeStyles((theme) => ({
         root: {
             width: "100%",
@@ -933,13 +935,13 @@ const BannerMessage = (props) => {
     const localStyles = styles();
 
     return (
-        <Grid> 
+        <Grid>
         {
-            (!!typeCheck) && 
+            (!!typeCheck) &&
             <Grid container item xs={12}>
-                <Alert 
+                <Alert
                     className={localStyles.root}
-                    variant="filled" 
+                    variant="filled"
                     severity={type}
                     elevation={3}
                 >
@@ -1011,7 +1013,7 @@ const PasswordRequirements = ({requirements}) => {
                     <ListItemIcon>
                         {req[1].error ? <CheckCircleRoundedIcon className={localStyles.valid}/> : <CancelRoundedIcon className={localStyles.invalid}/>}
                     </ListItemIcon>
-                    <ListItemText 
+                    <ListItemText
                         className={localStyles.fontSize}
                         primary={req[1].description}
                     />
@@ -1043,7 +1045,7 @@ const ReturnLanguageList = ({selectedLanguage, list, changeLanguage}) => {
     >
         {list.map(val => {
             return(
-                <option value={val.code}>{val.language}</option>
+                <option value={val.code} key = {val.code}>{val.language}</option>
             )
         })}
     </NativeSelect>;

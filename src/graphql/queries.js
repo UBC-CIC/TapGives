@@ -200,14 +200,8 @@ export const getSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        id
-        name
-        pricePerMonth
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        nextToken
+        startedAt
       }
       averageWait
       averageLine
@@ -356,7 +350,6 @@ export const getCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
-      weeklyJerryCans
       remainingJerryCans
       sub
       createdAt
@@ -382,7 +375,6 @@ export const listCustomerSiteLinkers = /* GraphQL */ `
         id
         customerID
         siteID
-        weeklyJerryCans
         remainingJerryCans
         sub
         createdAt
@@ -413,7 +405,6 @@ export const syncCustomerSiteLinkers = /* GraphQL */ `
         id
         customerID
         siteID
-        weeklyJerryCans
         remainingJerryCans
         sub
         createdAt
@@ -433,11 +424,13 @@ export const getSub = /* GraphQL */ `
       id
       name
       pricePerMonth
+      weeklyJerryCans
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSubsId
     }
   }
 `;
@@ -452,11 +445,13 @@ export const listSubs = /* GraphQL */ `
         id
         name
         pricePerMonth
+        weeklyJerryCans
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        siteSubsId
       }
       nextToken
       startedAt
@@ -480,11 +475,13 @@ export const syncSubs = /* GraphQL */ `
         id
         name
         pricePerMonth
+        weeklyJerryCans
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        siteSubsId
       }
       nextToken
       startedAt

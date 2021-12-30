@@ -1,24 +1,7 @@
 import React from "react";
-import {
-    Button,
-    Checkbox,
-    FormControl,
-    Grid,
-    InputLabel,
-    ListItemText,
-    MenuItem, OutlinedInput,
-    Select,
-    TextField
-} from "@material-ui/core";
 import { DataGrid } from '@mui/x-data-grid';
-import {API, Auth, DataStore, graphqlOperation} from "aws-amplify";
-import {
-    getAdministrator,
-    listCustomers,
-    listCustomerSiteLinkers,
-    listSites
-} from "../../graphql/queries";
-import {Customer, CustomerSiteLinker, ManagerSiteLinker, Site} from "../../models";
+import {Auth, DataStore} from "aws-amplify";
+import {Customer, CustomerSiteLinker, ManagerSiteLinker} from "../../models";
 
 const columns = [
         {
@@ -51,11 +34,6 @@ const columns = [
         },
     ]
 
-async function handleChange() {
-
-}
-
-
 class siteManagement extends React.Component {
     constructor(props) {
         super(props)
@@ -75,7 +53,7 @@ class siteManagement extends React.Component {
         for (const customer in custList) { // Iterating through list of customer id + site info
             try {
                 custList[customer].name = customerList.find((custInfo)=>{
-                    return custList[customer].customerID == custInfo.id
+                    return custList[customer].customerID === custInfo.id
                 }).name
             } catch (err) {
                 console.log("Failed to match connection to customer: " + err.message)

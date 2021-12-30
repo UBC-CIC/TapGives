@@ -134,14 +134,8 @@ export const onCreateSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        id
-        name
-        pricePerMonth
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        nextToken
+        startedAt
       }
       averageWait
       averageLine
@@ -164,14 +158,8 @@ export const onUpdateSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        id
-        name
-        pricePerMonth
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        nextToken
+        startedAt
       }
       averageWait
       averageLine
@@ -194,14 +182,8 @@ export const onDeleteSite = /* GraphQL */ `
       latitude
       longitude
       subs {
-        id
-        name
-        pricePerMonth
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
+        nextToken
+        startedAt
       }
       averageWait
       averageLine
@@ -262,7 +244,6 @@ export const onCreateCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
-      weeklyJerryCans
       remainingJerryCans
       sub
       createdAt
@@ -279,7 +260,6 @@ export const onUpdateCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
-      weeklyJerryCans
       remainingJerryCans
       sub
       createdAt
@@ -296,7 +276,6 @@ export const onDeleteCustomerSiteLinker = /* GraphQL */ `
       id
       customerID
       siteID
-      weeklyJerryCans
       remainingJerryCans
       sub
       createdAt
@@ -313,11 +292,13 @@ export const onCreateSub = /* GraphQL */ `
       id
       name
       pricePerMonth
+      weeklyJerryCans
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSubsId
     }
   }
 `;
@@ -327,11 +308,13 @@ export const onUpdateSub = /* GraphQL */ `
       id
       name
       pricePerMonth
+      weeklyJerryCans
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSubsId
     }
   }
 `;
@@ -341,11 +324,13 @@ export const onDeleteSub = /* GraphQL */ `
       id
       name
       pricePerMonth
+      weeklyJerryCans
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSubsId
     }
   }
 `;

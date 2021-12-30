@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Amplify, {API, Auth, graphqlOperation} from "aws-amplify";
 import amplifyConfig from "../../aws-exports";
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
@@ -7,7 +7,6 @@ import './MapPage.css'
 import LocationServiceHelper from '../Helpers/LocationServiceHelper'
 import {Button, Grid, TextField} from "@material-ui/core";
 import * as turf from "@turf/turf";
-import {createAdministrator} from "../../graphql/mutations";
 import {listManagerSiteLinkers, listSites} from "../../graphql/queries";
 
 
@@ -19,7 +18,7 @@ let count = 0;
 const AWS = require("aws-sdk");
 const placeIndex = process.env.REACT_APP_PLACE_INDEX_NAME;
 const locationHelper = new LocationServiceHelper()
-Amplify.configure(amplifyConfig);
+// Amplify.configure(amplifyConfig);
 mapboxgl.accessToken = process.env.accessToken
 
 //Getting current user credentials
@@ -222,7 +221,7 @@ class mapComponent extends React.Component {
                         Circle
                     </Button>
                 </div>
-                <div id="map"></div>
+                <div id="map"/>
             </Grid>
 
         )

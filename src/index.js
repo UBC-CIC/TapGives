@@ -8,7 +8,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import reducers from "./Reducers";
-import 'semantic-ui-css/semantic.min.css';
 import Amplify, { AuthModeStrategyType } from 'aws-amplify';
 import { offline } from '@redux-offline/redux-offline';
 import offlineConfig from '@redux-offline/redux-offline/lib/defaults';
