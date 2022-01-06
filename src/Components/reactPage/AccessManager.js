@@ -3,7 +3,7 @@ import amplifyConfig from "../../aws-exports";
 import Amplify, { DataStore, Hub } from 'aws-amplify';
 import {
     Button,
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl,
     Grid, InputLabel, ListItemText, MenuItem, Select,
     TextField
 } from "@material-ui/core";
@@ -47,7 +47,7 @@ const siteColumns = [
 const adminColumn = [
     {
         field: 'id',
-        headerName: 'Admin ID',
+        headerName: 'Manager ID',
         type: 'string',
         width: 200,
         editable: true,
@@ -151,8 +151,6 @@ class AccessManager extends React.Component {
                 managerData: manager,
             })
         })
-
-
     }
     constructor(props) {
         super(props);
@@ -164,6 +162,7 @@ class AccessManager extends React.Component {
         }).reduce((prev, curr) => {
             return Object.assign(prev,curr)
         })
+        // To create a deep copy
         const siteEditData = JSON.parse(JSON.stringify(siteCreationData))
         this.state = {
             selected: [],
@@ -186,22 +185,43 @@ class AccessManager extends React.Component {
                 subs: await DataStore.query(Sub)
             })
         }
+        //Constructor cannot be async, but we need to call these functions
         asyncFunctions()
     }
-    getManagerSelected(selected) {
-        let selectedSites = []
-        this.state.managerSiteLinkers.map((linker)=>{
-            if (linker.siteManagerID === selected) {
-                selectedSites.push(linker.siteID)
-            }
-        })
+    async getManagerSelected(selected) {
+        let selectedSites = await DataStore.query(ManagerSiteLinker, (linker)=>{linker.siteManagerID("eq",selected)})
+        selectedSites = selectedSites.map((linker)=>linker.siteID)
+        console.log("all linkers",this.state.managerSiteLinkers)
+        console.log(selectedSites)
         this.setState({
             selected: selectedSites,
             selectedManager: selected,
             open: false
         })
     }
-    async updateSites() {
+    async createSubscription() {
+        try {
+            await DataStore.save(
+                new Sub({
+                    id: this.state.subscriptionCreationData.name,
+                    name: this.state.subscriptionCreationData.name,
+                    pricePerMonth: parseFloat(this.state.subscriptionCreationData.pricePerMonth),
+                    weeklyJerryCans: 0,
+                })
+            )
+        } catch (error) {
+            console.log("Error saving sub", error);
+        }
+        this.setState({
+            createSubscriptionMenu: false
+        })
+        this.setState({
+            subs: await DataStore.query(Sub)
+        })
+
+    }
+    // Called when syncing new sites to selected Site Manager/Sites
+    async syncSites() {
         const selectedsiteManagerID = this.state.selectedManager[0]
         // Get sites that need to be linked
         let linkedSites = this.state.selected.map((selectedSite) => {
@@ -237,30 +257,7 @@ class AccessManager extends React.Component {
             })
         })
     }
-    handleClickOpen() {
-        this.setState({open: true})
-    }
-    async createSubscription() {
-        try {
-            await DataStore.save(
-                new Sub({
-                    id: this.state.subscriptionCreationData.name,
-                    name: this.state.subscriptionCreationData.name,
-                    pricePerMonth: parseFloat(this.state.subscriptionCreationData.pricePerMonth),
-                    weeklyJerryCans: 0,
-                })
-            )
-        } catch (error) {
-            console.log("Error saving sub", error);
-        }
-        this.setState({
-            createSubscriptionMenu: false
-        })
-        this.setState({
-            subs: await DataStore.query(Sub)
-        })
-
-    }
+    // Checks if the User Input is valid, then calls createSite if it is
     checkSiteValid() {
         let anyError = false
         console.log(this.state.siteCreationData)
@@ -280,6 +277,7 @@ class AccessManager extends React.Component {
 
         console.log(this.state.siteCreationData)
     }
+    //Calls Datastore to create a new site
     async createSite() {
         try {
             await DataStore.save(
@@ -305,6 +303,8 @@ class AccessManager extends React.Component {
             siteData: await DataStore.query(Site)
         })
     }
+
+    // Checks if user input is valid, and calls Datastore to update the first selected site if it is
     async updateSite() {
         let anyError = false
         console.log(this.state.siteEditData)
@@ -348,6 +348,7 @@ class AccessManager extends React.Component {
 
         console.log(this.state.siteEditData)
     }
+    // Calls datastore to delete selected sites
     async deleteSite() {
         try {
             for (const site in this.state.selected) {
@@ -373,10 +374,10 @@ class AccessManager extends React.Component {
                     color="inherit"
                     noWrap
                     sx={{ flexGrow: 1 }}>
-                    Manage permissions by Administrator
+                    Change site ownership permissions by Site Manager
                 </Typography>
                 <Grid container direction={"row"}>
-                    <Grid container xs={6} style = {{ height: "50vh"}} id = "adminGrid" direction={"column"}>
+                    <Grid container xs={6} style = {{ height: "50vh"}} id = "managerGrid" direction={"column"}>
                         <DataGrid
                             rows={this.state.managerData}
                             columns={adminColumn}
@@ -402,7 +403,7 @@ class AccessManager extends React.Component {
                 </Grid>
                 <Grid container direction={"row"}>
                     <Grid container xs={6}>
-                        <Button variant="outlined" onClick={this.updateSites.bind(this)}>Update Sites Administrated</Button>
+                        <Button variant="outlined" onClick={this.syncSites.bind(this)}>Update Sites Administrated</Button>
                     </Grid>
                     <Grid container xs={6}>
                         <Button xs={4} variant="outlined" onClick={()=>{this.setState({createSiteMenu: true})}}>
@@ -418,6 +419,7 @@ class AccessManager extends React.Component {
                         </Button>
                     </Grid>
                 </Grid>
+                {/*Dialogs : Create - Edit - Delete Sites*/}
                 <Dialog open={this.state.createSiteMenu} onClose={()=>{this.setState({createSiteMenu: false})}} maxWidth={"md"} >
                     <DialogTitle>New Site</DialogTitle>
                     <DialogContent>
@@ -446,32 +448,34 @@ class AccessManager extends React.Component {
                                 </Grid>
                             ))}
                             <Grid item xs = {4}>
-                                <InputLabel id="subscription-label">Subscriptions</InputLabel>
-                                <Select
-                                    labelId="subscription-label"
-                                    id="subscriptions"
-                                    multiple
-                                    value={this.state.selectedSubs}
-                                    onChange={(event)=>{
-                                        const {
-                                            target: { value },
-                                        } = event;
-                                        this.setState({
-                                            // On autofill we get a the stringified value.
-                                            selectedSubs: typeof value === 'string' ? value.split(',') : value,
-                                        });
-                                        console.log(value)
-                                    }}
-                                    style = {{ width: "100%"}}
-                                >
+                                <FormControl style = {{ width: "100%"}}>
+                                    <InputLabel id="subscription-label">Subscriptions</InputLabel>
+                                    <Select
+                                        labelId="subscription-label"
+                                        id="subscriptions"
+                                        multiple
+                                        value={this.state.selectedSubs}
+                                        onChange={(event)=>{
+                                            const {
+                                                target: { value },
+                                            } = event;
+                                            this.setState({
+                                                // On autofill we get a the stringified value.
+                                                selectedSubs: typeof value === 'string' ? value.split(',') : value,
+                                            });
+                                            console.log(value)
+                                        }}
+                                        style = {{ width: "100%"}}
+                                    >
 
-                                    {this.state.subs.map((sub)=> {
-                                        const val = sub.name+" ("+sub.weeklyJerryCans+"/ $"+sub.pricePerMonth+")"
-                                        return <MenuItem key = {val+"key"} value = {sub.id}>
-                                            {val}
-                                        </MenuItem>
-                                    })}
-                                </Select>
+                                        {this.state.subs.map((sub)=> {
+                                            const val = sub.name+" ("+sub.weeklyJerryCans.toString()+"/ $"+sub.pricePerMonth+")"
+                                            return <MenuItem key = {val+"key"} value = {sub.id}>
+                                                {val}
+                                            </MenuItem>
+                                        })}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                         </Grid>
                     </DialogContent>
@@ -508,32 +512,33 @@ class AccessManager extends React.Component {
                                 </Grid>
                             ))}
                             <Grid item xs = {4}>
-                                <InputLabel id="subscription-label">Subscriptions</InputLabel>
-                                <Select
-                                    labelId="subscription-label"
-                                    id="subscriptions"
-                                    multiple
-                                    value={this.state.selectedSubs}
-                                    onChange={(event)=>{
-                                        const {
-                                            target: { value },
-                                        } = event;
-                                        this.setState({
-                                            // On autofill we get a the stringified value.
-                                            selectedSubs: typeof value === 'string' ? value.split(',') : value,
-                                        });
-                                        console.log(value)
-                                    }}
-                                    style = {{ width: "100%"}}
-                                >
+                                <FormControl style = {{ width: "100%"}}>
+                                    <InputLabel id="subscription-label">Subscriptions</InputLabel>
+                                    <Select
+                                        labelId="subscription-label"
+                                        id="subscriptions"
+                                        multiple
+                                        value={this.state.selectedSubs}
+                                        onChange={(event)=>{
+                                            const {
+                                                target: { value },
+                                            } = event;
+                                            this.setState({
+                                                // On autofill we get a the stringified value.
+                                                selectedSubs: typeof value === 'string' ? value.split(',') : value,
+                                            });
+                                            console.log(value)
+                                        }}
+                                    >
 
-                                    {this.state.subs.map((sub)=> {
-                                        const val = sub.name+" ("+sub.weeklyJerryCans+"/ $"+sub.pricePerMonth+")"
-                                        return <MenuItem key = {val+"key"} value = {sub.id}>
-                                            {val}
-                                        </MenuItem>
-                                    })}
-                                </Select>
+                                        {this.state.subs.map((sub)=> {
+                                            const val = sub.name+" ("+sub.weeklyJerryCans+"/ $"+sub.pricePerMonth+")"
+                                            return <MenuItem key = {val+"key"} value = {sub.id}>
+                                                {val}
+                                            </MenuItem>
+                                        })}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                         </Grid>
                     </DialogContent>
@@ -548,9 +553,6 @@ class AccessManager extends React.Component {
                         <Button onClick={this.deleteSite.bind(this)}>Delete</Button>
                     </DialogActions>
                 </Dialog>
-                <Button variant="outlined" onClick={()=>{this.setState({createSubscriptionMenu: true})}}>
-                    Create New Subscription Model
-                </Button>
                 <Dialog open={this.state.createSubscriptionMenu} onClose={()=>{this.setState({createSubscriptionMenu: false})}} maxWidth={"md"} >
                     <DialogTitle>Generate Subscription Model</DialogTitle>
                     <DialogContent>
@@ -580,6 +582,11 @@ class AccessManager extends React.Component {
                         <Button onClick={this.createSubscription.bind(this)}>Create</Button>
                     </DialogActions>
                 </Dialog>
+                <Button variant="outlined" onClick={()=>{this.setState({createSubscriptionMenu: true})}}>
+                    Create New Subscription Model
+                </Button>
+
+
             </Grid>
 
 

@@ -246,7 +246,6 @@ function Login(props) {
         retrieveUser();
         async function queryLanguages () {
             const languageRaw = await DataStore.query(Language)
-            console.log(languageRaw)
             let languageProcessed = {}
             for (const language in languageRaw){
                 const code = languageRaw[language].code

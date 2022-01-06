@@ -10,6 +10,7 @@
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
         "@turf/turf": "^6.5.0",
+        "aws-sdk": "^2.1049.0",
         "dotenv": "^10.0.0",
         "mapbox-gl": "1.13.0",
         "react": "^17.0.2",

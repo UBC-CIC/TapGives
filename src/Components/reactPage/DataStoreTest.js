@@ -1,7 +1,9 @@
 import React from "react";
 import {Hub, DataStore} from "aws-amplify";
-import {Language, Phrase} from "../../models";
-import {Button, TextField} from "@material-ui/core";
+import {Administrator, Customer, CustomerSiteLinker, Language, Phrase, Site, SiteManager, Sub} from "../../models";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import {Subscriptions} from "@material-ui/icons";
 
 
 // Amplify.configure(amplifyConfig);
@@ -104,28 +106,29 @@ class DataStoreTest extends React.Component {
         this.state = {
             id : "",
             phrase : "",
-            data : ""
-
+            data : "",
+            sites: [],
+            subs: [],
+            customerData: {
+                site: [],
+                pin: "",
+                phoneNumber : 0,
+                name: "",
+                sub: null,
+            },
+            siteManagerData: {
+                name: ""
+            }
         }
     }
     async componentDidMount() {
         try {
-            // await DataStore.save(
-            //     new Language({
-            //         id: "l0",
-            //         code: "en",
-            //         language: "English"
-            //     })
-            // );
-            // console.log("Post saved successfully!");
+            this.setState({
+                sites: await DataStore.query(Site),
+                subs: await DataStore.query(Sub),
+            })
         } catch (error) {
-            console.log("Error saving language", error);
-        }
-        try {
-            const posts = await DataStore.query(Language);
-            console.log("Languages retrieved successfully!", JSON.stringify(posts, null, 2));
-        } catch (error) {
-            console.log("Error retrieving language", error);
+            console.log("Error startup", error);
         }
 
     }
@@ -153,18 +156,6 @@ class DataStoreTest extends React.Component {
     }
 
     async syncData() {
-        // const languageRaw = await DataStore.query(Language)
-        // let languageProcessed = {}
-        // for (const language in languageRaw){
-        //     const code = languageRaw[language].code
-        //     languageProcessed[code] = {}
-        //     const languagePhrases = await DataStore.query(Phrase, phrase=>phrase.code("eq", code))
-        //     for (const val in languagePhrases) {
-        //         languageProcessed[code][languagePhrases[val].phrase] = languagePhrases[val].data
-        //     }
-        //
-        // }
-        // console.log(languageProcessed)
         await DataStore.stop()
         DataStore.start()
     }
@@ -206,30 +197,145 @@ class DataStoreTest extends React.Component {
             }
         }
     }
+    async createUser() {
+        try {
+            const customer = await DataStore.save(
+                new Customer({
+                    name: this.state.customerData.name,
+                    phoneNumber: this.state.customerData.phoneNumber,
+                    pin: this.state.customerData.pin
+                })
+            )
+            const sub = await DataStore.query(Sub,this.state.customerData.sub)
+            const customerSiteLinker = await DataStore.save(
+                new CustomerSiteLinker({
+                    customerID: customer.id,
+                    siteID: this.state.customerData.site,
+                    remainingJerryCans: sub.weeklyJerryCans,
+                    sub: sub.id,
+                })
+            )
+
+        } catch (error) {
+            console.log("Error saving customer", error);
+        }
+    }
+    async createManager() {
+        try {
+            const admin = await DataStore.save(
+                new SiteManager({
+                    name: this.state.siteManagerData.name,
+                })
+            )
+
+        } catch (error) {
+            console.log("Error saving manager", error);
+        }
+    }
     render() {
-        return(<div>
-            <div>
-                This should be the dataStore test
-            </div>
-            <Button variant="outlined" onClick={this.clearDataStore.bind(this)}>
-                Clear DataStore
-            </Button>
-            <Button variant="outlined" onClick={this.syncData.bind(this)}>
-                Sync to cloud
-            </Button>
-            <TextField variant="outlined"  label={"Language Code"} onChange={(val)=>{this.setState({id: val.target.value})}}></TextField>
-            <TextField variant="outlined" label={"Phrase Prompt"} onChange={(val)=>{this.setState({phrase: val.target.value})}}></TextField>
-            <TextField variant="outlined"  label={"Data"} onChange={(val)=>{this.setState({data: val.target.value})}}></TextField>
-            <Button variant="outlined" onClick={this.addPhrase.bind(this)}>
-                Add phrase
-            </Button>
-            <Button variant="outlined" onClick={this.addBaseData.bind(this)}>
-                Add Base Data
-            </Button>
-            <Button variant="outlined" onClick={this.addLanguages.bind(this)}>
-                Add Base Languages
-            </Button>
-        </div>)
+        return(
+            <Grid direction={"column"}>
+                <Grid>
+                    <div>
+                        This should be the dataStore test
+                    </div>
+                    <Button variant="outlined" onClick={this.clearDataStore.bind(this)}>
+                        Clear DataStore
+                    </Button>
+                    <Button variant="outlined" onClick={this.syncData.bind(this)}>
+                        Sync to cloud
+                    </Button>
+                    <TextField variant="outlined"  label={"Language Code"} onChange={(val) => {this.setState({id: val.target.value})}}/>
+                    <TextField variant="outlined" label={"Phrase Prompt"} onChange={(val) => {this.setState({phrase: val.target.value})}}/>
+                    <TextField variant="outlined"  label={"Data"} onChange={(val) => {this.setState({data: val.target.value})}}/>
+                    <Button variant="outlined" onClick={this.addPhrase.bind(this)}>
+                        Add phrase
+                    </Button>
+                    <Button variant="outlined" onClick={this.addBaseData.bind(this)}>
+                        Add Base Data
+                    </Button>
+                    <Button variant="outlined" onClick={this.addLanguages.bind(this)}>
+                        Add Base Languages
+                    </Button>
+                </Grid>
+                <Grid direction={"row"}>
+                    <TextField variant="outlined"  label={"PIN"} onChange={(val) => {
+                        customerData : Object.assign(this.state.customerData, {pin: parseInt(val.target.value) })
+                    }}/>
+                    <TextField variant="outlined" label={"Phone Number"} onChange={(val) => {
+                        customerData : Object.assign(this.state.customerData, {phoneNumber: val.target.value})
+                    }}/>
+                    <TextField variant="outlined"  label={"Name"} onChange={(val) => {
+                        customerData : Object.assign(this.state.customerData, {name: val.target.value})
+                        console.log(val)
+                    }}/>
+                    <FormControl style = {{ width: "150px"}}>
+                        <InputLabel id="site-label">Sites</InputLabel>
+                        <Select
+                            labelId="site-label"
+                            id="sites"
+                            value={this.state.customerData.site}
+                            onChange={async (event) => {
+                                const {
+                                    target: {value},
+                                } = event;
+                                const subs = (await DataStore.query(Site, value)).subs
+                                this.setState({
+                                    customerData: Object.assign(this.state.customerData, {site: value}),
+                                    //Basically subs is equal to the subs that
+                                    subs: (await DataStore.query(Sub, (sub) => sub.or((sub)=>subs.reduce((sub,id) => sub.id("eq", id), sub))))
+                                });
+
+                            }}
+                        >
+                            {this.state.sites.map((site)=> {
+                                return <MenuItem key = {site.name+"key"} value = {site.id}>
+                                    {site.name}
+                                </MenuItem>
+                            })}
+
+                        </Select>
+                    </FormControl>
+                    <FormControl style = {{ width: "120px"}}>
+                        <InputLabel id="subscription-label">Subscriptions</InputLabel>
+                        <Select
+                            labelId="sites"
+                            id="subscriptions"
+                            value={this.state.customerData.sub}
+                            onChange={(event)=>{
+                                const {
+                                    target: { value },
+                                } = event;
+                                this.setState({
+                                    customerData: Object.assign(this.state.customerData, {sub: value})
+                                });
+                                console.log(value)
+                            }}
+                        >
+                            {this.state.subs.map((sub)=> {
+                                const val = sub.name+" ("+sub.weeklyJerryCans+"/ $"+sub.pricePerMonth+")"
+                                return <MenuItem key = {val+"key"} value = {sub.id}>
+                                    {val}
+                                </MenuItem>
+                            })}
+
+                        </Select>
+                    </FormControl>
+                    <Button variant="outlined" onClick={this.createUser.bind(this)}>
+                        Create User
+                    </Button>
+                </Grid>
+                <Grid>
+                    <TextField variant="outlined"  label={"Manager Email"} onChange={(val) => {
+                        siteManagerData : Object.assign(this.state.siteManagerData, {name: val.target.value})
+                    }}/>
+                    <Button variant="outlined" onClick={this.createManager.bind(this)}>
+                        Create Site Manager
+                    </Button>
+                </Grid>
+            </Grid>
+
+        )
     }
 }
 
