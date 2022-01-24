@@ -18,7 +18,8 @@
       "enablecaseinsensitivity": true,
       "useinclusiveterminology": true,
       "breakcirculardependency": true,
-      "forcealiasattributes": false
+      "forcealiasattributes": false,
+      "useenabledmfas": true
     },
     "codegen": {
       "useappsyncmodelgenplugin": true,

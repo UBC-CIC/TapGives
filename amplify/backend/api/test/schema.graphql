@@ -1,77 +1,63 @@
 # Designed to be compatable with Datastore
 # Key notes:
 # 1. primary keys MUST be id: ID!
-# 2. does not support circle references (referencing something that has references the original item)
-# This is an issue because it prevents proper queries which would allow
 
 # Issues
-# 1. Due to Datastore's nature of downloading everything, people will have access to all customers, which is not secure
-# May be combated with better use of @auth (unsure), or seperating Datastore from sensitive information entirely
+# 1. Datastore continually being enabled will prevent some queries.
+# 2. GraphQL's method of calling dynamoDB does not allow for efficient tables (https://www.alexdebrie.com/posts/dynamodb-single-table/#downsides-of-a-single-table-design)
 
-type Administrator @model @auth(rules:[{ allow: private }]) {
-  id: ID!
-  name: String!
-}
-
+# Has Duplicates to allow for better queries (composite of id/site)
 type SiteManager @model @auth(rules:[{ allow: private }]) {
-  id: ID!
-  name: String!
+    id: ID! @primaryKey(sortKeyFields: ["site"])
+    name: String!
+    site: ID! # Site ID, must be scalar to be a sort key
 }
 
-type Customer @model @auth(rules:[{ allow: private }]) {
-  id: ID!
-  pin: Int!
-  phoneNumber: String!
-  name: String!
+# Has Duplicates to allow for better queries (composite of id/site)
+type Customer @model @auth(rules:[{ allow: private }]){
+    id: ID! @primaryKey(sortKeyFields: ["site"])
+    site: ID! # Site ID, must be scalar to be a sort key
+    sub: Sub @hasOne
+    pin: Int!
+    phoneNumber: String!
+    name: String!
 }
 
 type Site @model @auth(rules:[{ allow: private }]) {
-  id: ID!
-  name: String!
-  description: String # Can be error message too (?) error can be abstracted away
-  serviceRadius: Float! # Measured in KM
-  latitude: Float!
-  longitude: Float!
-  subs: [Sub]! @hasMany
-  averageWait: Int! # Measured in seconds
-  averageLine: Int! # Measured in people
-  online: Boolean!
-}
-
-# Should in theory be a one to one relationship (or directly have siteManager-site multi-multi), but datastore
-# Does not support that, and it would just be this in the background
-type ManagerSiteLinker @model @auth(rules:[{ allow: private }]) {
-  id: ID!
-  siteManagerID: ID!
-  siteID: ID!
-}
-
-# Same as above
-type CustomerSiteLinker @model @auth(rules:[{ allow: private }]) {
-  id: ID!
-  customerID: ID!
-  siteID: ID!
-  weeklyJerryCans: Int!
-  remainingJerryCans: Int!
-  sub: Int
+    id: ID!
+    subs: [Sub]! @hasMany
+    siteManagers: [SiteManager] @hasMany
+    name: String!
+    description: String # Can be error message too (?) error can be abstracted away
+    serviceRadius: Float! # Measured in KM
+    latitude: Float!
+    longitude: Float!
+    averageWait: Int! # Measured in seconds
+    averageLine: Int! # Measured in people
+    online: Boolean!
+    estimatedDaily: Int! # Estimation using average of last 30 days?
 }
 
 # Perhaps some description would be nice for future reference
 type Sub @model @auth(rules:[{ allow: private }]) {
-  id: ID! @primaryKey
-  name : String!
-  pricePerMonth: Float!
+    id: ID!
+    site: Site! @belongsTo
+    name : String!
+    pricePerMonth: Float!
+    weeklyJerryCans: Int!
 }
 
-type Language @model @auth(rules: [{allow: public, provider: apiKey, operations: [read]}]) {
-  id: ID!
-  code: String!
-  language: String!
+type Language @model @auth(rules: [{allow: public, provider: iam, operations: [read]}
+    {allow: private}]) {
+    id: ID!
+    code: String!
+    language: String!
 }
 
-type Phrase @model @auth(rules: [{allow: public, provider: apiKey, operations: [read]}]) {
-  id: ID!
-  code: String!
-  phrase: String!
-  data: String!
+type Phrase @model @auth(rules: [{allow: public, provider: iam, operations: [read]}
+    {allow: private}]) {
+    id: ID!
+    code: String!
+    phrase: String!
+    data: String!
 }

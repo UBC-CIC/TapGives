@@ -67,6 +67,24 @@ export const getSiteManager = /* GraphQL */ `
     getSiteManager(id: $id) {
       id
       name
+      sites {
+        id
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        subs
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
@@ -85,6 +103,24 @@ export const listSiteManagers = /* GraphQL */ `
       items {
         id
         name
+        sites {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          subs
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         createdAt
         updatedAt
         _version
@@ -112,6 +148,24 @@ export const syncSiteManagers = /* GraphQL */ `
       items {
         id
         name
+        sites {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          subs
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         createdAt
         updatedAt
         _version
@@ -199,13 +253,11 @@ export const getSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      subs {
-        nextToken
-        startedAt
-      }
+      subs
       averageWait
       averageLine
       online
+      estimatedDaily
       createdAt
       updatedAt
       _version
@@ -228,9 +280,11 @@ export const listSites = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
+        subs
         averageWait
         averageLine
         online
+        estimatedDaily
         createdAt
         updatedAt
         _version
@@ -262,9 +316,11 @@ export const syncSites = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
+        subs
         averageWait
         averageLine
         online
+        estimatedDaily
         createdAt
         updatedAt
         _version
@@ -430,7 +486,6 @@ export const getSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;
@@ -451,7 +506,6 @@ export const listSubs = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        siteSubsId
       }
       nextToken
       startedAt
@@ -481,7 +535,6 @@ export const syncSubs = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        siteSubsId
       }
       nextToken
       startedAt

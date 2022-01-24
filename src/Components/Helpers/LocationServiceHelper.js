@@ -11,7 +11,6 @@ function transformRequest(url, resourceType) {
     if (resourceType === "Style" && !url.includes("://")) {
         // resolve to an AWS URL
         url = `https://maps.geo.${amplifyConfig.aws_project_region}.amazonaws.com/maps/v0/maps/${url}/style-descriptor`;
-        console.log(url)
     }
     if (url.includes("amazonaws.com")) {
         // only sign AWS requests (with the signature as part of the query string)
@@ -31,7 +30,7 @@ function transformRequest(url, resourceType) {
 class LocationServiceHelper {
     //create a map instance with center location, then return it
     async constructMapWithCenter(container, center, zoom ) {
-        console.log(process.env.REACT_APP_MAP_NAME)
+        // console.log(process.env.REACT_APP_MAP_NAME)
         credentials = await Auth.currentCredentials();
         if(container){
             return new mapboxgl.Map({

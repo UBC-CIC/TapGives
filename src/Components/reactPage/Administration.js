@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {DataGrid} from "@mui/x-data-grid";
-import {ManagerSiteLinker, Site, SiteManager, Sub} from "../../models";
+import {CustomerSiteLinker, ManagerSiteLinker, Site, SiteManager, Sub} from "../../models";
 
 const siteColumns = [
     {
@@ -75,20 +75,26 @@ const siteRequirements = [
     {
         id: "serviceRadius",
         label: "Service Radius (Km)",
-        xs: 4,
+        xs: 3,
         regex: /.+/,
     },
     {
         id: "latitude",
         label: "Latitude",
-        xs: 4,
+        xs: 3,
         regex: /\d+(\.\d)?/,
     },
     {
         id: "longitude",
         label: "Longitude",
-        xs: 4,
+        xs: 3,
         regex: /\d+(\.\d)?/,
+    },
+    {
+        id: "estimatedDaily",
+        label: "Daily Total Usage (L)",
+        xs: 3,
+        regex: /\d+/,
     },
     {
         id: "averageWait",
@@ -132,17 +138,17 @@ const subscriptionRequirements = [
     2. Change admins for each site
     3. Determine which accounts will be admins
     4. Determine which accounts will be AccessManagers
-    5. Have one account hardcoded as AccessManager (?)
+    5. Have one account hardcoded as Administration (?)
 
     OPTIONAL:
     1. Switch between querying all admin-site relationships at the start vs
     querying when clicked (tradeoffs: boot time, user fluidity, server load)
  */
-class AccessManager extends React.Component {
+class Administration extends React.Component {
     async componentDidMount() {
         const managerSiteLinkerPromise = DataStore.query(ManagerSiteLinker)
         const sitePromise = DataStore.query(Site)
-        console.log(await sitePromise)
+        // console.log(await sitePromise)
         const managerPromise = DataStore.query(SiteManager)
         await Promise.all([managerSiteLinkerPromise,sitePromise,managerPromise]).then (([managerSiteLinker, site, manager])=>{
             this.setState({
@@ -191,8 +197,8 @@ class AccessManager extends React.Component {
     async getManagerSelected(selected) {
         let selectedSites = await DataStore.query(ManagerSiteLinker, (linker)=>{linker.siteManagerID("eq",selected)})
         selectedSites = selectedSites.map((linker)=>linker.siteID)
-        console.log("all linkers",this.state.managerSiteLinkers)
-        console.log(selectedSites)
+        // console.log("all linkers",this.state.managerSiteLinkers)
+        // console.log(selectedSites)
         this.setState({
             selected: selectedSites,
             selectedManager: selected,
@@ -260,7 +266,7 @@ class AccessManager extends React.Component {
     // Checks if the User Input is valid, then calls createSite if it is
     checkSiteValid() {
         let anyError = false
-        console.log(this.state.siteCreationData)
+        // console.log(this.state.siteCreationData)
         let currentData = this.state.siteCreationData
         siteRequirements.map((requirement)=> {
             if (!requirement.regex.test(this.state.siteCreationData[requirement.id]))
@@ -291,6 +297,7 @@ class AccessManager extends React.Component {
                     averageWait: parseInt(this.state.siteCreationData.averageWait),
                     averageLine: parseInt(this.state.siteCreationData.averageLine),
                     online: true,
+                    estimatedDaily: parseInt(this.state.siteCreationData.estimatedDaily),
                 })
             )
         } catch (error) {
@@ -352,8 +359,10 @@ class AccessManager extends React.Component {
     async deleteSite() {
         try {
             for (const site in this.state.selected) {
-                console.log(this.state.selected[site])
+                console.log("Deleting: ",this.state.selected[site])
                 DataStore.delete(Site, this.state.selected[site])
+                DataStore.delete(CustomerSiteLinker, c => c.siteID("eq", this.state.selected[site]))
+                DataStore.delete(ManagerSiteLinker, c=>c.siteID("eq", this.state.selected[site]))
             }
         } catch (error) {
             console.log("Error deleting site", error);
@@ -586,7 +595,6 @@ class AccessManager extends React.Component {
                     Create New Subscription Model
                 </Button>
 
-
             </Grid>
 
 
@@ -597,4 +605,4 @@ const EditSite = () => {
     return
 }
 
-export default AccessManager;
+export default Administration;

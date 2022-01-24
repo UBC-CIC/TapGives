@@ -1,5 +1,5 @@
 import React from 'react';
-import Amplify, {API, Auth, graphqlOperation} from "aws-amplify";
+import {API, Auth, graphqlOperation} from "aws-amplify";
 import amplifyConfig from "../../aws-exports";
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -196,8 +196,8 @@ class mapComponent extends React.Component {
 
         const returnedUser = await Auth.currentAuthenticatedUser();
         extractSiteID(returnedUser.attributes.email)
-        console.log(process.env.accessToken)
-        console.log(process.env.REACT_APP_PLACE_INDEX_NAME)
+        // console.log(process.env.accessToken)
+        // console.log(process.env.REACT_APP_PLACE_INDEX_NAME)
     }
 
     updateInputText=(e)=>{

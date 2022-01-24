@@ -1,7 +1,5 @@
 import './App.css';
 import React, {useRef, useEffect, useState, Component} from 'react';
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
-import awsconfig from './aws-exports';
 import Login from "./Components/Authentication/Login_material";
 import PageContainer from "./Views/PageContainer/PageContainer";
 import { connect } from "react-redux";
@@ -11,8 +9,6 @@ import {StylesProvider, ThemeProvider} from '@material-ui/core/styles';
 import {Hub} from "aws-amplify";
 import theme from "./themes";
 
-
-Amplify.configure(awsconfig);
 
 function App(props) {
     const {loginState, updateLoginState} = props;

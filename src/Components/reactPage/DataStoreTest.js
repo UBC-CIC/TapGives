@@ -1,13 +1,11 @@
 import React from "react";
-import {Hub, DataStore} from "aws-amplify";
-import {Administrator, Customer, CustomerSiteLinker, Language, Phrase, Site, SiteManager, Sub} from "../../models";
+import {Amplify, DataStore, Storage} from "aws-amplify";
+import {Customer, CustomerSiteLinker, Language, Phrase, Site, SiteManager, Sub} from "../../models";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import {Subscriptions} from "@material-ui/icons";
+import awsconfig from '../../aws-exports';
+Amplify.configure(awsconfig);
 
-
-// Amplify.configure(amplifyConfig);
-Hub.listen("datastore", (test) => {console.log(test.payload)})
 const baseLanguages  = {
     en:{
         signIn:"Sign In",
@@ -222,7 +220,7 @@ class DataStoreTest extends React.Component {
     }
     async createManager() {
         try {
-            const admin = await DataStore.save(
+            await DataStore.save(
                 new SiteManager({
                     name: this.state.siteManagerData.name,
                 })
@@ -230,6 +228,14 @@ class DataStoreTest extends React.Component {
 
         } catch (error) {
             console.log("Error saving manager", error);
+        }
+    }
+    async tests3() {
+        try {
+            const result = await Storage.put("test.txt", "this is to override hello?");
+            console.log(result)
+        } catch (error) {
+            console.log("Error pushing to s3", error)
         }
     }
     render() {
@@ -280,6 +286,7 @@ class DataStoreTest extends React.Component {
                                     target: {value},
                                 } = event;
                                 const subs = (await DataStore.query(Site, value)).subs
+                                console.log(value)
                                 this.setState({
                                     customerData: Object.assign(this.state.customerData, {site: value}),
                                     //Basically subs is equal to the subs that
@@ -333,6 +340,9 @@ class DataStoreTest extends React.Component {
                         Create Site Manager
                     </Button>
                 </Grid>
+                <Button variant="outlined" onClick={this.tests3.bind(this)}>
+                    test s3
+                </Button>
             </Grid>
 
         )

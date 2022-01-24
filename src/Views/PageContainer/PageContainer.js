@@ -15,10 +15,10 @@ import Navbar from "../../Components/Navbar/Navbar";
 import { connect } from "react-redux";
 import {updateMenuState} from "../../Actions/menuActions";
 import MapComponent from '../../Components/reactPage/MapComponent'
-import SiteAdministration from '../../Components/reactPage/SiteManagement'
-import AccessManager from '../../Components/reactPage/AccessManager'
+import siteManagement from '../../Components/reactPage/SiteManagement'
+import Administration from '../../Components/reactPage/Administration'
 import DataStoreTest from '../../Components/reactPage/DataStoreTest'
-
+import SiteInformation from "../../Components/reactPage/SiteInformation";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -76,17 +76,21 @@ function PageContainer(props) {
                     <ListItemIcon><HomeIcon/></ListItemIcon>
                     <ListItemText primary={"Home"}/>
                 </ListItem>
-                <ListItem button key={"siteAdmin"} onClick={() => history.push("/siteAdmin")}>
+                <ListItem button key={"siteManagement"} onClick={() => history.push("/siteManagement")}>
                     <ListItemIcon><DashboardIcon/></ListItemIcon>
-                    <ListItemText primary={"Site Administration"}/>
+                    <ListItemText primary={"Site Management"}/>
                 </ListItem>
-                <ListItem button key={"accessManager"} onClick={() => history.push("/accessManager")}>
+                <ListItem button key={"administration"} onClick={() => history.push("/Administration")}>
                     <ListItemIcon><DashboardIcon/></ListItemIcon>
-                    <ListItemText primary={"Access Manager"}/>
+                    <ListItemText primary={"Administration"}/>
                 </ListItem>
                 <ListItem button key={"dataStoreTest"} onClick={() => history.push("/dataStoreTest")}>
                     <ListItemIcon><DashboardIcon /></ListItemIcon>
                     <ListItemText primary={"DataStore Test"} />
+                </ListItem>
+                <ListItem button key={"siteInformation"} onClick={() => history.push("/siteInformation/949630ec-85c7-4b59-b3d3-b2ac51749509")}>
+                    <ListItemIcon><DashboardIcon /></ListItemIcon>
+                    <ListItemText primary={"Temporary link to siteinfo"} />
                 </ListItem>
             </List>
             <Divider/>
@@ -125,9 +129,10 @@ function PageContainer(props) {
             <Switch>
                 <Route exact path={"/"} component={MapComponent} />
                 <Route exact path={"/home"} component={MapComponent} />
-                <Route exact path={"/siteAdmin"} component={SiteAdministration} />
-                <Route exact path={"/accessManager"} component={AccessManager} />
+                <Route exact path={"/siteManagement"} component={siteManagement} />
+                <Route exact path={"/Administration"} component={Administration} />
                 <Route exact path={"/dataStoreTest"} component={DataStoreTest} />
+                <Route path={"/siteInformation"} component={SiteInformation} />
             </Switch>
         </main>
     </Grid>)

@@ -1,0 +1,15 @@
+th{
+    font-weight:400;
+}
+thead{
+    border-bottom: 1px #000000;
+}
+thead, tbody{
+    background-color: #bebebe;
+    border-bottom: 1px #000000;
+}
+table{
+    /*border-collapse: collapse;*/
+    border: 2px solid #000000;
+    letter-spacing: 1px;
+}

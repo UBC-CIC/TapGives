@@ -57,6 +57,24 @@ export const createSiteManager = /* GraphQL */ `
     createSiteManager(input: $input, condition: $condition) {
       id
       name
+      sites {
+        id
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        subs
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
@@ -73,6 +91,24 @@ export const updateSiteManager = /* GraphQL */ `
     updateSiteManager(input: $input, condition: $condition) {
       id
       name
+      sites {
+        id
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        subs
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
@@ -89,6 +125,24 @@ export const deleteSiteManager = /* GraphQL */ `
     deleteSiteManager(input: $input, condition: $condition) {
       id
       name
+      sites {
+        id
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        subs
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       createdAt
       updatedAt
       _version
@@ -163,13 +217,11 @@ export const createSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      subs {
-        nextToken
-        startedAt
-      }
+      subs
       averageWait
       averageLine
       online
+      estimatedDaily
       createdAt
       updatedAt
       _version
@@ -190,13 +242,11 @@ export const updateSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      subs {
-        nextToken
-        startedAt
-      }
+      subs
       averageWait
       averageLine
       online
+      estimatedDaily
       createdAt
       updatedAt
       _version
@@ -217,13 +267,11 @@ export const deleteSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      subs {
-        nextToken
-        startedAt
-      }
+      subs
       averageWait
       averageLine
       online
+      estimatedDaily
       createdAt
       updatedAt
       _version
@@ -355,7 +403,6 @@ export const createSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;
@@ -374,7 +421,6 @@ export const updateSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;
@@ -393,7 +439,6 @@ export const deleteSub = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      siteSubsId
     }
   }
 `;

@@ -1,7 +1,7 @@
 import React from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import {Auth, DataStore} from "aws-amplify";
-import {Administrator, Customer, CustomerSiteLinker, ManagerSiteLinker, Site, SiteManager} from "../../models";
+import {Customer, CustomerSiteLinker, ManagerSiteLinker, Site, SiteManager} from "../../models";
 
 const columns = [
     {
@@ -48,6 +48,7 @@ class siteManagement extends React.Component {
             rows: []
         }
     }
+    // Converts all the CustomerSiteLinkers into a customer list
     async extractCustomers(ownedCustomerSiteLinkers){
         let cleanedLinkers = []
         for (const site in ownedCustomerSiteLinkers) {
@@ -57,10 +58,9 @@ class siteManagement extends React.Component {
             c.or((c) => cleanedLinkers.reduce((c, person) => c.id('eq', person.customerID), c))
         )
         let managedSiteList = await DataStore.query(Site)
-        console.log("")
-        console.log("Sitelist", managedSiteList)
-        console.log("cleaned linkers", cleanedLinkers)
-        console.log(customerList)
+        // console.log("Sitelist", managedSiteList)
+        // console.log("cleaned linkers", cleanedLinkers)
+        // console.log(customerList)
         for (const customer in cleanedLinkers) { // Iterating through list of customer id + site info
             try {
                 cleanedLinkers[customer] = Object.assign({}, cleanedLinkers[customer], {
@@ -78,21 +78,27 @@ class siteManagement extends React.Component {
         return cleanedLinkers
     }
     async getlist() {
-        const email = (await Auth.currentAuthenticatedUser()).attributes.email; //username of current user
-        const siteManagerID = (await DataStore.query(SiteManager, (siteManager)=> siteManager.name("eq", email)))[0].id
-        // site ids owned by site manager
-        let data = await DataStore.query(ManagerSiteLinker, (linker) => linker.siteManagerID("eq", siteManagerID))
-        let siteCustomersPromises = []
-        console.log(data)
-        for (const entry in data) {
-            siteCustomersPromises.push(DataStore.query(CustomerSiteLinker, csl => csl.siteID("eq",data[entry].siteID)))
-            // TODO: Handle request when over max limit (unknown limit, but was told its 11 000, or 10mb)
+        // username of current user
+        const email = (await Auth.currentAuthenticatedUser()).attributes.email;
+        // Finding the siteManager object using the same username (associated manager)
+        const siteManager = (await DataStore.query(SiteManager, (siteManager)=> siteManager.name("eq", email)))
+        // console.log("site Manager", siteManager)
+        if (siteManager.length !== 0){
+            const siteManagerID = siteManager[0].id
+            // get site ids owned by site manager
+            let sites = await DataStore.query(ManagerSiteLinker, (linker) => linker.siteManagerID("eq", siteManagerID))
+            let siteCustomersPromises = [] // Waiting for all the customers queried at the same time
+            // console.log("SitesLinked", sites)
+            for (const entry in sites) {
+                siteCustomersPromises.push(DataStore.query(CustomerSiteLinker, csl => csl.siteID("eq",sites[entry].siteID)))
+            }
+            const out = await Promise.all(siteCustomersPromises)
+            this.setState({
+                rows: await this.extractCustomers(out)
+            })
         }
-        const out = await Promise.all(siteCustomersPromises)
 
-        this.setState({
-            rows: await this.extractCustomers(out)
-        })
+
     }
     async componentDidMount() {
         await this.getlist()
