@@ -1,9 +1,15 @@
 import React from "react";
 import {Amplify, DataStore, Storage} from "aws-amplify";
-import {Customer, CustomerSiteLinker, Language, Phrase, Site, SiteManager, Sub} from "../../models";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import awsconfig from '../../aws-exports';
+import {Language, Phrase} from "../../models";
+import { API } from 'aws-amplify';
+import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
+import * as subscriptions from '../../graphql/subscriptions';
+import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
+
 Amplify.configure(awsconfig);
 
 const baseLanguages  = {
@@ -120,22 +126,10 @@ class DataStoreTest extends React.Component {
         }
     }
     async componentDidMount() {
-        try {
-            this.setState({
-                sites: await DataStore.query(Site),
-                subs: await DataStore.query(Sub),
-            })
-        } catch (error) {
-            console.log("Error startup", error);
-        }
 
     }
     async clearDataStore () {
-        try {
-            await DataStore.clear()
-        } catch (error) {
-            console.log("Error retrieving posts", error);
-        }
+        await DataStore.clear()
     }
 
     async addPhrase() {
@@ -196,39 +190,15 @@ class DataStoreTest extends React.Component {
         }
     }
     async createUser() {
-        try {
-            const customer = await DataStore.save(
-                new Customer({
-                    name: this.state.customerData.name,
-                    phoneNumber: this.state.customerData.phoneNumber,
-                    pin: this.state.customerData.pin
-                })
-            )
-            const sub = await DataStore.query(Sub,this.state.customerData.sub)
-            const customerSiteLinker = await DataStore.save(
-                new CustomerSiteLinker({
-                    customerID: customer.id,
-                    siteID: this.state.customerData.site,
-                    remainingJerryCans: sub.weeklyJerryCans,
-                    sub: sub.id,
-                })
-            )
 
-        } catch (error) {
-            console.log("Error saving customer", error);
-        }
     }
     async createManager() {
         try {
-            await DataStore.save(
-                new SiteManager({
-                    name: this.state.siteManagerData.name,
-                })
-            )
-
+            await AdministrationBackendHelper.createSiteManager(this.state.siteManagerData.name, this.state.siteManagerData.site)
         } catch (error) {
-            console.log("Error saving manager", error);
+            console.log("Error Creating Site Manager: ",error)
         }
+
     }
     async tests3() {
         try {
@@ -285,13 +255,13 @@ class DataStoreTest extends React.Component {
                                 const {
                                     target: {value},
                                 } = event;
-                                const subs = (await DataStore.query(Site, value)).subs
+                                // const subs = (await DataStore.query(Site, value)).subs
                                 console.log(value)
-                                this.setState({
-                                    customerData: Object.assign(this.state.customerData, {site: value}),
-                                    //Basically subs is equal to the subs that
-                                    subs: (await DataStore.query(Sub, (sub) => sub.or((sub)=>subs.reduce((sub,id) => sub.id("eq", id), sub))))
-                                });
+                                // this.setState({
+                                //     customerData: Object.assign(this.state.customerData, {site: value}),
+                                //     //Basically subs is equal to the subs that
+                                //     subs: (await DataStore.query(Sub, (sub) => sub.or((sub)=>subs.reduce((sub,id) => sub.id("eq", id), sub))))
+                                // });
 
                             }}
                         >
@@ -335,6 +305,9 @@ class DataStoreTest extends React.Component {
                 <Grid>
                     <TextField variant="outlined"  label={"Manager Email"} onChange={(val) => {
                         siteManagerData : Object.assign(this.state.siteManagerData, {name: val.target.value})
+                    }}/>
+                    <TextField variant="outlined"  label={"Site ID"} onChange={(val) => {
+                        siteManagerData : Object.assign(this.state.siteManagerData, {site: val.target.value})
                     }}/>
                     <Button variant="outlined" onClick={this.createManager.bind(this)}>
                         Create Site Manager

@@ -156,27 +156,27 @@ function locateAllWells (data){
 // to the admin, and sends those to be plotted by locateAllWells
 async function extractSiteID (email) {
     // site ids related to admin
-    const admin = API.graphql(graphqlOperation(listManagerSiteLinkers, {filter: {siteManagerID: {eq: email}}}))
+    // const admin = API.graphql(graphqlOperation(listManagerSiteLinkers, {filter: {siteManagerID: {eq: email}}}))
     // all sites
-    const wells = API.graphql(graphqlOperation(listSites))
-
-    // wait for both to return
-    Promise.all([admin, wells]).then(([adminOut,wellsOut])=>{
-        // get rid of all the fluff around returned site IDs
-        const data = (adminOut.data.listManagerSiteLinkers.items)
-        let siteIDs = []
-        for (const entry in data) {
-            siteIDs.push(data[entry].siteID)
-        }
-        const allSites = wellsOut.data.listSites.items
-        let adminstratedSites = []
-        for (const site in allSites) {
-            if (siteIDs.includes(allSites[site].id)) {
-                adminstratedSites.push(allSites[site])
-            }
-        }
-        locateAllWells(adminstratedSites)
-    })
+    // const wells = API.graphql(graphqlOperation(listSites))
+    //
+    // // wait for both to return
+    // Promise.all([admin, wells]).then(([adminOut,wellsOut])=>{
+    //     // get rid of all the fluff around returned site IDs
+    //     const data = (adminOut.data.listManagerSiteLinkers.items)
+    //     let siteIDs = []
+    //     for (const entry in data) {
+    //         siteIDs.push(data[entry].siteID)
+    //     }
+    //     const allSites = wellsOut.data.listSites.items
+    //     let adminstratedSites = []
+    //     for (const site in allSites) {
+    //         if (siteIDs.includes(allSites[site].id)) {
+    //             adminstratedSites.push(allSites[site])
+    //         }
+    //     }
+    //     locateAllWells(adminstratedSites)
+    // })
 
 }
 class mapComponent extends React.Component {

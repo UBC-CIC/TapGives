@@ -1,58 +1,26 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateAdministrator = /* GraphQL */ `
-  subscription OnCreateAdministrator {
-    onCreateAdministrator {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateAdministrator = /* GraphQL */ `
-  subscription OnUpdateAdministrator {
-    onUpdateAdministrator {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteAdministrator = /* GraphQL */ `
-  subscription OnDeleteAdministrator {
-    onDeleteAdministrator {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
 export const onCreateSiteManager = /* GraphQL */ `
   subscription OnCreateSiteManager {
     onCreateSiteManager {
       id
-      name
-      sites {
+      siteID
+      site {
         id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
         name
         description
         serviceRadius
         latitude
         longitude
-        subs
         averageWait
         averageLine
         online
@@ -63,11 +31,13 @@ export const onCreateSiteManager = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      name
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSiteManagersId
     }
   }
 `;
@@ -75,15 +45,22 @@ export const onUpdateSiteManager = /* GraphQL */ `
   subscription OnUpdateSiteManager {
     onUpdateSiteManager {
       id
-      name
-      sites {
+      siteID
+      site {
         id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
         name
         description
         serviceRadius
         latitude
         longitude
-        subs
         averageWait
         averageLine
         online
@@ -94,11 +71,13 @@ export const onUpdateSiteManager = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      name
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSiteManagersId
     }
   }
 `;
@@ -106,15 +85,22 @@ export const onDeleteSiteManager = /* GraphQL */ `
   subscription OnDeleteSiteManager {
     onDeleteSiteManager {
       id
-      name
-      sites {
+      siteID
+      site {
         id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
         name
         description
         serviceRadius
         latitude
         longitude
-        subs
         averageWait
         averageLine
         online
@@ -125,11 +111,13 @@ export const onDeleteSiteManager = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      name
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSiteManagersId
     }
   }
 `;
@@ -137,6 +125,62 @@ export const onCreateCustomer = /* GraphQL */ `
   subscription OnCreateCustomer {
     onCreateCustomer {
       id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      siteSubscription {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        name
+        pricePerMonth
+        weeklyJerryCans
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        siteSiteSubscriptionId
+      }
       pin
       phoneNumber
       name
@@ -145,6 +189,7 @@ export const onCreateCustomer = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      customerSiteSubscriptionId
     }
   }
 `;
@@ -152,6 +197,62 @@ export const onUpdateCustomer = /* GraphQL */ `
   subscription OnUpdateCustomer {
     onUpdateCustomer {
       id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      siteSubscription {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        name
+        pricePerMonth
+        weeklyJerryCans
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        siteSiteSubscriptionId
+      }
       pin
       phoneNumber
       name
@@ -160,6 +261,7 @@ export const onUpdateCustomer = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      customerSiteSubscriptionId
     }
   }
 `;
@@ -167,6 +269,62 @@ export const onDeleteCustomer = /* GraphQL */ `
   subscription OnDeleteCustomer {
     onDeleteCustomer {
       id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      siteSubscription {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        name
+        pricePerMonth
+        weeklyJerryCans
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        siteSiteSubscriptionId
+      }
       pin
       phoneNumber
       name
@@ -175,6 +333,133 @@ export const onDeleteCustomer = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      customerSiteSubscriptionId
+    }
+  }
+`;
+export const onCreateSiteSubscription = /* GraphQL */ `
+  subscription OnCreateSiteSubscription {
+    onCreateSiteSubscription {
+      id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      name
+      pricePerMonth
+      weeklyJerryCans
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      siteSiteSubscriptionId
+    }
+  }
+`;
+export const onUpdateSiteSubscription = /* GraphQL */ `
+  subscription OnUpdateSiteSubscription {
+    onUpdateSiteSubscription {
+      id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      name
+      pricePerMonth
+      weeklyJerryCans
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      siteSiteSubscriptionId
+    }
+  }
+`;
+export const onDeleteSiteSubscription = /* GraphQL */ `
+  subscription OnDeleteSiteSubscription {
+    onDeleteSiteSubscription {
+      id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      name
+      pricePerMonth
+      weeklyJerryCans
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      siteSiteSubscriptionId
     }
   }
 `;
@@ -182,12 +467,43 @@ export const onCreateSite = /* GraphQL */ `
   subscription OnCreateSite {
     onCreateSite {
       id
+      siteSubscription {
+        items {
+          id
+          siteID
+          name
+          pricePerMonth
+          weeklyJerryCans
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteSubscriptionId
+        }
+        nextToken
+        startedAt
+      }
+      siteManagers {
+        items {
+          id
+          siteID
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteManagersId
+        }
+        nextToken
+        startedAt
+      }
       name
       description
       serviceRadius
       latitude
       longitude
-      subs
       averageWait
       averageLine
       online
@@ -204,12 +520,43 @@ export const onUpdateSite = /* GraphQL */ `
   subscription OnUpdateSite {
     onUpdateSite {
       id
+      siteSubscription {
+        items {
+          id
+          siteID
+          name
+          pricePerMonth
+          weeklyJerryCans
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteSubscriptionId
+        }
+        nextToken
+        startedAt
+      }
+      siteManagers {
+        items {
+          id
+          siteID
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteManagersId
+        }
+        nextToken
+        startedAt
+      }
       name
       description
       serviceRadius
       latitude
       longitude
-      subs
       averageWait
       averageLine
       online
@@ -226,151 +573,47 @@ export const onDeleteSite = /* GraphQL */ `
   subscription OnDeleteSite {
     onDeleteSite {
       id
+      siteSubscription {
+        items {
+          id
+          siteID
+          name
+          pricePerMonth
+          weeklyJerryCans
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteSubscriptionId
+        }
+        nextToken
+        startedAt
+      }
+      siteManagers {
+        items {
+          id
+          siteID
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteManagersId
+        }
+        nextToken
+        startedAt
+      }
       name
       description
       serviceRadius
       latitude
       longitude
-      subs
       averageWait
       averageLine
       online
       estimatedDaily
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onCreateManagerSiteLinker = /* GraphQL */ `
-  subscription OnCreateManagerSiteLinker {
-    onCreateManagerSiteLinker {
-      id
-      siteManagerID
-      siteID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateManagerSiteLinker = /* GraphQL */ `
-  subscription OnUpdateManagerSiteLinker {
-    onUpdateManagerSiteLinker {
-      id
-      siteManagerID
-      siteID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteManagerSiteLinker = /* GraphQL */ `
-  subscription OnDeleteManagerSiteLinker {
-    onDeleteManagerSiteLinker {
-      id
-      siteManagerID
-      siteID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onCreateCustomerSiteLinker = /* GraphQL */ `
-  subscription OnCreateCustomerSiteLinker {
-    onCreateCustomerSiteLinker {
-      id
-      customerID
-      siteID
-      remainingJerryCans
-      sub
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateCustomerSiteLinker = /* GraphQL */ `
-  subscription OnUpdateCustomerSiteLinker {
-    onUpdateCustomerSiteLinker {
-      id
-      customerID
-      siteID
-      remainingJerryCans
-      sub
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteCustomerSiteLinker = /* GraphQL */ `
-  subscription OnDeleteCustomerSiteLinker {
-    onDeleteCustomerSiteLinker {
-      id
-      customerID
-      siteID
-      remainingJerryCans
-      sub
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onCreateSub = /* GraphQL */ `
-  subscription OnCreateSub {
-    onCreateSub {
-      id
-      name
-      pricePerMonth
-      weeklyJerryCans
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateSub = /* GraphQL */ `
-  subscription OnUpdateSub {
-    onUpdateSub {
-      id
-      name
-      pricePerMonth
-      weeklyJerryCans
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteSub = /* GraphQL */ `
-  subscription OnDeleteSub {
-    onDeleteSub {
-      id
-      name
-      pricePerMonth
-      weeklyJerryCans
       createdAt
       updatedAt
       _version

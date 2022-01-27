@@ -28,7 +28,7 @@
     }
   },
   "api": {
-    "test": {
+    "TapGivesAmplify": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {

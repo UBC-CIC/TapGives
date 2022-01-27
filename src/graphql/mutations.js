@@ -1,54 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createAdministrator = /* GraphQL */ `
-  mutation CreateAdministrator(
-    $input: CreateAdministratorInput!
-    $condition: ModelAdministratorConditionInput
-  ) {
-    createAdministrator(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateAdministrator = /* GraphQL */ `
-  mutation UpdateAdministrator(
-    $input: UpdateAdministratorInput!
-    $condition: ModelAdministratorConditionInput
-  ) {
-    updateAdministrator(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteAdministrator = /* GraphQL */ `
-  mutation DeleteAdministrator(
-    $input: DeleteAdministratorInput!
-    $condition: ModelAdministratorConditionInput
-  ) {
-    deleteAdministrator(input: $input, condition: $condition) {
-      id
-      name
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
 export const createSiteManager = /* GraphQL */ `
   mutation CreateSiteManager(
     $input: CreateSiteManagerInput!
@@ -56,15 +8,22 @@ export const createSiteManager = /* GraphQL */ `
   ) {
     createSiteManager(input: $input, condition: $condition) {
       id
-      name
-      sites {
+      siteID
+      site {
         id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
         name
         description
         serviceRadius
         latitude
         longitude
-        subs
         averageWait
         averageLine
         online
@@ -75,11 +34,13 @@ export const createSiteManager = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      name
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSiteManagersId
     }
   }
 `;
@@ -90,15 +51,22 @@ export const updateSiteManager = /* GraphQL */ `
   ) {
     updateSiteManager(input: $input, condition: $condition) {
       id
-      name
-      sites {
+      siteID
+      site {
         id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
         name
         description
         serviceRadius
         latitude
         longitude
-        subs
         averageWait
         averageLine
         online
@@ -109,11 +77,13 @@ export const updateSiteManager = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      name
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSiteManagersId
     }
   }
 `;
@@ -124,15 +94,22 @@ export const deleteSiteManager = /* GraphQL */ `
   ) {
     deleteSiteManager(input: $input, condition: $condition) {
       id
-      name
-      sites {
+      siteID
+      site {
         id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
         name
         description
         serviceRadius
         latitude
         longitude
-        subs
         averageWait
         averageLine
         online
@@ -143,11 +120,13 @@ export const deleteSiteManager = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      name
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      siteSiteManagersId
     }
   }
 `;
@@ -158,6 +137,62 @@ export const createCustomer = /* GraphQL */ `
   ) {
     createCustomer(input: $input, condition: $condition) {
       id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      siteSubscription {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        name
+        pricePerMonth
+        weeklyJerryCans
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        siteSiteSubscriptionId
+      }
       pin
       phoneNumber
       name
@@ -166,6 +201,7 @@ export const createCustomer = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      customerSiteSubscriptionId
     }
   }
 `;
@@ -176,6 +212,62 @@ export const updateCustomer = /* GraphQL */ `
   ) {
     updateCustomer(input: $input, condition: $condition) {
       id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      siteSubscription {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        name
+        pricePerMonth
+        weeklyJerryCans
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        siteSiteSubscriptionId
+      }
       pin
       phoneNumber
       name
@@ -184,6 +276,7 @@ export const updateCustomer = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      customerSiteSubscriptionId
     }
   }
 `;
@@ -194,6 +287,62 @@ export const deleteCustomer = /* GraphQL */ `
   ) {
     deleteCustomer(input: $input, condition: $condition) {
       id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      siteSubscription {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        name
+        pricePerMonth
+        weeklyJerryCans
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        siteSiteSubscriptionId
+      }
       pin
       phoneNumber
       name
@@ -202,6 +351,142 @@ export const deleteCustomer = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      customerSiteSubscriptionId
+    }
+  }
+`;
+export const createSiteSubscription = /* GraphQL */ `
+  mutation CreateSiteSubscription(
+    $input: CreateSiteSubscriptionInput!
+    $condition: ModelSiteSubscriptionConditionInput
+  ) {
+    createSiteSubscription(input: $input, condition: $condition) {
+      id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      name
+      pricePerMonth
+      weeklyJerryCans
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      siteSiteSubscriptionId
+    }
+  }
+`;
+export const updateSiteSubscription = /* GraphQL */ `
+  mutation UpdateSiteSubscription(
+    $input: UpdateSiteSubscriptionInput!
+    $condition: ModelSiteSubscriptionConditionInput
+  ) {
+    updateSiteSubscription(input: $input, condition: $condition) {
+      id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      name
+      pricePerMonth
+      weeklyJerryCans
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      siteSiteSubscriptionId
+    }
+  }
+`;
+export const deleteSiteSubscription = /* GraphQL */ `
+  mutation DeleteSiteSubscription(
+    $input: DeleteSiteSubscriptionInput!
+    $condition: ModelSiteSubscriptionConditionInput
+  ) {
+    deleteSiteSubscription(input: $input, condition: $condition) {
+      id
+      siteID
+      site {
+        id
+        siteSubscription {
+          nextToken
+          startedAt
+        }
+        siteManagers {
+          nextToken
+          startedAt
+        }
+        name
+        description
+        serviceRadius
+        latitude
+        longitude
+        averageWait
+        averageLine
+        online
+        estimatedDaily
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      name
+      pricePerMonth
+      weeklyJerryCans
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      siteSiteSubscriptionId
     }
   }
 `;
@@ -212,12 +497,43 @@ export const createSite = /* GraphQL */ `
   ) {
     createSite(input: $input, condition: $condition) {
       id
+      siteSubscription {
+        items {
+          id
+          siteID
+          name
+          pricePerMonth
+          weeklyJerryCans
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteSubscriptionId
+        }
+        nextToken
+        startedAt
+      }
+      siteManagers {
+        items {
+          id
+          siteID
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteManagersId
+        }
+        nextToken
+        startedAt
+      }
       name
       description
       serviceRadius
       latitude
       longitude
-      subs
       averageWait
       averageLine
       online
@@ -237,12 +553,43 @@ export const updateSite = /* GraphQL */ `
   ) {
     updateSite(input: $input, condition: $condition) {
       id
+      siteSubscription {
+        items {
+          id
+          siteID
+          name
+          pricePerMonth
+          weeklyJerryCans
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteSubscriptionId
+        }
+        nextToken
+        startedAt
+      }
+      siteManagers {
+        items {
+          id
+          siteID
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteManagersId
+        }
+        nextToken
+        startedAt
+      }
       name
       description
       serviceRadius
       latitude
       longitude
-      subs
       averageWait
       averageLine
       online
@@ -262,178 +609,47 @@ export const deleteSite = /* GraphQL */ `
   ) {
     deleteSite(input: $input, condition: $condition) {
       id
+      siteSubscription {
+        items {
+          id
+          siteID
+          name
+          pricePerMonth
+          weeklyJerryCans
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteSubscriptionId
+        }
+        nextToken
+        startedAt
+      }
+      siteManagers {
+        items {
+          id
+          siteID
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          siteSiteManagersId
+        }
+        nextToken
+        startedAt
+      }
       name
       description
       serviceRadius
       latitude
       longitude
-      subs
       averageWait
       averageLine
       online
       estimatedDaily
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const createManagerSiteLinker = /* GraphQL */ `
-  mutation CreateManagerSiteLinker(
-    $input: CreateManagerSiteLinkerInput!
-    $condition: ModelManagerSiteLinkerConditionInput
-  ) {
-    createManagerSiteLinker(input: $input, condition: $condition) {
-      id
-      siteManagerID
-      siteID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateManagerSiteLinker = /* GraphQL */ `
-  mutation UpdateManagerSiteLinker(
-    $input: UpdateManagerSiteLinkerInput!
-    $condition: ModelManagerSiteLinkerConditionInput
-  ) {
-    updateManagerSiteLinker(input: $input, condition: $condition) {
-      id
-      siteManagerID
-      siteID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteManagerSiteLinker = /* GraphQL */ `
-  mutation DeleteManagerSiteLinker(
-    $input: DeleteManagerSiteLinkerInput!
-    $condition: ModelManagerSiteLinkerConditionInput
-  ) {
-    deleteManagerSiteLinker(input: $input, condition: $condition) {
-      id
-      siteManagerID
-      siteID
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const createCustomerSiteLinker = /* GraphQL */ `
-  mutation CreateCustomerSiteLinker(
-    $input: CreateCustomerSiteLinkerInput!
-    $condition: ModelCustomerSiteLinkerConditionInput
-  ) {
-    createCustomerSiteLinker(input: $input, condition: $condition) {
-      id
-      customerID
-      siteID
-      remainingJerryCans
-      sub
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateCustomerSiteLinker = /* GraphQL */ `
-  mutation UpdateCustomerSiteLinker(
-    $input: UpdateCustomerSiteLinkerInput!
-    $condition: ModelCustomerSiteLinkerConditionInput
-  ) {
-    updateCustomerSiteLinker(input: $input, condition: $condition) {
-      id
-      customerID
-      siteID
-      remainingJerryCans
-      sub
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteCustomerSiteLinker = /* GraphQL */ `
-  mutation DeleteCustomerSiteLinker(
-    $input: DeleteCustomerSiteLinkerInput!
-    $condition: ModelCustomerSiteLinkerConditionInput
-  ) {
-    deleteCustomerSiteLinker(input: $input, condition: $condition) {
-      id
-      customerID
-      siteID
-      remainingJerryCans
-      sub
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const createSub = /* GraphQL */ `
-  mutation CreateSub(
-    $input: CreateSubInput!
-    $condition: ModelSubConditionInput
-  ) {
-    createSub(input: $input, condition: $condition) {
-      id
-      name
-      pricePerMonth
-      weeklyJerryCans
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateSub = /* GraphQL */ `
-  mutation UpdateSub(
-    $input: UpdateSubInput!
-    $condition: ModelSubConditionInput
-  ) {
-    updateSub(input: $input, condition: $condition) {
-      id
-      name
-      pricePerMonth
-      weeklyJerryCans
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteSub = /* GraphQL */ `
-  mutation DeleteSub(
-    $input: DeleteSubInput!
-    $condition: ModelSubConditionInput
-  ) {
-    deleteSub(input: $input, condition: $condition) {
-      id
-      name
-      pricePerMonth
-      weeklyJerryCans
       createdAt
       updatedAt
       _version
