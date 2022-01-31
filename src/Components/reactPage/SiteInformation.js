@@ -1,5 +1,5 @@
 import React from "react";
-import {Auth, DataStore} from "aws-amplify";
+import {Auth} from "aws-amplify";
 import {Site} from "../../models";
 import "./SiteInformation.css"
 import Grid from "@material-ui/core/Grid";
@@ -17,7 +17,7 @@ class SiteInformation extends React.Component {
     }
     async componentDidMount() {
         this.setState({
-            site: await DataStore.query(Site, this.state.siteID)
+
         })
     }
 

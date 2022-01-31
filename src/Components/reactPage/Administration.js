@@ -29,14 +29,14 @@ const siteColumns = [
         editable: true,
     },
     {
-        field: 'longitude',
-        headerName: 'Longitude',
+        field: 'latitude',
+        headerName: 'Latitude',
         width: 200,
         editable: true,
     },
     {
-        field: 'latitude',
-        headerName: 'Latitude',
+        field: 'longitude',
+        headerName: 'Longitude',
         width: 200,
         editable: true,
     },
@@ -125,12 +125,18 @@ const subscriptionRequirements = [
         xs: 6,
         type: "number",
     },
+    // {
+    //     id: "weeklyJerryCans",
+    //     label: "Weekly Jerrycans",
+    //     xs: 6,
+    //     type: "number",
+    // },
     {
-        id: "weeklyJerryCans",
-        label: "Weekly Jerrycans",
+        id: "softCapVisits",
+        label: "Max Site Visits",
         xs: 6,
-        type: "number",
-    },
+        type: "number"
+    }
 ]
 // Configure Amplify to allow network connectivity
 // Amplify.configure(amplifyConfig)
@@ -185,6 +191,7 @@ class Administration extends React.Component {
     }
     async getManagerSelected(input) {
         const selected = input[0]
+        console.log(this.state.siteManagerData)
         this.setState({selectedManager: selected})
         this.setState({
             selectedSites: this.state.siteManagerData.filter(
@@ -207,6 +214,34 @@ class Administration extends React.Component {
     }
     // Called when syncing new sites to selected Site Manager/Sites
     async syncSites() {
+        const selectedManager = this.state.selectedManager
+        const selectedSites = this.state.selectedSites
+        const currentSites = this.state.siteManagerData.filter(
+                (manager) => manager.id === selectedManager
+            )
+
+        let sitesToRemove = [], sitesToAdd = [];
+        // Checks selected sites, and sites owned by siteManager and finds which sites need to be removed
+        currentSites.map((siteManager) => {
+            if (!selectedSites.includes(siteManager.siteID))
+                sitesToRemove.push(siteManager.siteID)
+        })
+        selectedSites.map((siteID) => {
+            if (!currentSites.some((siteManager) => siteManager.siteID === siteID))
+                sitesToAdd.push(siteID)
+        })
+        console.log(sitesToAdd)
+        console.log(sitesToRemove)
+        for (const siteID in sitesToAdd) {
+            console.log(sitesToAdd[siteID])
+            AdministrationBackendHelper.createSiteManager(selectedManager, sitesToAdd[siteID])
+        }
+        for (const siteID in sitesToRemove) {
+            AdministrationBackendHelper.deleteSiteManager(selectedManager, sitesToRemove[siteID])
+        }
+        this.setState({
+            siteManagerData: await AdministrationBackendHelper.getSiteManagers(),
+        })
 
     }
     // Checks if the User Input is valid, then calls createSite if it is
@@ -231,28 +266,9 @@ class Administration extends React.Component {
     }
     //Calls Datastore to create a new site
     async createSite() {
-        try {
-            const site = {
-                id: this.state.siteCreationData.name,
-                name: this.state.siteCreationData.name,
-                description: this.state.siteCreationData.description,
-                serviceRadius: parseFloat(this.state.siteCreationData.serviceRadius),
-                latitude: parseFloat(this.state.siteCreationData.latitude),
-                longitude: parseFloat(this.state.siteCreationData.longitude),
-                // subs: this.state.selectedSubs,
-                averageWait: parseInt(this.state.siteCreationData.averageWait),
-                averageLine: parseInt(this.state.siteCreationData.averageLine),
-                online: true,
-                estimatedDaily: parseInt(this.state.siteCreationData.estimatedDaily),
-            }
-            API.graphql({
-                query: mutations.createSite,
-                variables: {input: site}
-            })
-        } catch (error) {
-            console.log("Error creating site: ", error)
-        }
+        await AdministrationBackendHelper.createSite(this.state.siteCreationData)
         this.setState({
+            sites: AdministrationBackendHelper.getSites(),
             createSiteMenu: false
         })
     }
@@ -303,22 +319,19 @@ class Administration extends React.Component {
     }
     // Calls datastore to delete selected sites
     async deleteSite() {
-        // try {
-        //     for (const site in this.state.selected) {
-        //         console.log("Deleting: ",this.state.selected[site])
-        //         DataStore.delete(Site, this.state.selected[site])
-        //         DataStore.delete(CustomerSiteLinker, c => c.siteID("eq", this.state.selected[site]))
-        //         DataStore.delete(ManagerSiteLinker, c=>c.siteID("eq", this.state.selected[site]))
-        //     }
-        // } catch (error) {
-        //     console.log("Error deleting site", error);
-        // }
-        // this.setState({
-        //     deleteSiteMenu: false
-        // })
-        // this.setState({
-        //     siteData: await DataStore.query(Site)
-        // })
+        try {
+            for (const site in this.state.selectedSites) {
+                await AdministrationBackendHelper.deleteSite(this.state.selectedSites[site])
+            }
+        } catch (error) {
+            console.log("Error deleting site", error);
+        }
+        this.setState({
+            deleteSiteMenu: false
+        })
+        this.setState({
+            siteData: await AdministrationBackendHelper.getSites()
+        })
     }
     render() {
         return (

@@ -10,11 +10,9 @@ export const getSiteManager = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -27,16 +25,10 @@ export const getSiteManager = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       siteSiteManagersId
     }
   }
@@ -74,66 +66,13 @@ export const listSiteManagers = /* GraphQL */ `
           estimatedDaily
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         name
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         siteSiteManagersId
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncSiteManagers = /* GraphQL */ `
-  query SyncSiteManagers(
-    $filter: ModelSiteManagerFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncSiteManagers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        siteID
-        site {
-          id
-          name
-          description
-          serviceRadius
-          latitude
-          longitude
-          averageWait
-          averageLine
-          online
-          estimatedDaily
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        name
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        siteSiteManagersId
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -146,11 +85,9 @@ export const getCustomer = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -163,13 +100,12 @@ export const getCustomer = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
+      siteSubscriptionID
       siteSubscription {
         id
         siteID
+        pricePerMonth
         site {
           id
           name
@@ -183,28 +119,19 @@ export const getCustomer = /* GraphQL */ `
           estimatedDaily
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         name
-        pricePerMonth
-        weeklyJerryCans
+        softCapVisits
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         siteSiteSubscriptionId
       }
+      validSubscription
       pin
       phoneNumber
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       customerSiteSubscriptionId
     }
   }
@@ -242,96 +169,27 @@ export const listCustomers = /* GraphQL */ `
           estimatedDaily
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
+        siteSubscriptionID
         siteSubscription {
           id
           siteID
-          name
           pricePerMonth
-          weeklyJerryCans
+          name
+          softCapVisits
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteSubscriptionId
         }
+        validSubscription
         pin
         phoneNumber
         name
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         customerSiteSubscriptionId
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncCustomers = /* GraphQL */ `
-  query SyncCustomers(
-    $filter: ModelCustomerFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncCustomers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        siteID
-        site {
-          id
-          name
-          description
-          serviceRadius
-          latitude
-          longitude
-          averageWait
-          averageLine
-          online
-          estimatedDaily
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        siteSubscription {
-          id
-          siteID
-          name
-          pricePerMonth
-          weeklyJerryCans
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          siteSiteSubscriptionId
-        }
-        pin
-        phoneNumber
-        name
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        customerSiteSubscriptionId
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -340,15 +198,14 @@ export const getSiteSubscription = /* GraphQL */ `
     getSiteSubscription(id: $id) {
       id
       siteID
+      pricePerMonth
       site {
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -361,18 +218,11 @@ export const getSiteSubscription = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       name
-      pricePerMonth
-      weeklyJerryCans
+      softCapVisits
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       siteSiteSubscriptionId
     }
   }
@@ -391,6 +241,7 @@ export const listSiteSubscriptions = /* GraphQL */ `
       items {
         id
         siteID
+        pricePerMonth
         site {
           id
           name
@@ -404,70 +255,14 @@ export const listSiteSubscriptions = /* GraphQL */ `
           estimatedDaily
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         name
-        pricePerMonth
-        weeklyJerryCans
+        softCapVisits
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         siteSiteSubscriptionId
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncSiteSubscriptions = /* GraphQL */ `
-  query SyncSiteSubscriptions(
-    $filter: ModelSiteSubscriptionFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncSiteSubscriptions(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        siteID
-        site {
-          id
-          name
-          description
-          serviceRadius
-          latitude
-          longitude
-          averageWait
-          averageLine
-          online
-          estimatedDaily
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        name
-        pricePerMonth
-        weeklyJerryCans
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        siteSiteSubscriptionId
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -479,18 +274,14 @@ export const getSite = /* GraphQL */ `
         items {
           id
           siteID
-          name
           pricePerMonth
-          weeklyJerryCans
+          name
+          softCapVisits
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteSubscriptionId
         }
         nextToken
-        startedAt
       }
       siteManagers {
         items {
@@ -499,13 +290,9 @@ export const getSite = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteManagersId
         }
         nextToken
-        startedAt
       }
       name
       description
@@ -518,9 +305,6 @@ export const getSite = /* GraphQL */ `
       estimatedDaily
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -535,11 +319,9 @@ export const listSites = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -552,55 +334,8 @@ export const listSites = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncSites = /* GraphQL */ `
-  query SyncSites(
-    $filter: ModelSiteFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncSites(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        siteSubscription {
-          nextToken
-          startedAt
-        }
-        siteManagers {
-          nextToken
-          startedAt
-        }
-        name
-        description
-        serviceRadius
-        latitude
-        longitude
-        averageWait
-        averageLine
-        online
-        estimatedDaily
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -608,13 +343,9 @@ export const getLanguage = /* GraphQL */ `
   query GetLanguage($id: ID!) {
     getLanguage(id: $id) {
       id
-      code
       language
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -627,111 +358,64 @@ export const listLanguages = /* GraphQL */ `
     listLanguages(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        code
         language
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncLanguages = /* GraphQL */ `
-  query SyncLanguages(
-    $filter: ModelLanguageFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLanguages(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        code
-        language
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
 export const getPhrase = /* GraphQL */ `
-  query GetPhrase($id: ID!) {
-    getPhrase(id: $id) {
+  query GetPhrase($id: ID!, $languageID: ID!) {
+    getPhrase(id: $id, languageID: $languageID) {
       id
-      code
+      languageID
+      language {
+        id
+        language
+        createdAt
+        updatedAt
+      }
       phrase
       data
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
 export const listPhrases = /* GraphQL */ `
   query ListPhrases(
+    $id: ID
+    $languageID: ModelIDKeyConditionInput
     $filter: ModelPhraseFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listPhrases(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        code
-        phrase
-        data
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncPhrases = /* GraphQL */ `
-  query SyncPhrases(
-    $filter: ModelPhraseFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncPhrases(
+    listPhrases(
+      id: $id
+      languageID: $languageID
       filter: $filter
       limit: $limit
       nextToken: $nextToken
-      lastSync: $lastSync
+      sortDirection: $sortDirection
     ) {
       items {
         id
-        code
+        languageID
+        language {
+          id
+          language
+          createdAt
+          updatedAt
+        }
         phrase
         data
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
     }
   }
 `;

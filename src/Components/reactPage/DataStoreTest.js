@@ -1,14 +1,10 @@
 import React from "react";
-import {Amplify, DataStore, Storage} from "aws-amplify";
+import {Amplify, Storage} from "aws-amplify";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import awsconfig from '../../aws-exports';
-import {Language, Phrase} from "../../models";
-import { API } from 'aws-amplify';
-import * as queries from '../../graphql/queries';
-import * as mutations from '../../graphql/mutations';
-import * as subscriptions from '../../graphql/subscriptions';
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
+import LocalizationHelper from "../Helpers/LocalizationHelper";
 
 Amplify.configure(awsconfig);
 
@@ -104,6 +100,14 @@ const baseAssociations = {
     en : "English",
     sw : "Swahili",
 }
+const siteLocations = [
+    [0.8601723100257656, 32.081114032264246],
+    [1.9263576758795882, 34.684589004602465],
+    [3.1332438033296173, 31.66345987298884],
+    [-0.469978477756793, 30.81226239329865],
+    [-0.9886157700640454, 29.843974915072906],
+    [0.22664695872836463, 32.926285624776376]
+]
 class DataStoreTest extends React.Component {
     constructor() {
         super();
@@ -126,68 +130,24 @@ class DataStoreTest extends React.Component {
         }
     }
     async componentDidMount() {
-
+        this.setState({
+            sites: await AdministrationBackendHelper.getSites()
+        })
     }
     async clearDataStore () {
-        await DataStore.clear()
+
     }
 
     async addPhrase() {
-        try {
-            await DataStore.save(
-                new Phrase({
-                    code : this.state.id,
-                    phrase : this.state.phrase,
-                    data : this.state.data,
-                })
-            )
-        } catch (error) {
-            console.log("Error saving phrase", error);
-        }
-        console.log(this.state.data)
     }
 
     async syncData() {
-        await DataStore.stop()
-        DataStore.start()
     }
     async addBaseData() {
-        let phraseList = []
-
-        for (const code in baseLanguages) {
-            console.log(code) // Prints current language being saved
-            phraseList.push([])
-            for (const phrase in baseLanguages[code]) {
-                try {
-                    phraseList[phraseList.length - 1].push(DataStore.save(
-                        new Phrase({
-                            code : code,
-                            phrase : phrase,
-                            data : baseLanguages[code][phrase]
-                        })
-                    ))
-                } catch (error) {
-                    console.log("Error saving phrase: "+baseLanguages[code]+phrase+baseLanguages[code][phrase], error);
-                }
-            }
-        }
-        await Promise.all(phraseList.map((language)=>Promise.all(language)))
+        await LocalizationHelper.addMultipleLanguagePhrases(baseLanguages)
     }
     async addLanguages() {
-
-        let languageList = []
-        for (const code in baseAssociations){
-            try {
-                languageList.push(DataStore.save(
-                    new Language({
-                        code: code,
-                        language: baseAssociations[code]
-                    })
-                ))
-            } catch (error) {
-                console.log("Error saving Language: "+code+baseAssociations[code], error);
-            }
-        }
+        await LocalizationHelper.addMultipleLanguageCodes(baseAssociations)
     }
     async createUser() {
 
@@ -201,12 +161,44 @@ class DataStoreTest extends React.Component {
 
     }
     async tests3() {
-        try {
-            const result = await Storage.put("test.txt", "this is to override hello?");
-            console.log(result)
-        } catch (error) {
-            console.log("Error pushing to s3", error)
+        // try {
+        //     const result = await Storage.put("test.txt", "this is to override hello?");
+        //     console.log(result)
+        // } catch (error) {
+        //     console.log("Error pushing to s3", error)
+        // }
+        await LocalizationHelper.getLanguages()
+    }
+    async simulate() {
+        let siteCreationPromises = []
+        for (const pair in siteLocations) {
+            siteCreationPromises.push(this.simpleCreateSite(pair, siteLocations[pair][0], siteLocations[pair][1]))
         }
+        await Promise.all(siteCreationPromises)
+        for (const pair in siteLocations) {
+            for (let iterator = 0 ; iterator < 1500; iterator++) {
+                AdministrationBackendHelper.createCustomer("customer"+iterator+"site"+pair, "testSiteSub"+pair, "testSite"+pair, 1234, iterator)
+            }
+        }
+    }
+    async simpleCreateSite(number, latitude, longitude) {
+        const siteCreationData = {
+            name: "testSite" + number,
+            description: "realistic site location " + number,
+            serviceRadius: 5,
+            latitude: latitude,
+            longitude: longitude,
+            averageWait: 5,
+            averageLine: 5,
+            estimatedDaily: 200
+        }
+        await AdministrationBackendHelper.createSite(siteCreationData)
+        const subscriptionData = {
+            name: "testSiteSub" + number,
+            pricePerMonth: 5,
+            softCapVisits: 5,
+        }
+        await AdministrationBackendHelper.createSubscription(subscriptionData, "testSite" + number)
     }
     render() {
         return(
@@ -257,11 +249,11 @@ class DataStoreTest extends React.Component {
                                 } = event;
                                 // const subs = (await DataStore.query(Site, value)).subs
                                 console.log(value)
-                                // this.setState({
-                                //     customerData: Object.assign(this.state.customerData, {site: value}),
-                                //     //Basically subs is equal to the subs that
-                                //     subs: (await DataStore.query(Sub, (sub) => sub.or((sub)=>subs.reduce((sub,id) => sub.id("eq", id), sub))))
-                                // });
+                                this.setState({
+                                    customerData: Object.assign(this.state.customerData, {site: value}),
+                                    //Basically subs is equal to the subs that
+                                    subs: await AdministrationBackendHelper.getSiteSubscriptionsBySite(value)
+                                });
 
                             }}
                         >
@@ -315,6 +307,9 @@ class DataStoreTest extends React.Component {
                 </Grid>
                 <Button variant="outlined" onClick={this.tests3.bind(this)}>
                     test s3
+                </Button>
+                <Button variant="outlined" onClick={this.simulate.bind(this)}>
+                    simulate
                 </Button>
             </Grid>
 

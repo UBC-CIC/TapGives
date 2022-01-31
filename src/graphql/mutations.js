@@ -13,11 +13,9 @@ export const createSiteManager = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -30,16 +28,10 @@ export const createSiteManager = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       siteSiteManagersId
     }
   }
@@ -56,11 +48,9 @@ export const updateSiteManager = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -73,16 +63,10 @@ export const updateSiteManager = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       siteSiteManagersId
     }
   }
@@ -99,11 +83,9 @@ export const deleteSiteManager = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -116,16 +98,10 @@ export const deleteSiteManager = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       siteSiteManagersId
     }
   }
@@ -142,11 +118,9 @@ export const createCustomer = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -159,13 +133,12 @@ export const createCustomer = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
+      siteSubscriptionID
       siteSubscription {
         id
         siteID
+        pricePerMonth
         site {
           id
           name
@@ -179,28 +152,19 @@ export const createCustomer = /* GraphQL */ `
           estimatedDaily
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         name
-        pricePerMonth
-        weeklyJerryCans
+        softCapVisits
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         siteSiteSubscriptionId
       }
+      validSubscription
       pin
       phoneNumber
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       customerSiteSubscriptionId
     }
   }
@@ -217,11 +181,9 @@ export const updateCustomer = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -234,13 +196,12 @@ export const updateCustomer = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
+      siteSubscriptionID
       siteSubscription {
         id
         siteID
+        pricePerMonth
         site {
           id
           name
@@ -254,28 +215,19 @@ export const updateCustomer = /* GraphQL */ `
           estimatedDaily
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         name
-        pricePerMonth
-        weeklyJerryCans
+        softCapVisits
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         siteSiteSubscriptionId
       }
+      validSubscription
       pin
       phoneNumber
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       customerSiteSubscriptionId
     }
   }
@@ -292,11 +244,9 @@ export const deleteCustomer = /* GraphQL */ `
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -309,13 +259,12 @@ export const deleteCustomer = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
+      siteSubscriptionID
       siteSubscription {
         id
         siteID
+        pricePerMonth
         site {
           id
           name
@@ -329,28 +278,19 @@ export const deleteCustomer = /* GraphQL */ `
           estimatedDaily
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
         }
         name
-        pricePerMonth
-        weeklyJerryCans
+        softCapVisits
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
         siteSiteSubscriptionId
       }
+      validSubscription
       pin
       phoneNumber
       name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       customerSiteSubscriptionId
     }
   }
@@ -363,15 +303,14 @@ export const createSiteSubscription = /* GraphQL */ `
     createSiteSubscription(input: $input, condition: $condition) {
       id
       siteID
+      pricePerMonth
       site {
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -384,18 +323,11 @@ export const createSiteSubscription = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       name
-      pricePerMonth
-      weeklyJerryCans
+      softCapVisits
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       siteSiteSubscriptionId
     }
   }
@@ -408,15 +340,14 @@ export const updateSiteSubscription = /* GraphQL */ `
     updateSiteSubscription(input: $input, condition: $condition) {
       id
       siteID
+      pricePerMonth
       site {
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -429,18 +360,11 @@ export const updateSiteSubscription = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       name
-      pricePerMonth
-      weeklyJerryCans
+      softCapVisits
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       siteSiteSubscriptionId
     }
   }
@@ -453,15 +377,14 @@ export const deleteSiteSubscription = /* GraphQL */ `
     deleteSiteSubscription(input: $input, condition: $condition) {
       id
       siteID
+      pricePerMonth
       site {
         id
         siteSubscription {
           nextToken
-          startedAt
         }
         siteManagers {
           nextToken
-          startedAt
         }
         name
         description
@@ -474,18 +397,11 @@ export const deleteSiteSubscription = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       name
-      pricePerMonth
-      weeklyJerryCans
+      softCapVisits
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
       siteSiteSubscriptionId
     }
   }
@@ -501,18 +417,14 @@ export const createSite = /* GraphQL */ `
         items {
           id
           siteID
-          name
           pricePerMonth
-          weeklyJerryCans
+          name
+          softCapVisits
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteSubscriptionId
         }
         nextToken
-        startedAt
       }
       siteManagers {
         items {
@@ -521,13 +433,9 @@ export const createSite = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteManagersId
         }
         nextToken
-        startedAt
       }
       name
       description
@@ -540,9 +448,6 @@ export const createSite = /* GraphQL */ `
       estimatedDaily
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -557,18 +462,14 @@ export const updateSite = /* GraphQL */ `
         items {
           id
           siteID
-          name
           pricePerMonth
-          weeklyJerryCans
+          name
+          softCapVisits
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteSubscriptionId
         }
         nextToken
-        startedAt
       }
       siteManagers {
         items {
@@ -577,13 +478,9 @@ export const updateSite = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteManagersId
         }
         nextToken
-        startedAt
       }
       name
       description
@@ -596,9 +493,6 @@ export const updateSite = /* GraphQL */ `
       estimatedDaily
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -613,18 +507,14 @@ export const deleteSite = /* GraphQL */ `
         items {
           id
           siteID
-          name
           pricePerMonth
-          weeklyJerryCans
+          name
+          softCapVisits
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteSubscriptionId
         }
         nextToken
-        startedAt
       }
       siteManagers {
         items {
@@ -633,13 +523,9 @@ export const deleteSite = /* GraphQL */ `
           name
           createdAt
           updatedAt
-          _version
-          _deleted
-          _lastChangedAt
           siteSiteManagersId
         }
         nextToken
-        startedAt
       }
       name
       description
@@ -652,9 +538,6 @@ export const deleteSite = /* GraphQL */ `
       estimatedDaily
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -665,13 +548,9 @@ export const createLanguage = /* GraphQL */ `
   ) {
     createLanguage(input: $input, condition: $condition) {
       id
-      code
       language
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -682,13 +561,9 @@ export const updateLanguage = /* GraphQL */ `
   ) {
     updateLanguage(input: $input, condition: $condition) {
       id
-      code
       language
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -699,13 +574,9 @@ export const deleteLanguage = /* GraphQL */ `
   ) {
     deleteLanguage(input: $input, condition: $condition) {
       id
-      code
       language
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -716,14 +587,17 @@ export const createPhrase = /* GraphQL */ `
   ) {
     createPhrase(input: $input, condition: $condition) {
       id
-      code
+      languageID
+      language {
+        id
+        language
+        createdAt
+        updatedAt
+      }
       phrase
       data
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -734,14 +608,17 @@ export const updatePhrase = /* GraphQL */ `
   ) {
     updatePhrase(input: $input, condition: $condition) {
       id
-      code
+      languageID
+      language {
+        id
+        language
+        createdAt
+        updatedAt
+      }
       phrase
       data
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -752,14 +629,17 @@ export const deletePhrase = /* GraphQL */ `
   ) {
     deletePhrase(input: $input, condition: $condition) {
       id
-      code
+      languageID
+      language {
+        id
+        language
+        createdAt
+        updatedAt
+      }
       phrase
       data
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;

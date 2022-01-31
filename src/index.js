@@ -18,7 +18,6 @@ Amplify.configure({
 })
 
 Hub.listen("datastore", (test) => {console.log(test.payload)})
-
 const enhancers = compose(applyMiddleware(thunk))
 const store = createStore(
     reducers, enhancers
