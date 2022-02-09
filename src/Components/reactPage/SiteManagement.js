@@ -36,10 +36,10 @@ class siteManagement extends React.Component {
     async getlist() {
         // // username of current user
         const email = (await Auth.currentAuthenticatedUser()).attributes.email;
-        const sites = await AdministrationBackendHelper.getSitesBySiteManager(email)
+        const sites = await AdministrationBackendHelper.getSiteIDsBySiteManager(email)
         let totalCustomers = []
         for (const site in sites) {
-            totalCustomers.push(...(await AdministrationBackendHelper.getCustomersBySite(sites[site])))
+            totalCustomers.push(...(await AdministrationBackendHelper.getCustomersBySiteFast(sites[site])))
         }
         this.setState({
             customers: totalCustomers

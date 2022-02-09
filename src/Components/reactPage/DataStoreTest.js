@@ -150,7 +150,12 @@ class DataStoreTest extends React.Component {
         await LocalizationHelper.addMultipleLanguageCodes(baseAssociations)
     }
     async createUser() {
-
+        await AdministrationBackendHelper.createCustomer(
+            this.state.customerData.name,
+            this.state.customerData.sub,
+            this.state.customerData.site,
+            this.state.customerData.pin,
+            this.state.customerData.phoneNumber)
     }
     async createManager() {
         try {
@@ -175,9 +180,10 @@ class DataStoreTest extends React.Component {
             siteCreationPromises.push(this.simpleCreateSite(pair, siteLocations[pair][0], siteLocations[pair][1]))
         }
         await Promise.all(siteCreationPromises)
-        for (const pair in siteLocations) {
-            for (let iterator = 0 ; iterator < 1500; iterator++) {
-                AdministrationBackendHelper.createCustomer("customer"+iterator+"site"+pair, "testSiteSub"+pair, "testSite"+pair, 1234, iterator)
+        const sites = await AdministrationBackendHelper.getSites()
+        for (const site in sites) {
+            for (let iterator = 0 ; iterator < 5; iterator++) {
+                AdministrationBackendHelper.createCustomer("customer"+iterator, site.siteSubscriptions.items[0].id, site.id, 1234, iterator)
             }
         }
     }
@@ -199,6 +205,14 @@ class DataStoreTest extends React.Component {
             softCapVisits: 5,
         }
         await AdministrationBackendHelper.createSubscription(subscriptionData, "testSite" + number)
+    }
+    async getSite() {
+        console.log(this.state.customerData.site)
+        console.log(await AdministrationBackendHelper.getSite(this.state.customerData.site))
+    }
+    async deleteSiteSubscription(){
+        // AdministrationBackendHelper.cascadeDeleteSiteSubscription("testSiteSub5")
+        AdministrationBackendHelper.cascadeDeleteSite("testsite")
     }
     render() {
         return(
@@ -282,7 +296,7 @@ class DataStoreTest extends React.Component {
                             }}
                         >
                             {this.state.subs.map((sub)=> {
-                                const val = sub.name+" ("+sub.weeklyJerryCans+"/ $"+sub.pricePerMonth+")"
+                                const val = sub.name+" ("+sub.expectedJerrycans+"/ $"+sub.pricePerMonth+")"
                                 return <MenuItem key = {val+"key"} value = {sub.id}>
                                     {val}
                                 </MenuItem>
@@ -310,6 +324,12 @@ class DataStoreTest extends React.Component {
                 </Button>
                 <Button variant="outlined" onClick={this.simulate.bind(this)}>
                     simulate
+                </Button>
+                <Button variant="outlined" onClick={this.getSite.bind(this)}>
+                    test getsite
+                </Button>
+                <Button variant="outlined" onClick={this.deleteSiteSubscription.bind(this)}>
+                    cascade delete
                 </Button>
             </Grid>
 

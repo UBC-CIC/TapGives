@@ -159,6 +159,7 @@ class Administration extends React.Component {
             siteManagerData: await AdministrationBackendHelper.getSiteManagers(),
             siteData: await AdministrationBackendHelper.getSites(),
         })
+
     }
     constructor(props) {
         super(props);
@@ -171,7 +172,9 @@ class Administration extends React.Component {
             return Object.assign(prev,curr)
         })
         // To create a deep copy
+        const siteCreationErrors = JSON.parse(JSON.stringify(siteCreationData))
         const siteEditData = JSON.parse(JSON.stringify(siteCreationData))
+        const siteEditErrors = JSON.parse(JSON.stringify(siteCreationData))
         this.state = {
             selectedSites: [],
             siteData : [],
@@ -181,10 +184,13 @@ class Administration extends React.Component {
             selectedManager : [],
             createSiteMenu: false,
             siteCreationData: siteCreationData,
+            siteCreationErrors: siteCreationErrors,
             editSiteMenu: false,
             siteEditData : siteEditData,
+            siteEditErrors: siteEditErrors,
             deleteSiteMenu: false,
             createSubscriptionMenu: false,
+            deleteSubscriptionMenu: false,
             subscriptionCreationData: {},
             weeklyJerryCans: "",
         }
@@ -208,6 +214,7 @@ class Administration extends React.Component {
             console.log("Error creating subscription: ", error)
         }
         this.setState({
+            siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
             createSubscriptionMenu: false
         })
 
@@ -248,89 +255,84 @@ class Administration extends React.Component {
     checkSiteValid() {
         let anyError = false
         // console.log(this.state.siteCreationData)
-        let currentData = this.state.siteCreationData
+        let currentData = this.state.siteCreationErrors
         siteRequirements.map((requirement)=> {
             if (!requirement.regex.test(this.state.siteCreationData[requirement.id]))
                 anyError = true
-            currentData[requirement.id+"Error"]= !requirement.regex.test(this.state.siteCreationData[requirement.id])
+            currentData[requirement.id]= !requirement.regex.test(this.state.siteCreationData[requirement.id])
         })
         this.setState({
-            siteCreationData: currentData
+            siteCreationErrors: currentData
         })
         if (!anyError) {
             this.createSite()
         }
-
-
         console.log(this.state.siteCreationData)
     }
     //Calls Datastore to create a new site
     async createSite() {
         await AdministrationBackendHelper.createSite(this.state.siteCreationData)
         this.setState({
-            sites: AdministrationBackendHelper.getSites(),
+            siteData: await AdministrationBackendHelper.getSites(),
             createSiteMenu: false
         })
     }
 
     // Checks if user input is valid, and calls Datastore to update the first selected site if it is
     async updateSite() {
-        // let anyError = false
-        // console.log(this.state.siteEditData)
-        // let currentData = this.state.siteEditData
-        // siteRequirements.map((requirement)=> {
-        //     if (!requirement.regex.test(this.state.siteEditData[requirement.id]))
-        //         anyError = true
-        //     currentData[requirement.id+"Error"]= !requirement.regex.test(this.state.siteEditData[requirement.id])
-        // })
-        // this.setState({
-        //     siteEditData: currentData
-        // })
-        // if (!anyError) {
-        //     try {
-        //         let site = await DataStore.query(Site, this.state.selectedAdmins[0])
-        //         console.log(site)
-        //         await DataStore.save(
-        //             Site.copyOf(site, updated => {
-        //                 updated.name= this.state.siteEditData.name;
-        //                 updated.description= this.state.siteEditData.description;
-        //                 updated.serviceRadius= parseFloat(this.state.siteEditData.serviceRadius);
-        //                 updated.latitude= parseFloat(this.state.siteEditData.latitude);
-        //                 updated.longitude= parseFloat(this.state.siteEditData.longitude);
-        //                 updated.subs= this.state.selectedSubs;
-        //                 updated.averageWait= parseInt(this.state.siteEditData.averageWait);
-        //                 updated.averageLine= parseInt(this.state.siteEditData.averageLine);
-        //                 updated.online= true;
-        //             })
-        //         )
-        //     } catch (error) {
-        //         console.log("Error saving site", error);
-        //     }
-        //     this.setState({
-        //         editSiteMenu: false
-        //     })
-        //     this.setState({
-        //         siteData: await DataStore.query(Site)
-        //     })
-        // }
-        //
-        //
-        // console.log(this.state.siteEditData)
+        let anyError = false
+        console.log(this.state.siteEditData)
+        let currentData = this.state.siteEditErrors
+        siteRequirements.map((requirement)=> {
+            if (!requirement.regex.test(this.state.siteEditData[requirement.id]))
+                anyError = true
+            currentData[requirement.id]= !requirement.regex.test(this.state.siteEditData[requirement.id])
+        })
+        this.setState({
+            siteEditErrors: currentData
+        })
+        if (!anyError) {
+            try {
+                await AdministrationBackendHelper.updateSite(this.state.selectedSites[0],this.state.siteEditData)
+            } catch (error) {
+                console.log("Error saving site", error);
+            }
+            this.setState({
+                editSiteMenu: false,
+                siteData: await AdministrationBackendHelper.getSites()
+            })
+        }
     }
     // Calls datastore to delete selected sites
     async deleteSite() {
-        try {
+        // try {
             for (const site in this.state.selectedSites) {
-                await AdministrationBackendHelper.deleteSite(this.state.selectedSites[site])
+                await AdministrationBackendHelper.cascadeDeleteSite(this.state.selectedSites[site])
             }
-        } catch (error) {
-            console.log("Error deleting site", error);
-        }
+        // } catch (error) {
+        //     console.log("Error deleting site", error);
+        // }
         this.setState({
             deleteSiteMenu: false
         })
         this.setState({
             siteData: await AdministrationBackendHelper.getSites()
+        })
+    }
+    async deleteSiteSubscription(){
+        try {
+            for (const siteSubscription in this.state.selectedSiteSubscriptions) {
+                console.log(this.state.selectedSiteSubscriptions[siteSubscription])
+                await AdministrationBackendHelper.cascadeDeleteSiteSubscription(this.state.selectedSiteSubscriptions[siteSubscription])
+            }
+        } catch (e) {
+            console.log("Error deleting site subscriptions", e)
+        }
+        this.setState({
+            deleteSubscriptionMenu: false
+        })
+        this.setState({
+            siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0])
         })
     }
     render() {
@@ -364,8 +366,7 @@ class Administration extends React.Component {
                             checkboxSelection
                             // disableSelectionOnClick
                             selectionModel = {this.state.selectedSites}
-                            onSelectionModelChange={(input)=>{this.setState({selectedSites: input})
-                            console.log(this.state.selectedSites)}}
+                            onSelectionModelChange={(input)=>{this.setState({selectedSites: input})}}
                         />
                     </Grid>
                 </Grid>
@@ -377,9 +378,20 @@ class Administration extends React.Component {
                         <Button xs={4} variant="outlined" onClick={()=>{this.setState({createSiteMenu: true})}}>
                             Create New Site
                         </Button>
-                        <Button xs={4} variant="outlined" onClick={()=>{
-                            if (this.state.selectedSites.length > 0)
-                                this.setState({editSiteMenu: true})}}>
+                        <Button xs={4} variant="outlined" onClick={async () => {
+                            if (this.state.selectedSites.length > 0) {
+                                let siteEditData = {}
+                                const selectedSite = this.state.siteData.find((site) => site.id === this.state.selectedSites[0])
+                                siteRequirements.map((requirement) => {
+                                    Object.assign(siteEditData, {[requirement.id]: selectedSite[requirement.id]})
+                                })
+                                this.setState({
+                                    editSiteMenu: true,
+                                    siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
+                                    siteEditData: siteEditData
+                                })
+                            }
+                        }}>
                             Edit Selected Site
                         </Button>
                         <Button xs={4} variant="outlined" onClick={()=>{this.setState({deleteSiteMenu: true})}}>
@@ -405,7 +417,7 @@ class Administration extends React.Component {
                                         type="text"
                                         fullWidth
                                         variant="standard"
-                                        error = {this.state.siteCreationData[requirement.id+"Error"]}
+                                        error = {this.state.siteCreationErrors[requirement.id]}
                                         onChange={(event)=>{
                                             this.setState({
                                                     siteCreationData: Object.assign({}, this.state.siteCreationData, {[requirement.id]: event.target.value})
@@ -415,42 +427,9 @@ class Administration extends React.Component {
                                     />
                                 </Grid>
                             ))}
-                            <Grid item xs = {4}>
-                                <FormControl style = {{ width: "100%"}}>
-                                    <InputLabel id="subscription-label">Subscriptions</InputLabel>
-                                    <Select
-                                        labelId="subscription-label"
-                                        id="subscriptions"
-                                        multiple
-                                        value={this.state.selectedSubs}
-                                        onChange={(event)=>{
-                                            const {
-                                                target: { value },
-                                            } = event;
-                                            this.setState({
-                                                // On autofill we get a the stringified value.
-                                                selectedSubs: typeof value === 'string' ? value.split(',') : value,
-                                            });
-                                            console.log(value)
-                                        }}
-                                        style = {{ width: "100%"}}
-                                    >
-
-                                        {/*{this.state.subs.map((sub)=> {*/}
-                                        {/*    const val = sub.name+" ("+sub.weeklyJerryCans.toString()+"/ $"+sub.pricePerMonth+")"*/}
-                                        {/*    return <MenuItem key = {val+"key"} value = {sub.id}>*/}
-                                        {/*        {val}*/}
-                                        {/*    </MenuItem>*/}
-                                        {/*})}*/}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
                         </Grid>
                     </DialogContent>
                     <DialogActions>
-                        <Button variant="outlined" onClick={()=>{this.setState({createSubscriptionMenu: true})}}>
-                            Create New Subscription Model
-                        </Button>
                         <Button onClick={()=>{this.setState({createSiteMenu: false})}}>Cancel</Button>
                         <Button onClick={this.checkSiteValid.bind(this)}>Create</Button>
                     </DialogActions>
@@ -472,7 +451,8 @@ class Administration extends React.Component {
                                         type="text"
                                         fullWidth
                                         variant="standard"
-                                        error = {this.state.siteEditData[requirement.id+"Error"]}
+                                        error = {this.state.siteEditErrors[requirement.id]}
+                                        defaultValue = {this.state.siteEditData[requirement.id]}
                                         onChange={(event)=>{
                                             this.setState({
                                                     siteEditData: Object.assign({}, this.state.siteEditData, {[requirement.id]: event.target.value})
@@ -489,23 +469,22 @@ class Administration extends React.Component {
                                         labelId="subscription-label"
                                         id="subscriptions"
                                         multiple
-                                        value={this.state.selectedSubs}
+                                        value={this.state.selectedSiteSubscriptions}
                                         onChange={(event)=>{
                                             const {
                                                 target: { value },
                                             } = event;
                                             this.setState({
                                                 // On autofill we get a the stringified value.
-                                                selectedSubs: typeof value === 'string' ? value.split(',') : value,
+                                                selectedSiteSubscriptions: typeof value === 'string' ? value.split(',') : value,
                                             });
                                             console.log(value)
                                         }}
                                     >
 
-                                        {this.state.selectedSiteSubscriptions.map((sub)=> {
-                                            const val = sub.name+" ("+sub.weeklyJerryCans+"/ $"+sub.pricePerMonth+")"
-                                            return <MenuItem key = {val+"key"} value = {sub.id}>
-                                                {val}
+                                        {this.state.siteSubscriptions.map((sub)=> {
+                                            return <MenuItem key = {sub.id} value = {sub.name}>
+                                                {sub.name + "/" + sub.expectedJerrycans + "$" + sub.pricePerMonth}
                                             </MenuItem>
                                         })}
                                     </Select>
@@ -515,7 +494,10 @@ class Administration extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button variant="outlined" onClick={()=>{this.setState({createSubscriptionMenu: true})}}>
-                            Create New Subscription Model
+                            Create Subscription
+                        </Button>
+                        <Button variant="outlined" onClick={()=>{this.setState({deleteSubscriptionMenu: true})}}>
+                            Delete Subscription
                         </Button>
                         <Button onClick={()=>{this.setState({editSiteMenu: false})}}>Cancel</Button>
                         <Button onClick={this.updateSite.bind(this)}>Edit</Button>
@@ -523,8 +505,30 @@ class Administration extends React.Component {
                 </Dialog>
                 <Dialog open={this.state.deleteSiteMenu} onClose={()=>{this.setState({deleteSiteMenu: false})}} maxWidth={"md"} >
                     <DialogActions>
-                        <Button onClick={()=>{this.setState({deleteSiteMenu: false})}}>Cancel</Button>
-                        <Button onClick={this.deleteSite.bind(this)}>Delete</Button>
+                        <Grid container direction={"column"} justifyContent={"center"}>
+                            <DialogContentText>
+                                WARNING: This will delete all associated customers and site managers
+                            </DialogContentText>
+                            <DialogActions>
+                                <Button  onClick={()=>{this.setState({deleteSiteMenu: false})}}>Cancel</Button>
+                                <Button  onClick={this.deleteSite.bind(this)}>Delete</Button>
+                            </DialogActions>
+                        </Grid>
+
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.deleteSubscriptionMenu} onClose={()=>{this.setState({deleteSubscriptionMenu: false})}} maxWidth={"md"} >
+                    <DialogActions>
+                        <Grid container direction={"column"} justifyContent={"center"}>
+                            <DialogContentText>
+                                WARNING: This will also delete all associated Customers
+                            </DialogContentText>
+                            <DialogActions>
+                                <Button  onClick={()=>{this.setState({deleteSubscriptionMenu: false})}}>Cancel</Button>
+                                <Button  onClick={this.deleteSiteSubscription.bind(this)}>Delete</Button>
+                            </DialogActions>
+                        </Grid>
+
                     </DialogActions>
                 </Dialog>
                 <Dialog open={this.state.createSubscriptionMenu} onClose={()=>{this.setState({createSubscriptionMenu: false})}} maxWidth={"md"} >

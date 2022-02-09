@@ -6,10 +6,21 @@ import {
     List,
     ListItem,
     ListItemIcon,
-    ListItemText,
-    NativeSelect
+    ListItemText, MenuItem,
+    NativeSelect, Select
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
+import Amplify, {API, Auth, AuthModeStrategyType} from "aws-amplify";
+import React, {useState, useEffect} from "react";
+import { connect } from "react-redux";
+import {updateLoginState} from "../../Actions/loginActions";
+import TextFieldStartAdornment from "./TextFieldStartAdornment";
+import "./Login.css";
+import LocalizedStrings from 'react-localization';
+import amplifyConfig from "../../aws-exports";
+import LocalizationHelper from "../Helpers/LocalizationHelper";
+import * as queries from "../../graphql/queries";
 
 // icons
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -23,20 +34,9 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import { green, red } from '@material-ui/core/colors';
 
 
-import {makeStyles, withStyles} from '@material-ui/core/styles';
-import Amplify, {API, Auth, AuthModeStrategyType} from "aws-amplify";
-import React, {useState, useEffect} from "react";
-import { connect } from "react-redux";
-import {updateLoginState} from "../../Actions/loginActions";
-import TextFieldStartAdornment from "./TextFieldStartAdornment";
-import "./Login.css";
-import LocalizedStrings from 'react-localization';
-import amplifyConfig from "../../aws-exports";
-import LocalizationHelper from "../Helpers/LocalizationHelper";
-import * as queries from "../../graphql/queries";
+
 
 Amplify.configure(amplifyConfig)
-Amplify.configure()
 const initialFormState = {
     email: "", password: "", given_name: "", family_name: "", authCode: "", resetCode: ""
 }
@@ -165,17 +165,10 @@ function Login(props) {
         async function queryLanguages () {
             try {
                 const languageRaw = (await API.graphql({query: queries.listLanguages, authMode: 'AWS_IAM'})).data.listLanguages.items
-                console.log(languageRaw)
                 const languageProcessed = await LocalizationHelper.getLanguages()
-                console.log(languageProcessed)
-                // console.log(languageRaw)
                 try {
                     setStrings(new LocalizedStrings(languageProcessed))
-                    let listForSelection = []
-                    for (const rawData in languageRaw) {
-                        listForSelection.push({code: languageRaw[rawData].code, language: languageRaw[rawData].language})
-                    }
-                    setLanguageCode(listForSelection)
+                    setLanguageCode(languageRaw)
                     setPasswordRequirements({
                         uppercase: { error: false, description: strings.uppercase },
                         lowercase: { error: false, description: strings.lowercase },
@@ -457,9 +450,13 @@ function Login(props) {
         updateLoginState(state)
     }
 
-    function changeLanguage() {
-        strings.setLanguage(document.getElementById("selectLanguage").value)
-        setCurrentLanguage(strings.getLanguage())
+    function changeLanguage(input) {
+        const languageName = input.target.value
+        const code = languageCode.find((language)=>{
+            return language.language == languageName
+        }).id
+        setCurrentLanguage(input.target.value)
+        strings.setLanguage(code)
         setPasswordRequirements({
             uppercase: { error: false, description: strings.uppercase },
             lowercase: { error: false, description: strings.lowercase },
@@ -490,19 +487,16 @@ function Login(props) {
                         <InputLabel variant="standard" htmlFor="uncontrolled-native">
                             Language
                         </InputLabel>
-                        {/*<NativeSelect*/}
-                        {/*    defaultValue={strings.getLanguage()}*/}
-                        {/*    inputProps={{*/}
-                        {/*        name: "Language",*/}
-                        {/*        id: "selectLanguage"*/}
-                        {/*    }}*/}
-                        {/*    onChange={changeLanguage}*/}
-                        {/*>*/}
-                        {/*    <option value={"en"}>English</option>*/}
-                        {/*    <option value={"sw"}>Swahili</option>*/}
-                        {/*</NativeSelect>*/}
-                        <ReturnLanguageList selectedLanguage={strings.getLanguage()} list={languageCode} changeLanguage={changeLanguage}/>
-
+                        <NativeSelect
+                            value={currentLanguage ? currentLanguage : "en"}
+                            inputProps={{
+                                name: "Language",
+                                id: "selectLanguage"
+                            }}
+                            onChange={changeLanguage}
+                        >
+                            {languageCode.map((val) => {return <option > {val.language} </option>})}
+                        </NativeSelect>
                     </FormControl>
                 </Grid>
                 <Grid container item xs={12} md={6} className={`page-info ${classes.centerBox}`}>
@@ -950,25 +944,26 @@ const mapDispatchToProps = {
     updateLoginState,
 };
 
-const ReturnLanguageList = ({selectedLanguage, list, changeLanguage}) => {
-    // const languages = list.map(val=>val.language)
-    let selectBox = <NativeSelect
-        defaultValue={selectedLanguage}
-        inputProps={{
-            name: "Language",
-            id: "selectLanguage"
-        }}
-        onChange={changeLanguage}
-    >
-        {list.map(val => {
-            return(
-                <option value={val.code} key = {val.code}>{val.language}</option>
-            )
-        })}
-    </NativeSelect>;
-    return selectBox
-
-}
+// const ReturnLanguageList = ({list, changeLanguage}) => {
+//     // const languages = list.map(val=>val.language)
+//     console.log(list)
+//     let selectBox = <Select
+//         value = {}
+//         inputProps={{
+//             name: "Language",
+//             id: "selectLanguage"
+//         }}
+//         onChange={changeLanguage}
+//     >
+//         {list.map(val => {
+//             return(
+//                 <MenuItem value={val.code}> {val.language} </MenuItem >
+//             )
+//         })}
+//     </Select>;
+//     return selectBox
+//
+// }
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

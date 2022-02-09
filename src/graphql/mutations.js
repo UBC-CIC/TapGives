@@ -11,7 +11,7 @@ export const createSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -46,7 +46,7 @@ export const updateSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -81,7 +81,7 @@ export const deleteSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -116,7 +116,7 @@ export const createCustomer = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -154,10 +154,10 @@ export const createCustomer = /* GraphQL */ `
           updatedAt
         }
         name
-        softCapVisits
+        expectedJerrycans
         createdAt
         updatedAt
-        siteSiteSubscriptionId
+        siteSiteSubscriptionsId
       }
       validSubscription
       pin
@@ -179,7 +179,7 @@ export const updateCustomer = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -217,10 +217,10 @@ export const updateCustomer = /* GraphQL */ `
           updatedAt
         }
         name
-        softCapVisits
+        expectedJerrycans
         createdAt
         updatedAt
-        siteSiteSubscriptionId
+        siteSiteSubscriptionsId
       }
       validSubscription
       pin
@@ -242,7 +242,7 @@ export const deleteCustomer = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -280,10 +280,10 @@ export const deleteCustomer = /* GraphQL */ `
           updatedAt
         }
         name
-        softCapVisits
+        expectedJerrycans
         createdAt
         updatedAt
-        siteSiteSubscriptionId
+        siteSiteSubscriptionsId
       }
       validSubscription
       pin
@@ -306,7 +306,7 @@ export const createSiteSubscription = /* GraphQL */ `
       pricePerMonth
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -325,10 +325,10 @@ export const createSiteSubscription = /* GraphQL */ `
         updatedAt
       }
       name
-      softCapVisits
+      expectedJerrycans
       createdAt
       updatedAt
-      siteSiteSubscriptionId
+      siteSiteSubscriptionsId
     }
   }
 `;
@@ -343,7 +343,7 @@ export const updateSiteSubscription = /* GraphQL */ `
       pricePerMonth
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -362,10 +362,10 @@ export const updateSiteSubscription = /* GraphQL */ `
         updatedAt
       }
       name
-      softCapVisits
+      expectedJerrycans
       createdAt
       updatedAt
-      siteSiteSubscriptionId
+      siteSiteSubscriptionsId
     }
   }
 `;
@@ -380,7 +380,7 @@ export const deleteSiteSubscription = /* GraphQL */ `
       pricePerMonth
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -399,10 +399,10 @@ export const deleteSiteSubscription = /* GraphQL */ `
         updatedAt
       }
       name
-      softCapVisits
+      expectedJerrycans
       createdAt
       updatedAt
-      siteSiteSubscriptionId
+      siteSiteSubscriptionsId
     }
   }
 `;
@@ -413,16 +413,16 @@ export const createSite = /* GraphQL */ `
   ) {
     createSite(input: $input, condition: $condition) {
       id
-      siteSubscription {
+      siteSubscriptions {
         items {
           id
           siteID
           pricePerMonth
           name
-          softCapVisits
+          expectedJerrycans
           createdAt
           updatedAt
-          siteSiteSubscriptionId
+          siteSiteSubscriptionsId
         }
         nextToken
       }
@@ -458,16 +458,16 @@ export const updateSite = /* GraphQL */ `
   ) {
     updateSite(input: $input, condition: $condition) {
       id
-      siteSubscription {
+      siteSubscriptions {
         items {
           id
           siteID
           pricePerMonth
           name
-          softCapVisits
+          expectedJerrycans
           createdAt
           updatedAt
-          siteSiteSubscriptionId
+          siteSiteSubscriptionsId
         }
         nextToken
       }
@@ -503,16 +503,16 @@ export const deleteSite = /* GraphQL */ `
   ) {
     deleteSite(input: $input, condition: $condition) {
       id
-      siteSubscription {
+      siteSubscriptions {
         items {
           id
           siteID
           pricePerMonth
           name
-          softCapVisits
+          expectedJerrycans
           createdAt
           updatedAt
-          siteSiteSubscriptionId
+          siteSiteSubscriptionsId
         }
         nextToken
       }

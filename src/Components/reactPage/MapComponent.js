@@ -8,6 +8,7 @@ import LocationServiceHelper from '../Helpers/LocationServiceHelper'
 import {Button, Grid, TextField} from "@material-ui/core";
 import * as turf from "@turf/turf";
 import {listManagerSiteLinkers, listSites} from "../../graphql/queries";
+import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 
 
 let map;
@@ -142,43 +143,18 @@ function searchAndUpdateMapview(map, text){
     )
 }
 
-function locateAllWells (data){
-    // console.log(data)
-    const wells = data
-    for (const well in wells) {
-        // console.log(JSON.stringify(wells[well]))
-        createMarker(wells[well].longitude, wells[well].latitude, wells[well].description, wells[well].serviceRadius)
+function locateSites (data){
+    console.log(data)
+
+    for (const site in data) {
+        console.log(JSON.stringify(data[site]))
+        createMarker(data[site].longitude, data[site].latitude, data[site].description, data[site].serviceRadius)
     }
 
 }
 
 // Calls API to grab all sites hosted by the admin, and the list of sites.  Then filters for all of the sites belonging
 // to the admin, and sends those to be plotted by locateAllWells
-async function extractSiteID (email) {
-    // site ids related to admin
-    // const admin = API.graphql(graphqlOperation(listManagerSiteLinkers, {filter: {siteManagerID: {eq: email}}}))
-    // all sites
-    // const wells = API.graphql(graphqlOperation(listSites))
-    //
-    // // wait for both to return
-    // Promise.all([admin, wells]).then(([adminOut,wellsOut])=>{
-    //     // get rid of all the fluff around returned site IDs
-    //     const data = (adminOut.data.listManagerSiteLinkers.items)
-    //     let siteIDs = []
-    //     for (const entry in data) {
-    //         siteIDs.push(data[entry].siteID)
-    //     }
-    //     const allSites = wellsOut.data.listSites.items
-    //     let adminstratedSites = []
-    //     for (const site in allSites) {
-    //         if (siteIDs.includes(allSites[site].id)) {
-    //             adminstratedSites.push(allSites[site])
-    //         }
-    //     }
-    //     locateAllWells(adminstratedSites)
-    // })
-
-}
 class mapComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -195,9 +171,7 @@ class mapComponent extends React.Component {
         map.resize();
 
         const returnedUser = await Auth.currentAuthenticatedUser();
-        extractSiteID(returnedUser.attributes.email)
-        // console.log(process.env.accessToken)
-        // console.log(process.env.REACT_APP_PLACE_INDEX_NAME)
+        locateSites(await AdministrationBackendHelper.getSitesBySiteManager(returnedUser.attributes.email))
     }
 
     updateInputText=(e)=>{

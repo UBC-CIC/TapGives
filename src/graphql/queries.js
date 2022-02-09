@@ -8,7 +8,7 @@ export const getSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -83,7 +83,7 @@ export const getCustomer = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -121,10 +121,10 @@ export const getCustomer = /* GraphQL */ `
           updatedAt
         }
         name
-        softCapVisits
+        expectedJerrycans
         createdAt
         updatedAt
-        siteSiteSubscriptionId
+        siteSiteSubscriptionsId
       }
       validSubscription
       pin
@@ -176,10 +176,10 @@ export const listCustomers = /* GraphQL */ `
           siteID
           pricePerMonth
           name
-          softCapVisits
+          expectedJerrycans
           createdAt
           updatedAt
-          siteSiteSubscriptionId
+          siteSiteSubscriptionsId
         }
         validSubscription
         pin
@@ -201,7 +201,7 @@ export const getSiteSubscription = /* GraphQL */ `
       pricePerMonth
       site {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -220,10 +220,10 @@ export const getSiteSubscription = /* GraphQL */ `
         updatedAt
       }
       name
-      softCapVisits
+      expectedJerrycans
       createdAt
       updatedAt
-      siteSiteSubscriptionId
+      siteSiteSubscriptionsId
     }
   }
 `;
@@ -257,10 +257,10 @@ export const listSiteSubscriptions = /* GraphQL */ `
           updatedAt
         }
         name
-        softCapVisits
+        expectedJerrycans
         createdAt
         updatedAt
-        siteSiteSubscriptionId
+        siteSiteSubscriptionsId
       }
       nextToken
     }
@@ -270,16 +270,16 @@ export const getSite = /* GraphQL */ `
   query GetSite($id: ID!) {
     getSite(id: $id) {
       id
-      siteSubscription {
+      siteSubscriptions {
         items {
           id
           siteID
           pricePerMonth
           name
-          softCapVisits
+          expectedJerrycans
           createdAt
           updatedAt
-          siteSiteSubscriptionId
+          siteSiteSubscriptionsId
         }
         nextToken
       }
@@ -317,7 +317,7 @@ export const listSites = /* GraphQL */ `
     listSites(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        siteSubscription {
+        siteSubscriptions {
           nextToken
         }
         siteManagers {
@@ -334,6 +334,253 @@ export const listSites = /* GraphQL */ `
         estimatedDaily
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const siteManagerByID = /* GraphQL */ `
+  query SiteManagerByID(
+    $id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSiteManagerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    siteManagerByID(
+      id: $id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+        }
+        name
+        createdAt
+        updatedAt
+        siteSiteManagersId
+      }
+      nextToken
+    }
+  }
+`;
+export const siteManagerBySite = /* GraphQL */ `
+  query SiteManagerBySite(
+    $siteID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSiteManagerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    siteManagerBySite(
+      siteID: $siteID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+        }
+        name
+        createdAt
+        updatedAt
+        siteSiteManagersId
+      }
+      nextToken
+    }
+  }
+`;
+export const customerByID = /* GraphQL */ `
+  query CustomerByID(
+    $id: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    customerByID(
+      id: $id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+        }
+        siteSubscriptionID
+        siteSubscription {
+          id
+          siteID
+          pricePerMonth
+          name
+          expectedJerrycans
+          createdAt
+          updatedAt
+          siteSiteSubscriptionsId
+        }
+        validSubscription
+        pin
+        phoneNumber
+        name
+        createdAt
+        updatedAt
+        customerSiteSubscriptionId
+      }
+      nextToken
+    }
+  }
+`;
+export const customerBySite = /* GraphQL */ `
+  query CustomerBySite(
+    $siteID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    customerBySite(
+      siteID: $siteID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+        }
+        siteSubscriptionID
+        siteSubscription {
+          id
+          siteID
+          pricePerMonth
+          name
+          expectedJerrycans
+          createdAt
+          updatedAt
+          siteSiteSubscriptionsId
+        }
+        validSubscription
+        pin
+        phoneNumber
+        name
+        createdAt
+        updatedAt
+        customerSiteSubscriptionId
+      }
+      nextToken
+    }
+  }
+`;
+export const customerBySiteSubscription = /* GraphQL */ `
+  query CustomerBySiteSubscription(
+    $siteSubscriptionID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    customerBySiteSubscription(
+      siteSubscriptionID: $siteSubscriptionID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteID
+        site {
+          id
+          name
+          description
+          serviceRadius
+          latitude
+          longitude
+          averageWait
+          averageLine
+          online
+          estimatedDaily
+          createdAt
+          updatedAt
+        }
+        siteSubscriptionID
+        siteSubscription {
+          id
+          siteID
+          pricePerMonth
+          name
+          expectedJerrycans
+          createdAt
+          updatedAt
+          siteSiteSubscriptionsId
+        }
+        validSubscription
+        pin
+        phoneNumber
+        name
+        createdAt
+        updatedAt
+        customerSiteSubscriptionId
       }
       nextToken
     }
