@@ -11,16 +11,17 @@ import {
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
-import Amplify, {API, Auth, AuthModeStrategyType} from "aws-amplify";
+import Amplify, {Auth} from "aws-amplify";
 import React, {useState, useEffect} from "react";
 import { connect } from "react-redux";
 import {updateLoginState} from "../../Actions/loginActions";
+import {updateLanguageState, updateStringsState, updateLanguageCodes} from "../../Actions/languageActions";
 import TextFieldStartAdornment from "./TextFieldStartAdornment";
 import "./Login.css";
 import LocalizedStrings from 'react-localization';
 import amplifyConfig from "../../aws-exports";
 import LocalizationHelper from "../Helpers/LocalizationHelper";
-import * as queries from "../../graphql/queries";
+
 
 // icons
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -109,9 +110,10 @@ const SubmitButton = withStyles((theme) => ({
         },
     },
 }))(DefaultButton);
-// const strings ;
+// const strings ;updateStringsState, updateLanguageCodes
 function Login(props) {
-    const {loginState, updateLoginState, animateTitle, type, title, darkMode, logo, themeColor, disableSignUp} = props;
+    const {loginState, updateLoginState, language, updateLanguageState, code, strings, updateStringsState, languageCode, updateLanguageCodes,
+        animateTitle, type, title, darkMode, logo, themeColor, disableSignUp} = props;
     const [formState, updateFormState] = useState(initialFormState);
     const [accountCreationEmailExistError, setAccountCreationEmailExistError] = useState(false);
     const [accountCreationPasswordError, setAccountCreationPasswordError] = useState(false);
@@ -125,14 +127,9 @@ function Login(props) {
     const [emptyInputError, setEmptyInputError] = useState(false);
     const [invalidEmailError, setInvalidEmailError] = useState(false);
     const [timeLimitError, setTimeLimitError] = useState("");
-    const [currentLanguage, setCurrentLanguage] = useState("");
-    const [languageCode, setLanguageCode] = useState([{code: "en", language: "English"},{code: "sw", language: "Swahili"}])
-    const [strings, setStrings] = useState(new LocalizedStrings({
-        en:{
-        },
-        sw: {
-        }
-    }));
+    // const [languageCode, setLanguageCode] = useState(LocalizationHelper.getLanguageCodesFast())
+    // const [strings, setStrings] = useState(new LocalizedStrings(LocalizationHelper.getLanguagePhrasesFast()));
+    // const [currentLanguage, setCurrentLanguage] = useState(strings.getInterfaceLanguage());
     // password check
     const [passwordRequirements, setPasswordRequirements] = useState({
         uppercase: { error: false, description: strings.uppercase },
@@ -149,6 +146,7 @@ function Login(props) {
     const classes = useStyles();
 
     useEffect(() => {
+        console.log(code)
         async function retrieveUser() {
             try {
                 Auth.currentAuthenticatedUser().then(user => {
@@ -164,11 +162,11 @@ function Login(props) {
         retrieveUser();
         async function queryLanguages () {
             try {
-                const languageRaw = (await API.graphql({query: queries.listLanguages, authMode: 'AWS_IAM'})).data.listLanguages.items
-                const languageProcessed = await LocalizationHelper.getLanguages()
+                const languageRaw = await LocalizationHelper.getLanguageCodes()
+                const languageProcessed = await LocalizationHelper.getLanguagePhrases()
                 try {
-                    setStrings(new LocalizedStrings(languageProcessed))
-                    setLanguageCode(languageRaw)
+                    updateStringsState(languageProcessed)
+                    updateLanguageCodes(languageRaw)
                     setPasswordRequirements({
                         uppercase: { error: false, description: strings.uppercase },
                         lowercase: { error: false, description: strings.lowercase },
@@ -180,6 +178,7 @@ function Login(props) {
                 } catch (error) {
                     console.log("Invalid Languages", error)
                 }
+                console.log(language)
             } catch (e) {
                 console.log(e)
             }
@@ -452,11 +451,14 @@ function Login(props) {
 
     function changeLanguage(input) {
         const languageName = input.target.value
+        // console.log(languageName)
+        const languageCode = LocalizationHelper.getLanguageCodesFast()
         const code = languageCode.find((language)=>{
-            return language.language == languageName
+            return language.language === languageName
         }).id
-        setCurrentLanguage(input.target.value)
-        strings.setLanguage(code)
+        // setCurrentLanguage(input.target.value)
+        updateLanguageState({code:code, language: languageName})
+        // strings.setLanguage(code)
         setPasswordRequirements({
             uppercase: { error: false, description: strings.uppercase },
             lowercase: { error: false, description: strings.lowercase },
@@ -488,7 +490,7 @@ function Login(props) {
                             Language
                         </InputLabel>
                         <NativeSelect
-                            value={currentLanguage ? currentLanguage : "en"}
+                            value={language}
                             inputProps={{
                                 name: "Language",
                                 id: "selectLanguage"
@@ -934,36 +936,32 @@ const PasswordRequirements = ({requirements}) => {
         </List>
     )
 }
+/*
+    const initialState = {
+        languageCode: "en",
+        language: "English",
+        strings : new LocalizedStrings(LocalizationHelper.getLanguagePhrasesFast()),
+    };
+    const [languageCode, setLanguageCode] = useState(LocalizationHelper.getLanguageCodesFast())
+    const [strings, setStrings] = useState(new LocalizedStrings(LocalizationHelper.getLanguagePhrasesFast()));
+    const [currentLanguage, setCurrentLanguage] = useState(strings.getInterfaceLanguage());
+ */
 const mapStateToProps = (state) => {
     return {
         loginState: state.loginState.currentState,
+        language: state.languageState.language,
+        code: state.languageState.code,
+        languageCode: state.languageState.languageCodes,
+        strings: state.languageState.strings,
     };
 };
 
 const mapDispatchToProps = {
     updateLoginState,
+    updateLanguageState,
+    updateStringsState,
+    updateLanguageCodes,
 };
-
-// const ReturnLanguageList = ({list, changeLanguage}) => {
-//     // const languages = list.map(val=>val.language)
-//     console.log(list)
-//     let selectBox = <Select
-//         value = {}
-//         inputProps={{
-//             name: "Language",
-//             id: "selectLanguage"
-//         }}
-//         onChange={changeLanguage}
-//     >
-//         {list.map(val => {
-//             return(
-//                 <MenuItem value={val.code}> {val.language} </MenuItem >
-//             )
-//         })}
-//     </Select>;
-//     return selectBox
-//
-// }
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

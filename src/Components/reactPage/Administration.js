@@ -4,15 +4,16 @@ import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
 import * as subscriptions from '../../graphql/subscriptions';
 import {
-    Button,
+    Button, Checkbox,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl,
-    Grid, InputLabel, ListItemText, MenuItem, Select,
+    Grid, InputLabel, ListItem, ListItemIcon, ListItemText, MenuItem, Paper, Select,
     TextField
 } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {DataGrid} from "@mui/x-data-grid";
 import {listSiteManagers} from "../../graphql/queries";
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
+import List from "@material-ui/core/List";
 
 const siteColumns = [
     {
@@ -153,6 +154,7 @@ const subscriptionRequirements = [
     1. Switch between querying all admin-site relationships at the start vs
     querying when clicked (tradeoffs: boot time, user fluidity, server load)
  */
+
 class Administration extends React.Component {
     async componentDidMount() {
         this.setState({
@@ -161,6 +163,7 @@ class Administration extends React.Component {
         })
 
     }
+
     constructor(props) {
         super(props);
         const siteCreationData = siteRequirements.map((requirement) => {
@@ -193,6 +196,11 @@ class Administration extends React.Component {
             deleteSubscriptionMenu: false,
             subscriptionCreationData: {},
             weeklyJerryCans: "",
+            leftUsers: [1,2,3,4],
+            rightUsers: [5,6,7,8],
+            checked: [],
+            leftChecked: [],
+            rightChecked: [],
         }
     }
     async getManagerSelected(input) {
@@ -335,17 +343,25 @@ class Administration extends React.Component {
             siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0])
         })
     }
+    not(a, b) {
+        return a.filter((value) => b.indexOf(value) === -1);
+    }
+    intersection(a, b) {
+        return a.filter((value) => b.indexOf(value) !== -1);
+    }
     render() {
         return (
             <Grid >
-                <Typography
-                    component="h1"
-                    variant="h6"
-                    color="inherit"
-                    noWrap
-                    sx={{ flexGrow: 1 }}>
-                    Change site ownership permissions by Site Manager
-                </Typography>
+                <Grid item>
+                    <Typography
+                        component="h1"
+                        variant="h6"
+                        color="inherit"
+                        noWrap
+                        sx={{ flexGrow: 1 }}>
+                        Change site ownership permissions by Site Manager
+                    </Typography>
+                </Grid>
                 <Grid container direction={"row"}>
                     <Grid container xs={6} style = {{ height: "50vh"}} id = "managerGrid" direction={"column"}>
                         <DataGrid
@@ -372,28 +388,32 @@ class Administration extends React.Component {
                 </Grid>
                 <Grid container direction={"row"}>
                     <Grid container xs={6}>
-                        <Button variant="outlined" onClick={this.syncSites.bind(this)}>Update Sites Administrated</Button>
+                        <Button variant="outlined" onClick={this.syncSites.bind(this)}>Update Sites Managed</Button>
                     </Grid>
                     <Grid container xs={6}>
-                        <Button xs={4} variant="outlined" onClick={()=>{this.setState({createSiteMenu: true})}}>
-                            Create New Site
-                        </Button>
-                        <Button xs={4} variant="outlined" onClick={async () => {
-                            if (this.state.selectedSites.length > 0) {
-                                let siteEditData = {}
-                                const selectedSite = this.state.siteData.find((site) => site.id === this.state.selectedSites[0])
-                                siteRequirements.map((requirement) => {
-                                    Object.assign(siteEditData, {[requirement.id]: selectedSite[requirement.id]})
-                                })
-                                this.setState({
-                                    editSiteMenu: true,
-                                    siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
-                                    siteEditData: siteEditData
-                                })
-                            }
-                        }}>
-                            Edit Selected Site
-                        </Button>
+                        <Grid item>
+                            <Button xs={4} variant="outlined" onClick={()=>{this.setState({createSiteMenu: true})}}>
+                                Create New Site
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button xs={4} variant="outlined" onClick={async () => {
+                                if (this.state.selectedSites.length > 0) {
+                                    let siteEditData = {}
+                                    const selectedSite = this.state.siteData.find((site) => site.id === this.state.selectedSites[0])
+                                    siteRequirements.map((requirement) => {
+                                        Object.assign(siteEditData, {[requirement.id]: selectedSite[requirement.id]})
+                                    })
+                                    this.setState({
+                                        editSiteMenu: true,
+                                        siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
+                                        siteEditData: siteEditData
+                                    })
+                                }
+                            }}>
+                                Edit Selected Site
+                            </Button>
+                        </Grid>
                         <Button xs={4} variant="outlined" onClick={()=>{this.setState({deleteSiteMenu: true})}}>
                             Delete Selected Sites
                         </Button>
@@ -561,15 +581,102 @@ class Administration extends React.Component {
                     </DialogActions>
                 </Dialog>
 
+                {/*Code to change admins, has been removed due to potential security issues.  Must be done through cognito console on amplify*/}
+                {/*<Grid item>*/}
+                {/*    <Typography*/}
+                {/*        component="h1"*/}
+                {/*        variant="h6"*/}
+                {/*        color="inherit"*/}
+                {/*        noWrap*/}
+                {/*        sx={{ flexGrow: 1 }}>*/}
+                {/*        Change site Administrators*/}
+                {/*    </Typography>*/}
+                {/*</Grid>*/}
+                {/*<Grid container >*/}
+                {/*    <Grid item>*/}
+                {/*        <Paper sx={{ width: 200, height: 230, overflow: 'auto' }}>*/}
+                {/*            <List dense component="div" role="list">*/}
+                {/*                {this.state.leftUsers.map((value) => {*/}
+                {/*                    const labelId = `transfer-list-item-${value}-label`;*/}
+
+                {/*                    return (*/}
+                {/*                        <ListItem*/}
+                {/*                            key={value}*/}
+                {/*                            role="listitem"*/}
+                {/*                            button*/}
+                {/*                            onClick={()=> {*/}
+                {/*                                if (this.state.checked.indexOf(value) === -1)*/}
+                {/*                                    this.state.checked.push(value)*/}
+                {/*                                else*/}
+                {/*                                    this.state.checked.splice(this.state.checked.indexOf(value), 1)*/}
+                {/*                                this.setState({*/}
+                {/*                                    leftChecked: this.intersection(this.state.checked, this.state.leftUsers),*/}
+                {/*                                })*/}
+                {/*                            }}*/}
+                {/*                        >*/}
+                {/*                            <ListItemIcon>*/}
+                {/*                                <Checkbox*/}
+                {/*                                    checked={this.state.checked.indexOf(value) !== -1}*/}
+                {/*                                    tabIndex={-1}*/}
+                {/*                                    disableRipple*/}
+                {/*                                    inputProps={{*/}
+                {/*                                        'aria-labelledby': labelId,*/}
+                {/*                                    }}*/}
+                {/*                                />*/}
+                {/*                            </ListItemIcon>*/}
+                {/*                            <ListItemText id={labelId} primary={`Admin: ${value}`} />*/}
+                {/*                        </ListItem>*/}
+                {/*                    );*/}
+                {/*                })}*/}
+                {/*                <ListItem />*/}
+                {/*            </List>*/}
+                {/*        </Paper>*/}
+                {/*    </Grid>*/}
+                {/*    <Grid item>*/}
+                {/*        <Grid container direction="column" alignItems="center">*/}
+                {/*            <Button*/}
+                {/*                sx={{ my: 0.5 }}*/}
+                {/*                variant="outlined"*/}
+                {/*                size="small"*/}
+                {/*                onClick={()=>{*/}
+                {/*                    this.setState({*/}
+                {/*                        leftUsers: this.not(JSON.parse(JSON.stringify(this.state.leftUsers)), this.state.leftChecked),*/}
+                {/*                        rightUsers: JSON.parse(JSON.stringify(this.state.rightUsers)).concat(this.state.leftChecked),*/}
+                {/*                        checked: JSON.parse(JSON.stringify(this.state.rightChecked)),*/}
+                {/*                        leftChecked: [],*/}
+                {/*                    })*/}
+                {/*                }}*/}
+                {/*                disabled={this.state.leftChecked.length === 0}*/}
+                {/*                aria-label="move selected right"*/}
+                {/*            >*/}
+                {/*                &gt;*/}
+                {/*            </Button>*/}
+                {/*            <Button*/}
+                {/*                sx={{ my: 0.5 }}*/}
+                {/*                variant="outlined"*/}
+                {/*                size="small"*/}
+                {/*                onClick={()=>{*/}
+                {/*                    this.setState({*/}
+                {/*                        leftUsers: JSON.parse(JSON.stringify(this.state.leftUsers)).concat(this.state.rightChecked),*/}
+                {/*                        rightUsers: this.not(JSON.parse(JSON.stringify(this.state.rightUsers)), this.state.rightChecked),*/}
+                {/*                        checked: JSON.parse(JSON.stringify(this.state.leftChecked)),*/}
+                {/*                        rightChecked: [],*/}
+                {/*                    })*/}
+                {/*                }}*/}
+                {/*                disabled={this.state.rightChecked.length === 0}*/}
+                {/*                aria-label="move selected left"*/}
+                {/*            >*/}
+                {/*                &lt;*/}
+                {/*            </Button>*/}
+                {/*        </Grid>*/}
+                {/*    </Grid>*/}
+                {/*</Grid>*/}
 
             </Grid>
 
 
         )
     }
-}
-const EditSite = () => {
-    return
 }
 
 export default Administration;

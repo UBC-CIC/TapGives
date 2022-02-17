@@ -6,8 +6,6 @@ import awsconfig from '../../aws-exports';
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 import LocalizationHelper from "../Helpers/LocalizationHelper";
 
-Amplify.configure(awsconfig);
-
 const baseLanguages  = {
     en:{
         signIn:"Sign In",
@@ -172,7 +170,7 @@ class DataStoreTest extends React.Component {
         // } catch (error) {
         //     console.log("Error pushing to s3", error)
         // }
-        await LocalizationHelper.getLanguages()
+        await LocalizationHelper.getLanguagePhrases()
     }
     async simulate() {
         let siteCreationPromises = []
@@ -182,9 +180,14 @@ class DataStoreTest extends React.Component {
         await Promise.all(siteCreationPromises)
         const sites = await AdministrationBackendHelper.getSites()
         for (const site in sites) {
-            for (let iterator = 0 ; iterator < 5; iterator++) {
-                AdministrationBackendHelper.createCustomer("customer"+iterator, site.siteSubscriptions.items[0].id, site.id, 1234, iterator)
+            try {
+                for (let iterator = 0 ; iterator < 5; iterator++) {
+                    AdministrationBackendHelper.createCustomer("customer"+iterator, sites[site].siteSubscriptions.items[0].id, sites[site].id, 1234, iterator)
+                }
+            } catch (e) {
+                console.log("Error creating customers for site: "+sites[site].id, e)
             }
+
         }
     }
     async simpleCreateSite(number, latitude, longitude) {
@@ -211,8 +214,7 @@ class DataStoreTest extends React.Component {
         console.log(await AdministrationBackendHelper.getSite(this.state.customerData.site))
     }
     async deleteSiteSubscription(){
-        // AdministrationBackendHelper.cascadeDeleteSiteSubscription("testSiteSub5")
-        AdministrationBackendHelper.cascadeDeleteSite("testsite")
+        LocalizationHelper.deleteLanguageCascade("test")
     }
     render() {
         return(

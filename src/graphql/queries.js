@@ -9,9 +9,27 @@ export const getSiteManager = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -55,6 +73,12 @@ export const listSiteManagers = /* GraphQL */ `
         siteID
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -84,9 +108,27 @@ export const getCustomer = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -108,6 +150,12 @@ export const getCustomer = /* GraphQL */ `
         pricePerMonth
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -130,6 +178,7 @@ export const getCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      language
       createdAt
       updatedAt
       customerSiteSubscriptionId
@@ -158,6 +207,12 @@ export const listCustomers = /* GraphQL */ `
         siteID
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -175,6 +230,20 @@ export const listCustomers = /* GraphQL */ `
           id
           siteID
           pricePerMonth
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           expectedJerrycans
           createdAt
@@ -185,6 +254,7 @@ export const listCustomers = /* GraphQL */ `
         pin
         phoneNumber
         name
+        language
         createdAt
         updatedAt
         customerSiteSubscriptionId
@@ -202,9 +272,27 @@ export const getSiteSubscription = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -244,6 +332,12 @@ export const listSiteSubscriptions = /* GraphQL */ `
         pricePerMonth
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -275,6 +369,20 @@ export const getSite = /* GraphQL */ `
           id
           siteID
           pricePerMonth
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           expectedJerrycans
           createdAt
@@ -287,6 +395,20 @@ export const getSite = /* GraphQL */ `
         items {
           id
           siteID
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           createdAt
           updatedAt
@@ -318,9 +440,27 @@ export const listSites = /* GraphQL */ `
       items {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -359,6 +499,12 @@ export const siteManagerByID = /* GraphQL */ `
         siteID
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -400,6 +546,12 @@ export const siteManagerBySite = /* GraphQL */ `
         siteID
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -441,6 +593,12 @@ export const customerByID = /* GraphQL */ `
         siteID
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -458,6 +616,20 @@ export const customerByID = /* GraphQL */ `
           id
           siteID
           pricePerMonth
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           expectedJerrycans
           createdAt
@@ -468,6 +640,7 @@ export const customerByID = /* GraphQL */ `
         pin
         phoneNumber
         name
+        language
         createdAt
         updatedAt
         customerSiteSubscriptionId
@@ -496,6 +669,12 @@ export const customerBySite = /* GraphQL */ `
         siteID
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -513,6 +692,20 @@ export const customerBySite = /* GraphQL */ `
           id
           siteID
           pricePerMonth
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           expectedJerrycans
           createdAt
@@ -523,6 +716,7 @@ export const customerBySite = /* GraphQL */ `
         pin
         phoneNumber
         name
+        language
         createdAt
         updatedAt
         customerSiteSubscriptionId
@@ -551,6 +745,12 @@ export const customerBySiteSubscription = /* GraphQL */ `
         siteID
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -568,6 +768,20 @@ export const customerBySiteSubscription = /* GraphQL */ `
           id
           siteID
           pricePerMonth
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           expectedJerrycans
           createdAt
@@ -578,6 +792,7 @@ export const customerBySiteSubscription = /* GraphQL */ `
         pin
         phoneNumber
         name
+        language
         createdAt
         updatedAt
         customerSiteSubscriptionId
@@ -624,7 +839,6 @@ export const getPhrase = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      phrase
       data
       createdAt
       updatedAt
@@ -657,7 +871,38 @@ export const listPhrases = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        phrase
+        data
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const phraseByLanguage = /* GraphQL */ `
+  query PhraseByLanguage(
+    $languageID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPhraseFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    phraseByLanguage(
+      languageID: $languageID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        languageID
+        language {
+          id
+          language
+          createdAt
+          updatedAt
+        }
         data
         createdAt
         updatedAt

@@ -19,7 +19,7 @@ import siteManagement from '../../Components/reactPage/SiteManagement'
 import Administration from '../../Components/reactPage/Administration'
 import DataStoreTest from '../../Components/reactPage/DataStoreTest'
 import SiteInformation from "../../Components/reactPage/SiteInformation";
-
+import LanguageAdministration from "../../Components/reactPage/LanguageAdministration";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -84,6 +84,10 @@ function PageContainer(props) {
                     <ListItemIcon><DashboardIcon/></ListItemIcon>
                     <ListItemText primary={"Administration"}/>
                 </ListItem>
+                <ListItem button key={"languageAdministration"} onClick={() => history.push("/languageAdministration")}>
+                    <ListItemIcon><DashboardIcon /></ListItemIcon>
+                    <ListItemText primary={"Language Administration"} />
+                </ListItem>
                 <ListItem button key={"dataStoreTest"} onClick={() => history.push("/dataStoreTest")}>
                     <ListItemIcon><DashboardIcon /></ListItemIcon>
                     <ListItemText primary={"DataStore Test"} />
@@ -132,6 +136,7 @@ function PageContainer(props) {
                 <Route exact path={"/siteManagement"} component={siteManagement} />
                 <Route exact path={"/Administration"} component={Administration} />
                 <Route exact path={"/dataStoreTest"} component={DataStoreTest} />
+                <Route exact path={"/languageAdministration"} component={LanguageAdministration}/>
                 <Route path={"/siteInformation"} component={SiteInformation} />
             </Switch>
         </main>

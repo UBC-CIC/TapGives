@@ -9,9 +9,27 @@ export const onCreateSiteManager = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -41,9 +59,27 @@ export const onUpdateSiteManager = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -73,9 +109,27 @@ export const onDeleteSiteManager = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -105,9 +159,27 @@ export const onCreateCustomer = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -129,6 +201,12 @@ export const onCreateCustomer = /* GraphQL */ `
         pricePerMonth
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -151,6 +229,7 @@ export const onCreateCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      language
       createdAt
       updatedAt
       customerSiteSubscriptionId
@@ -165,9 +244,27 @@ export const onUpdateCustomer = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -189,6 +286,12 @@ export const onUpdateCustomer = /* GraphQL */ `
         pricePerMonth
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -211,6 +314,7 @@ export const onUpdateCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      language
       createdAt
       updatedAt
       customerSiteSubscriptionId
@@ -225,9 +329,27 @@ export const onDeleteCustomer = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -249,6 +371,12 @@ export const onDeleteCustomer = /* GraphQL */ `
         pricePerMonth
         site {
           id
+          siteSubscriptions {
+            nextToken
+          }
+          siteManagers {
+            nextToken
+          }
           name
           description
           serviceRadius
@@ -271,6 +399,7 @@ export const onDeleteCustomer = /* GraphQL */ `
       pin
       phoneNumber
       name
+      language
       createdAt
       updatedAt
       customerSiteSubscriptionId
@@ -286,9 +415,27 @@ export const onCreateSiteSubscription = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -320,9 +467,27 @@ export const onUpdateSiteSubscription = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -354,9 +519,27 @@ export const onDeleteSiteSubscription = /* GraphQL */ `
       site {
         id
         siteSubscriptions {
+          items {
+            id
+            siteID
+            pricePerMonth
+            name
+            expectedJerrycans
+            createdAt
+            updatedAt
+            siteSiteSubscriptionsId
+          }
           nextToken
         }
         siteManagers {
+          items {
+            id
+            siteID
+            name
+            createdAt
+            updatedAt
+            siteSiteManagersId
+          }
           nextToken
         }
         name
@@ -388,6 +571,20 @@ export const onCreateSite = /* GraphQL */ `
           id
           siteID
           pricePerMonth
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           expectedJerrycans
           createdAt
@@ -400,6 +597,20 @@ export const onCreateSite = /* GraphQL */ `
         items {
           id
           siteID
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           createdAt
           updatedAt
@@ -430,6 +641,20 @@ export const onUpdateSite = /* GraphQL */ `
           id
           siteID
           pricePerMonth
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           expectedJerrycans
           createdAt
@@ -442,6 +667,20 @@ export const onUpdateSite = /* GraphQL */ `
         items {
           id
           siteID
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           createdAt
           updatedAt
@@ -472,6 +711,20 @@ export const onDeleteSite = /* GraphQL */ `
           id
           siteID
           pricePerMonth
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           expectedJerrycans
           createdAt
@@ -484,6 +737,20 @@ export const onDeleteSite = /* GraphQL */ `
         items {
           id
           siteID
+          site {
+            id
+            name
+            description
+            serviceRadius
+            latitude
+            longitude
+            averageWait
+            averageLine
+            online
+            estimatedDaily
+            createdAt
+            updatedAt
+          }
           name
           createdAt
           updatedAt
@@ -546,7 +813,6 @@ export const onCreatePhrase = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      phrase
       data
       createdAt
       updatedAt
@@ -564,7 +830,6 @@ export const onUpdatePhrase = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      phrase
       data
       createdAt
       updatedAt
@@ -582,7 +847,6 @@ export const onDeletePhrase = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      phrase
       data
       createdAt
       updatedAt
