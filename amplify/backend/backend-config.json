@@ -1,6 +1,6 @@
 {
   "auth": {
-    "test9e671054": {
+    "tapgiveschallenge541da3e3": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -32,7 +32,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "test9e671054",
+          "resourceName": "tapgiveschallenge541da3e3",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
@@ -44,7 +44,7 @@
     }
   },
   "api": {
-    "TapgivesAmplifyAPI": {
+    "tapgiveschallenge": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -52,7 +52,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authtest9e671054"
+              "userPoolId": "authtapgiveschallenge541da3e3"
             }
           },
           "additionalAuthenticationProviders": [
@@ -62,14 +62,44 @@
           ]
         }
       }
-    }
-  },
-  "storage": {
-    "VisitHistory": {
-      "service": "S3",
+    },
+    "AdminQueries": {
+      "service": "API Gateway",
       "providerPlugin": "awscloudformation",
-      "dependsOn": []
+      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "tapgiveschallenge541da3e3",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "AdminQueries8a19391d",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ]
     }
   },
-  "function": {}
+  "function": {
+    "AdminQueries8a19391d": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "tapgiveschallenge541da3e3",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    }
+  }
 }

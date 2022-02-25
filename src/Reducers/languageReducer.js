@@ -2,8 +2,8 @@ import LocalizedStrings from "react-localization";
 import LocalizationHelper from "../Components/Helpers/LocalizationHelper";
 
 const initialState = {
-    code: "en",
-    language: "English",
+    code: LocalizationHelper.getLanguage().code,
+    language: LocalizationHelper.getLanguage().language,
     strings : new LocalizedStrings(LocalizationHelper.getLanguagePhrasesFast()),
     /*
         shape:
@@ -37,7 +37,7 @@ const initialState = {
 
 const languageReducer = (currentState = initialState, action) => {
     let newState = currentState;
-    console.log(action)
+    // console.log(action)
     switch(action.type) {
         /*
             payload in shape:
@@ -49,7 +49,8 @@ const languageReducer = (currentState = initialState, action) => {
         case "SET_LANGUAGE": {
             const strings = newState.strings
             strings.setLanguage(action.payload.code)
-            console.log(action.payload)
+            LocalizationHelper.setLanguage(action.payload.code, action.payload.language)
+            // console.log(action.payload)
             return {
                 ...newState,
                 code: action.payload.code,

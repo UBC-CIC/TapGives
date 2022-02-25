@@ -5,99 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import awsconfig from '../../aws-exports';
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 import LocalizationHelper from "../Helpers/LocalizationHelper";
+import {baseAssociations, baseLanguages} from "../languageData";
 
-const baseLanguages  = {
-    en:{
-        signIn:"Sign In",
-        email:"Email",
-        password:"Password",
-        forgot:"Forgot your password?",
-        forgotQuery:"Enter your email address and we'll send you a code to help you reset your password.",
-        reset:"Send reset code",
-        back:"Back",
-        createAccount:"Create an account",
-        uppercase: 'At least one uppercase letter' ,
-        lowercase: 'At least one lowercase letter' ,
-        digit: 'At least one digit' ,
-        special: 'At least one special character' ,
-        minLength: 'Should be more than 8 characters' ,
-        maxLength: 'Should be less than 16 characters',
-        enterValidEmail: "Please enter a valid email or create an account",
-        enterReset:"Enter received code",
-        checkEmail:"Please check your email",
-        forCode:"for a reset code and create a new password.",
-        verificationError:"Please enter correct reset code.",
-        createPassword:"Create new password",
-        reenter:"Re-enter the password",
-        noMatch:"Passwords do not match",
-        helperText:"Your password must have the following:",
-        firstName:"First Name",
-        lastName:"Last Name",
-        passwordRequirements: "Your password must have the following:",
-        confirmPassword: "Confirm Password",
-        signUp: "Sign Up",
-        verifyAccount: "Verify Account",
-        emailCheck: "Please check your email for a confirmation code. This may take several minutes.",
-        invalidCode: "Invalid verification code provided, please try again.",
-        newCode: "New verification code sent successfully.",
-        noCode: "Didn't receive your verification code?",
-        resend: "Resend Code",
-        verify: "Verify",
-        enterPassword: "Enter new password",
-        setPassword: "Set Password",
-        accountExists: "An account with the given email already exists.",
-        validEmail: "Please enter a valid email.",
-        passwordReset: "Password Reset",
-        setNewPassword: "Set New Password"
-    },
-    sw: {
-        signIn:"Weka sahihi ",
-        email:"Barua pepe",
-        password:"Nenosiri",
-        forgot:"Umesahau nenosiri yako?",
-        forgotQuery:"Weka barua pepe yako na tutakutumia msimbo ili kukusaidia kuweka upya nenosiri lako.",
-        reset:"Tuma msimbo wa kuweka upya",
-        back:"Nyuma",
-        createAccount:"Fungua akaunti",
-        uppercase: 'Angalau herufi kubwa moja' ,
-        lowercase: 'Angalau herufi ndogo moja' ,
-        digit: 'Angalau tarakimu moja' ,
-        special: 'Angalau mhusika mmoja maalum' ,
-        minLength: 'Inapaswa kuwa zaidi ya herufi 8' ,
-        maxLength: 'Inapaswa kuwa chini ya herufi 16',
-        enterValidEmail: "Tafadhali ingiza barua pepe halali au ufungue akaunti",
-        enterReset:"Weka msimbo uliopokelewa",
-        checkEmail:"Tafadhali angalia barua pepe yako ",
-        forCode:"kwa msimbo wa kuweka upya na unda nenosiri mpya.",
-        verificationError:"Tafadhali weka msimbo sahihi wa kuweka upya.",
-        createPassword:"Unda nenosiri mpya",
-        reenter:"Ingiza tena nenosiri",
-        noMatch:"Manenosiri hayalingani",
-        helperText:"Nenosiri lako lazima liwe na yafuatayo:",
-        firstName:"Jina la kwanza",
-        lastName:"Jina la familia",
-        passwordRequirements: "Nenosiri lako lazima liwe na yafuatayo:",
-        confirmPassword: "Thibitisha Nenosiri",
-        signUp: "Jisajili",
-        verifyAccount: "Thibitisha Akaunti",
-        emailCheck: "Tafadhali angalia barua pepe yako kwa nambari ya kuthibitisha. Hii inaweza kuchukua dakika kadhaa.",
-        invalidCode: "Nambari ya kuthibitisha imetolewa, tafadhali jaribu tena.",
-        newCode: "Nambari mpya ya uthibitishaji imetumwa kwa mafanikio.",
-        noCode: "Hukupokea nambari yako ya kuthibitisha?",
-        resend: "Tuma tena Msimbo",
-        verify: "Thibitisha",
-        enterPassword: "Weka nenosiri jipya",
-        setPassword: "Weka Nenosiri",
-        accountExists: "Akaunti iliyo na barua pepe uliyopewa tayari ipo.",
-        validEmail: "Tafadhali weka barua pepe halali.",
-        passwordReset: "Weka Upya Nenosiri",
-        setNewPassword: "Weka Nenosiri Jipya"
-    }
-}
-const baseAssociations = {
-    en : "English",
-    sw : "Swahili",
-}
 const siteLocations = [
     [0.8601723100257656, 32.081114032264246],
     [1.9263576758795882, 34.684589004602465],
@@ -150,7 +59,6 @@ class DataStoreTest extends React.Component {
     async createUser() {
         await AdministrationBackendHelper.createCustomer(
             this.state.customerData.name,
-            this.state.customerData.sub,
             this.state.customerData.site,
             this.state.customerData.pin,
             this.state.customerData.phoneNumber)
@@ -182,7 +90,7 @@ class DataStoreTest extends React.Component {
         for (const site in sites) {
             try {
                 for (let iterator = 0 ; iterator < 5; iterator++) {
-                    AdministrationBackendHelper.createCustomer("customer"+iterator, sites[site].siteSubscriptions.items[0].id, sites[site].id, 1234, iterator)
+                    AdministrationBackendHelper.createCustomer("customer"+iterator, sites[site].id, 1234, iterator)
                 }
             } catch (e) {
                 console.log("Error creating customers for site: "+sites[site].id, e)
@@ -199,22 +107,20 @@ class DataStoreTest extends React.Component {
             longitude: longitude,
             averageWait: 5,
             averageLine: 5,
-            estimatedDaily: 200
+            online: true,
+            estimatedDaily: 200,
+            subscriptionFee: 5,
+            expectedJerrycans: 10,
         }
         await AdministrationBackendHelper.createSite(siteCreationData)
-        const subscriptionData = {
-            name: "testSiteSub" + number,
-            pricePerMonth: 5,
-            softCapVisits: 5,
-        }
-        await AdministrationBackendHelper.createSubscription(subscriptionData, "testSite" + number)
     }
     async getSite() {
         console.log(this.state.customerData.site)
         console.log(await AdministrationBackendHelper.getSite(this.state.customerData.site))
     }
     async deleteSiteSubscription(){
-        LocalizationHelper.deleteLanguageCascade("test")
+        // LocalizationHelper.deleteLanguageCascade("test")
+        console.log(await AdministrationBackendHelper.listCognito(30))
     }
     render() {
         return(
@@ -331,7 +237,7 @@ class DataStoreTest extends React.Component {
                     test getsite
                 </Button>
                 <Button variant="outlined" onClick={this.deleteSiteSubscription.bind(this)}>
-                    cascade delete
+                    Test button
                 </Button>
             </Grid>
 

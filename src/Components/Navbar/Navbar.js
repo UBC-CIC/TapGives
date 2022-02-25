@@ -19,6 +19,8 @@ import { Auth } from "aws-amplify";
 import { connect } from "react-redux";
 import {updateLoginState} from "../../Actions/loginActions";
 import {updateMenuState} from "../../Actions/menuActions";
+import {updateLanguageCodes, updateLanguageState, updateStringsState} from "../../Actions/languageActions";
+import {FormControl, InputLabel, NativeSelect, Paper} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -61,7 +63,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Navbar(props) {
-    const {updateLoginState, updateMenuState, loginState, menuEnabled, showSideMenuButton} = props;
+    const {updateLoginState, updateMenuState, loginState, menuEnabled, showSideMenuButton,
+        language, updateLanguageState, code, strings, updateStringsState, languageCode, updateLanguageCodes,} = props;
     const classes = useStyles();
     const theme = useTheme();
     const history = useHistory();
@@ -175,9 +178,37 @@ function Navbar(props) {
                         :
                         null
                     }
-                    <Typography className={classes.title} variant="h6" component={"h1"} noWrap>
-                        <span><span>App</span><span style={{color: `${theme.palette.secondary.main}`}}>/</span><span>Name</span></span>
-                    </Typography>
+                    {/*<Typography className={classes.title} variant="h6" component={"h1"} noWrap>*/}
+                    {/*    <span><span>App</span><span style={{color: `${theme.palette.secondary.main}`}}>/</span><span>Name</span></span>*/}
+                    {/*</Typography>*/}
+                    <Paper >
+                        <Grid sx={{ maxWidth: 120, border: 1, backgroundColor: "white"}} id = {"language-box"} >
+                            <FormControl fullWidth>
+                                {/*<InputLabel variant="standard" htmlFor="uncontrolled-native">*/}
+                                {/*    Language*/}
+                                {/*</InputLabel>*/}
+                                <NativeSelect
+                                    value={language}
+                                    inputProps={{
+                                        name: "Language",
+                                        id: "selectLanguage"
+                                    }}
+                                    onChange={(input)=>{
+                                        updateLanguageState({
+                                            code:languageCode.find((language)=>{
+                                                return language.language === input.target.value
+                                            }).id,
+                                            language: input.target.value})
+                                        // Here, the page is reloaded but it really shouldn't need to, I'm not sure how to deal with it though
+                                        window.location.reload();
+                                    }}
+                                >
+                                    {languageCode.map((val) => {return <option > {val.language} </option>})}
+                                </NativeSelect>
+                            </FormControl>
+                        </Grid>
+                    </Paper>
+
                     <img className={classes.logo} style={{width: "270px", height: "30px"}} src={process.env.PUBLIC_URL + './Assets/Images/logo_inverse.png'} alt="..."/>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
@@ -219,12 +250,20 @@ const mapStateToProps = (state) => {
     return {
         loginState: state.loginState.currentState,
         menuEnabled: state.appState.showSideBar,
+        language: state.languageState.language,
+        code: state.languageState.code,
+        languageCode: state.languageState.languageCodes,
+        strings: state.languageState.strings,
     };
 };
 
 const mapDispatchToProps = {
     updateLoginState,
+    updateLanguageState,
+    updateStringsState,
+    updateLanguageCodes,
     updateMenuState,
 };
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

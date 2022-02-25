@@ -14,131 +14,12 @@ import {DataGrid} from "@mui/x-data-grid";
 import {listSiteManagers} from "../../graphql/queries";
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 import List from "@material-ui/core/List";
+import {updateLoginState} from "../../Actions/loginActions";
+import {updateLanguageCodes, updateLanguageState, updateStringsState} from "../../Actions/languageActions";
+import {connect} from "react-redux";
 
-const siteColumns = [
-    {
-        field: 'name',
-        headerName: 'Name',
-        type: 'string',
-        width: 200,
-        editable: true,
-    },
-    {
-        field: 'serviceRadius',
-        headerName: 'Radius (Km)',
-        width: 200,
-        editable: true,
-    },
-    {
-        field: 'latitude',
-        headerName: 'Latitude',
-        width: 200,
-        editable: true,
-    },
-    {
-        field: 'longitude',
-        headerName: 'Longitude',
-        width: 200,
-        editable: true,
-    },
-    {
-        field: 'description',
-        headerName: 'Description',
-        width: 200,
-        editable: true,
-    },
-]
-const adminColumn = [
-    {
-        field: 'id',
-        headerName: 'Manager ID',
-        type: 'string',
-        width: 200,
-        editable: true,
-    },
-    {
-        field: 'name',
-        headerName: 'Name',
-        width: 200,
-        editable: true,
-    },
-]
-const siteRequirements = [
-    {
-        id: "name",
-        label: "Site name",
-        xs: 12,
-        regex: /.+/,
-    },
-    {
-        id:"description",
-        label: "Site Description",
-        xs: 12,
-        regex: /.+/,
-    },
-    {
-        id: "serviceRadius",
-        label: "Service Radius (Km)",
-        xs: 3,
-        regex: /.+/,
-    },
-    {
-        id: "latitude",
-        label: "Latitude",
-        xs: 3,
-        regex: /\d+(\.\d)?/,
-    },
-    {
-        id: "longitude",
-        label: "Longitude",
-        xs: 3,
-        regex: /\d+(\.\d)?/,
-    },
-    {
-        id: "estimatedDaily",
-        label: "Daily Total Usage (L)",
-        xs: 3,
-        regex: /\d+/,
-    },
-    {
-        id: "averageWait",
-        label: "Average Wait time (minutes)",
-        xs: 4,
-        regex: /\d+(\.\d)?/,
-    },
-    {
-        id: "averageLine",
-        label: "Average lineup",
-        xs: 4,
-        regex: /\d+/,
-    },
-]
-const subscriptionRequirements = [
-    {
-        id: "name",
-        label: "Subscription title",
-        xs: 6,
-        type: "text",
-    },
-    {
-        id: "pricePerMonth",
-        label: "Monthly Cost",
-        xs: 6,
-        type: "number",
-    },
-    // {
-    //     id: "weeklyJerryCans",
-    //     label: "Weekly Jerrycans",
-    //     xs: 6,
-    //     type: "number",
-    // },
-    {
-        id: "softCapVisits",
-        label: "Max Site Visits",
-        xs: 6,
-        type: "number"
-    }
-]
+
+
 // Configure Amplify to allow network connectivity
 // Amplify.configure(amplifyConfig)
 // Enable Hub to debug datatore connectivity
@@ -158,14 +39,146 @@ const subscriptionRequirements = [
 class Administration extends React.Component {
     async componentDidMount() {
         this.setState({
-            siteManagerData: await AdministrationBackendHelper.getSiteManagers(),
+            siteManagerLinkers: await AdministrationBackendHelper.getSiteManagers(),
+            siteManagers: await AdministrationBackendHelper.listCognito(),
             siteData: await AdministrationBackendHelper.getSites(),
         })
-
+        console.log(this.state.siteManagers)
+        console.log(this.state)
+        console.log(this.props)
     }
 
     constructor(props) {
         super(props);
+        const siteColumns = [
+            {
+                field: 'name',
+                headerName: this.props.strings.name,
+                type: 'string',
+                width: 200,
+                editable: true,
+            },
+            {
+                field: 'serviceRadius',
+                headerName: this.props.strings.serviceRadius,
+                width: 200,
+                editable: true,
+            },
+            {
+                field: 'latitude',
+                headerName: this.props.strings.latitude,
+                width: 200,
+                editable: true,
+            },
+            {
+                field: 'longitude',
+                headerName: this.props.strings.longitude,
+                width: 200,
+                editable: true,
+            },
+            {
+                field: 'description',
+                headerName: this.props.strings.description,
+                width: 200,
+                editable: true,
+            },
+        ]
+        const adminColumn = [
+            {
+                field: 'id',
+                headerName: this.props.strings.cognitoID,
+                type: 'string',
+                width: 200,
+                editable: true,
+            },
+            {
+                field: 'given_name',
+                headerName: this.props.strings.givenName,
+                width: 200,
+                editable: true,
+            },
+            {
+                field: 'family_name',
+                headerName: this.props.strings.familyName,
+                width: 200,
+                editable: true,
+            },
+            {
+                field: 'email',
+                headerName: this.props.strings.email,
+                width: 200,
+                editable: true,
+            },
+
+        ]
+        const siteRequirements = [
+            {
+                id: "name",
+                label: this.props.strings.siteName,
+                xs: 12,
+                regex: /.+/,
+            },
+            {
+                id:"description",
+                label: this.props.strings.siteDescription,
+                xs: 12,
+                regex: /.+/,
+            },
+            {
+                id: "nickname",
+                label: this.props.strings.nickname,
+                xs: 4,
+                regex: /.+/,
+            },
+            {
+                id: "serviceRadius",
+                label: this.props.strings.serviceRadius,
+                xs: 4,
+                regex: /.+/,
+            },
+            {
+                id: "latitude",
+                label: this.props.strings.latitude,
+                xs: 4,
+                regex: /\d+(\.\d)?/,
+            },
+            {
+                id: "longitude",
+                label: this.props.strings.longitude,
+                xs: 4,
+                regex: /\d+(\.\d)?/,
+            },
+            {
+                id: "averageWait",
+                label: this.props.strings.averageWait,
+                xs: 4,
+                regex: /\d+(\.\d)?/,
+            },
+            {
+                id: "averageLine",
+                label: this.props.strings.averageLine,
+                xs: 4,
+                regex: /\d+/,
+            },
+            {
+                id: "estimatedDaily",
+                label: this.props.strings.estimatedDaily,
+                xs: 4,
+                regex: /\d+/,
+            },
+            {
+                id: "subscriptionFee",
+                label: this.props.strings.subscriptionFee,
+                xs: 4,
+                regex: /\d+/,
+            },
+            {
+                id: "expectedJerrycans",
+                label: this.props.strings.expectedJerrycans,
+                xs: 4,
+                regex: /\d+/,
+            },
+        ]
         const siteCreationData = siteRequirements.map((requirement) => {
             return({
                     [requirement.id]: "",
@@ -181,9 +194,9 @@ class Administration extends React.Component {
         this.state = {
             selectedSites: [],
             siteData : [],
-            siteManagerData : [],
-            siteSubscriptions: [],
-            selectedSiteSubscriptions: [],
+            siteManagerLinkers : [],
+            // siteSubscriptions: [],
+            // selectedSiteSubscriptions: [],
             selectedManager : [],
             createSiteMenu: false,
             siteCreationData: siteCreationData,
@@ -192,46 +205,51 @@ class Administration extends React.Component {
             siteEditData : siteEditData,
             siteEditErrors: siteEditErrors,
             deleteSiteMenu: false,
-            createSubscriptionMenu: false,
-            deleteSubscriptionMenu: false,
-            subscriptionCreationData: {},
-            weeklyJerryCans: "",
-            leftUsers: [1,2,3,4],
-            rightUsers: [5,6,7,8],
-            checked: [],
-            leftChecked: [],
-            rightChecked: [],
+            // createSubscriptionMenu: false,
+            // deleteSubscriptionMenu: false,
+            // subscriptionCreationData: {},
+            // leftUsers: [1,2,3,4],
+            // rightUsers: [5,6,7,8],
+            // checked: [],
+            // leftChecked: [],
+            // rightChecked: [],
+            siteManagers: [],
+            loginState: props.loginState,
+            languageState: props.languageState,
+            code: "",
+            siteColumns: siteColumns,
+            adminColumn: adminColumn,
+            siteRequirements: siteRequirements,
         }
     }
     async getManagerSelected(input) {
         const selected = input[0]
-        console.log(this.state.siteManagerData)
+        console.log(this.state.siteManagerLinkers)
         this.setState({selectedManager: selected})
         this.setState({
-            selectedSites: this.state.siteManagerData.filter(
+            selectedSites: this.state.siteManagerLinkers.filter(
                 (manager) => manager.id === selected
             ).map(
                 (manager) => manager.siteID
             )
         })
     }
-    async createSubscription() {
-        try {
-            await AdministrationBackendHelper.createSubscription(this.state.subscriptionCreationData, this.state.selectedSites[0])
-        } catch (error) {
-            console.log("Error creating subscription: ", error)
-        }
-        this.setState({
-            siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
-            createSubscriptionMenu: false
-        })
-
-    }
+    // async createSubscription() {
+    //     try {
+    //         await AdministrationBackendHelper.createSubscription(this.state.subscriptionCreationData, this.state.selectedSites[0])
+    //     } catch (error) {
+    //         console.log("Error creating subscription: ", error)
+    //     }
+    //     this.setState({
+    //         siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
+    //         createSubscriptionMenu: false
+    //     })
+    // }
     // Called when syncing new sites to selected Site Manager/Sites
     async syncSites() {
         const selectedManager = this.state.selectedManager
         const selectedSites = this.state.selectedSites
-        const currentSites = this.state.siteManagerData.filter(
+        const currentSites = this.state.siteManagerLinkers.filter(
                 (manager) => manager.id === selectedManager
             )
 
@@ -248,14 +266,17 @@ class Administration extends React.Component {
         console.log(sitesToAdd)
         console.log(sitesToRemove)
         for (const siteID in sitesToAdd) {
-            console.log(sitesToAdd[siteID])
-            AdministrationBackendHelper.createSiteManager(selectedManager, sitesToAdd[siteID])
+            const number = this.state.siteManagers.find((manager) => manager.id === selectedManager)
+            if (number === null)
+                throw new Error("No number")
+            else
+                AdministrationBackendHelper.createSiteManager(selectedManager, sitesToAdd[siteID], this.state.siteManagers.find((manager) => manager.id === selectedManager).phone_number)
         }
         for (const siteID in sitesToRemove) {
             AdministrationBackendHelper.deleteSiteManager(selectedManager, sitesToRemove[siteID])
         }
         this.setState({
-            siteManagerData: await AdministrationBackendHelper.getSiteManagers(),
+            siteManagerLinkers: await AdministrationBackendHelper.getSiteManagers(),
         })
 
     }
@@ -264,7 +285,7 @@ class Administration extends React.Component {
         let anyError = false
         // console.log(this.state.siteCreationData)
         let currentData = this.state.siteCreationErrors
-        siteRequirements.map((requirement)=> {
+        this.state.siteRequirements.map((requirement)=> {
             if (!requirement.regex.test(this.state.siteCreationData[requirement.id]))
                 anyError = true
             currentData[requirement.id]= !requirement.regex.test(this.state.siteCreationData[requirement.id])
@@ -291,7 +312,7 @@ class Administration extends React.Component {
         let anyError = false
         console.log(this.state.siteEditData)
         let currentData = this.state.siteEditErrors
-        siteRequirements.map((requirement)=> {
+        this.state.siteRequirements.map((requirement)=> {
             if (!requirement.regex.test(this.state.siteEditData[requirement.id]))
                 anyError = true
             currentData[requirement.id]= !requirement.regex.test(this.state.siteEditData[requirement.id])
@@ -327,22 +348,22 @@ class Administration extends React.Component {
             siteData: await AdministrationBackendHelper.getSites()
         })
     }
-    async deleteSiteSubscription(){
-        try {
-            for (const siteSubscription in this.state.selectedSiteSubscriptions) {
-                console.log(this.state.selectedSiteSubscriptions[siteSubscription])
-                await AdministrationBackendHelper.cascadeDeleteSiteSubscription(this.state.selectedSiteSubscriptions[siteSubscription])
-            }
-        } catch (e) {
-            console.log("Error deleting site subscriptions", e)
-        }
-        this.setState({
-            deleteSubscriptionMenu: false
-        })
-        this.setState({
-            siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0])
-        })
-    }
+    // async deleteSiteSubscription(){
+    //     try {
+    //         for (const siteSubscription in this.state.selectedSiteSubscriptions) {
+    //             console.log(this.state.selectedSiteSubscriptions[siteSubscription])
+    //             await AdministrationBackendHelper.cascadeDeleteSiteSubscription(this.state.selectedSiteSubscriptions[siteSubscription])
+    //         }
+    //     } catch (e) {
+    //         console.log("Error deleting site subscriptions", e)
+    //     }
+    //     this.setState({
+    //         deleteSubscriptionMenu: false
+    //     })
+    //     this.setState({
+    //         siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0])
+    //     })
+    // }
     not(a, b) {
         return a.filter((value) => b.indexOf(value) === -1);
     }
@@ -359,14 +380,14 @@ class Administration extends React.Component {
                         color="inherit"
                         noWrap
                         sx={{ flexGrow: 1 }}>
-                        Change site ownership permissions by Site Manager
+                        {this.props.strings.siteOwnership}
                     </Typography>
                 </Grid>
                 <Grid container direction={"row"}>
                     <Grid container xs={6} style = {{ height: "50vh"}} id = "managerGrid" direction={"column"}>
                         <DataGrid
-                            rows={this.state.siteManagerData}
-                            columns={adminColumn}
+                            rows={this.state.siteManagers}
+                            columns={this.state.adminColumn}
                             pageSize={10}
                             rowsPerPageOptions={[10]}
                             onSelectionModelChange={this.getManagerSelected.bind(this)}
@@ -376,7 +397,7 @@ class Administration extends React.Component {
                     <Grid container xs={6} style = {{ height: "50vh"}} id = "siteGrid" >
                         <DataGrid
                             rows={this.state.siteData}
-                            columns={siteColumns}
+                            columns={this.state.siteColumns}
                             pageSize={10}
                             rowsPerPageOptions={[10]}
                             checkboxSelection
@@ -388,12 +409,12 @@ class Administration extends React.Component {
                 </Grid>
                 <Grid container direction={"row"}>
                     <Grid container xs={6}>
-                        <Button variant="outlined" onClick={this.syncSites.bind(this)}>Update Sites Managed</Button>
+                        <Button variant="outlined" onClick={this.syncSites.bind(this)}>{this.props.strings.updateSitesManaged}</Button>
                     </Grid>
                     <Grid container xs={6}>
                         <Grid item>
                             <Button xs={4} variant="outlined" onClick={()=>{this.setState({createSiteMenu: true})}}>
-                                Create New Site
+                                {this.props.strings.createNewSite}
                             </Button>
                         </Grid>
                         <Grid item>
@@ -401,21 +422,21 @@ class Administration extends React.Component {
                                 if (this.state.selectedSites.length > 0) {
                                     let siteEditData = {}
                                     const selectedSite = this.state.siteData.find((site) => site.id === this.state.selectedSites[0])
-                                    siteRequirements.map((requirement) => {
+                                    this.state.siteRequirements.map((requirement) => {
                                         Object.assign(siteEditData, {[requirement.id]: selectedSite[requirement.id]})
                                     })
                                     this.setState({
                                         editSiteMenu: true,
-                                        siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
+                                        // siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
                                         siteEditData: siteEditData
                                     })
                                 }
                             }}>
-                                Edit Selected Site
+                                {this.props.strings.editSelectedSite}
                             </Button>
                         </Grid>
                         <Button xs={4} variant="outlined" onClick={()=>{this.setState({deleteSiteMenu: true})}}>
-                            Delete Selected Sites
+                            {this.props.strings.deleteSelectedSites}
                         </Button>
                     </Grid>
                 </Grid>
@@ -424,10 +445,10 @@ class Administration extends React.Component {
                     <DialogTitle>New Site</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            To create a new Site, enter the relevant details and press create
+                            {this.props.strings.createNewSiteDialog}
                         </DialogContentText>
                         <Grid container direction = "row" spacing = {1}>
-                            {siteRequirements.map((requirement) => (
+                            {this.state.siteRequirements.map((requirement) => (
                                 <Grid item xs = {requirement.xs}>
                                     <TextField
                                         autoFocus
@@ -450,18 +471,18 @@ class Administration extends React.Component {
                         </Grid>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={()=>{this.setState({createSiteMenu: false})}}>Cancel</Button>
-                        <Button onClick={this.checkSiteValid.bind(this)}>Create</Button>
+                        <Button onClick={()=>{this.setState({createSiteMenu: false})}}>{this.props.strings.cancel}</Button>
+                        <Button onClick={this.checkSiteValid.bind(this)}>{this.props.strings.create}</Button>
                     </DialogActions>
                 </Dialog>
                 <Dialog open={this.state.editSiteMenu} onClose={()=>{this.setState({editSiteMenu: false})}} maxWidth={"md"} >
                     <DialogTitle>{"Edit Site " + this.state.selectedSites[0]}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            To edit this site, fill in the details and press Edit
+                            {this.props.strings.editSiteDialog}
                         </DialogContentText>
                         <Grid container direction = "row" spacing = {1}>
-                            {siteRequirements.map((requirement) => (
+                            {this.state.siteRequirements.map((requirement) => (
                                 <Grid item xs = {requirement.xs}>
                                     <TextField
                                         autoFocus
@@ -482,195 +503,23 @@ class Administration extends React.Component {
                                     />
                                 </Grid>
                             ))}
-                            <Grid item xs = {4}>
-                                <FormControl style = {{ width: "100%"}}>
-                                    <InputLabel id="subscription-label">Subscriptions</InputLabel>
-                                    <Select
-                                        labelId="subscription-label"
-                                        id="subscriptions"
-                                        multiple
-                                        value={this.state.selectedSiteSubscriptions}
-                                        onChange={(event)=>{
-                                            const {
-                                                target: { value },
-                                            } = event;
-                                            this.setState({
-                                                // On autofill we get a the stringified value.
-                                                selectedSiteSubscriptions: typeof value === 'string' ? value.split(',') : value,
-                                            });
-                                            console.log(value)
-                                        }}
-                                    >
-
-                                        {this.state.siteSubscriptions.map((sub)=> {
-                                            return <MenuItem key = {sub.id} value = {sub.name}>
-                                                {sub.name + "/" + sub.expectedJerrycans + "$" + sub.pricePerMonth}
-                                            </MenuItem>
-                                        })}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
                         </Grid>
                     </DialogContent>
-                    <DialogActions>
-                        <Button variant="outlined" onClick={()=>{this.setState({createSubscriptionMenu: true})}}>
-                            Create Subscription
-                        </Button>
-                        <Button variant="outlined" onClick={()=>{this.setState({deleteSubscriptionMenu: true})}}>
-                            Delete Subscription
-                        </Button>
-                        <Button onClick={()=>{this.setState({editSiteMenu: false})}}>Cancel</Button>
-                        <Button onClick={this.updateSite.bind(this)}>Edit</Button>
-                    </DialogActions>
                 </Dialog>
                 <Dialog open={this.state.deleteSiteMenu} onClose={()=>{this.setState({deleteSiteMenu: false})}} maxWidth={"md"} >
                     <DialogActions>
                         <Grid container direction={"column"} justifyContent={"center"}>
                             <DialogContentText>
-                                WARNING: This will delete all associated customers and site managers
+                                {this.props.strings.deleteSiteWarning}
                             </DialogContentText>
                             <DialogActions>
-                                <Button  onClick={()=>{this.setState({deleteSiteMenu: false})}}>Cancel</Button>
-                                <Button  onClick={this.deleteSite.bind(this)}>Delete</Button>
+                                <Button  onClick={()=>{this.setState({deleteSiteMenu: false})}}>this.props.strings.cancel</Button>
+                                <Button  onClick={this.deleteSite.bind(this)}>this.props.strings.delete</Button>
                             </DialogActions>
                         </Grid>
 
                     </DialogActions>
                 </Dialog>
-                <Dialog open={this.state.deleteSubscriptionMenu} onClose={()=>{this.setState({deleteSubscriptionMenu: false})}} maxWidth={"md"} >
-                    <DialogActions>
-                        <Grid container direction={"column"} justifyContent={"center"}>
-                            <DialogContentText>
-                                WARNING: This will also delete all associated Customers
-                            </DialogContentText>
-                            <DialogActions>
-                                <Button  onClick={()=>{this.setState({deleteSubscriptionMenu: false})}}>Cancel</Button>
-                                <Button  onClick={this.deleteSiteSubscription.bind(this)}>Delete</Button>
-                            </DialogActions>
-                        </Grid>
-
-                    </DialogActions>
-                </Dialog>
-                <Dialog open={this.state.createSubscriptionMenu} onClose={()=>{this.setState({createSubscriptionMenu: false})}} maxWidth={"md"} >
-                    <DialogTitle>Generate Subscription Model</DialogTitle>
-                    <DialogContent>
-                        <Grid container direction = "row" spacing = {1}>
-                            {subscriptionRequirements.map((requirement) => (
-                                <Grid item xs = {requirement.xs}>
-                                    <TextField
-                                        autoFocus
-                                        margin="dense"
-                                        id = {requirement.id}
-                                        label = {requirement.label}
-                                        type="text"
-                                        fullWidth
-                                        variant="standard"
-                                        onChange={(event)=>{
-                                            this.setState({
-                                                    subscriptionCreationData: Object.assign({}, this.state.subscriptionCreationData, {[requirement.id]: event.target.value})
-                                                }
-                                            )}}
-                                    />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={()=>{this.setState({createSubscriptionMenu: false})}}>Cancel</Button>
-                        <Button onClick={this.createSubscription.bind(this)}>Create</Button>
-                    </DialogActions>
-                </Dialog>
-
-                {/*Code to change admins, has been removed due to potential security issues.  Must be done through cognito console on amplify*/}
-                {/*<Grid item>*/}
-                {/*    <Typography*/}
-                {/*        component="h1"*/}
-                {/*        variant="h6"*/}
-                {/*        color="inherit"*/}
-                {/*        noWrap*/}
-                {/*        sx={{ flexGrow: 1 }}>*/}
-                {/*        Change site Administrators*/}
-                {/*    </Typography>*/}
-                {/*</Grid>*/}
-                {/*<Grid container >*/}
-                {/*    <Grid item>*/}
-                {/*        <Paper sx={{ width: 200, height: 230, overflow: 'auto' }}>*/}
-                {/*            <List dense component="div" role="list">*/}
-                {/*                {this.state.leftUsers.map((value) => {*/}
-                {/*                    const labelId = `transfer-list-item-${value}-label`;*/}
-
-                {/*                    return (*/}
-                {/*                        <ListItem*/}
-                {/*                            key={value}*/}
-                {/*                            role="listitem"*/}
-                {/*                            button*/}
-                {/*                            onClick={()=> {*/}
-                {/*                                if (this.state.checked.indexOf(value) === -1)*/}
-                {/*                                    this.state.checked.push(value)*/}
-                {/*                                else*/}
-                {/*                                    this.state.checked.splice(this.state.checked.indexOf(value), 1)*/}
-                {/*                                this.setState({*/}
-                {/*                                    leftChecked: this.intersection(this.state.checked, this.state.leftUsers),*/}
-                {/*                                })*/}
-                {/*                            }}*/}
-                {/*                        >*/}
-                {/*                            <ListItemIcon>*/}
-                {/*                                <Checkbox*/}
-                {/*                                    checked={this.state.checked.indexOf(value) !== -1}*/}
-                {/*                                    tabIndex={-1}*/}
-                {/*                                    disableRipple*/}
-                {/*                                    inputProps={{*/}
-                {/*                                        'aria-labelledby': labelId,*/}
-                {/*                                    }}*/}
-                {/*                                />*/}
-                {/*                            </ListItemIcon>*/}
-                {/*                            <ListItemText id={labelId} primary={`Admin: ${value}`} />*/}
-                {/*                        </ListItem>*/}
-                {/*                    );*/}
-                {/*                })}*/}
-                {/*                <ListItem />*/}
-                {/*            </List>*/}
-                {/*        </Paper>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item>*/}
-                {/*        <Grid container direction="column" alignItems="center">*/}
-                {/*            <Button*/}
-                {/*                sx={{ my: 0.5 }}*/}
-                {/*                variant="outlined"*/}
-                {/*                size="small"*/}
-                {/*                onClick={()=>{*/}
-                {/*                    this.setState({*/}
-                {/*                        leftUsers: this.not(JSON.parse(JSON.stringify(this.state.leftUsers)), this.state.leftChecked),*/}
-                {/*                        rightUsers: JSON.parse(JSON.stringify(this.state.rightUsers)).concat(this.state.leftChecked),*/}
-                {/*                        checked: JSON.parse(JSON.stringify(this.state.rightChecked)),*/}
-                {/*                        leftChecked: [],*/}
-                {/*                    })*/}
-                {/*                }}*/}
-                {/*                disabled={this.state.leftChecked.length === 0}*/}
-                {/*                aria-label="move selected right"*/}
-                {/*            >*/}
-                {/*                &gt;*/}
-                {/*            </Button>*/}
-                {/*            <Button*/}
-                {/*                sx={{ my: 0.5 }}*/}
-                {/*                variant="outlined"*/}
-                {/*                size="small"*/}
-                {/*                onClick={()=>{*/}
-                {/*                    this.setState({*/}
-                {/*                        leftUsers: JSON.parse(JSON.stringify(this.state.leftUsers)).concat(this.state.rightChecked),*/}
-                {/*                        rightUsers: this.not(JSON.parse(JSON.stringify(this.state.rightUsers)), this.state.rightChecked),*/}
-                {/*                        checked: JSON.parse(JSON.stringify(this.state.leftChecked)),*/}
-                {/*                        rightChecked: [],*/}
-                {/*                    })*/}
-                {/*                }}*/}
-                {/*                disabled={this.state.rightChecked.length === 0}*/}
-                {/*                aria-label="move selected left"*/}
-                {/*            >*/}
-                {/*                &lt;*/}
-                {/*            </Button>*/}
-                {/*        </Grid>*/}
-                {/*    </Grid>*/}
-                {/*</Grid>*/}
 
             </Grid>
 
@@ -678,5 +527,16 @@ class Administration extends React.Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        loginState: state.loginState.currentState,
+        language: state.languageState.language,
+        code: state.languageState.code,
+        languageCode: state.languageState.languageCodes,
+        strings: state.languageState.strings,
+    };
+};
 
-export default Administration;
+
+
+export default connect(mapStateToProps)(Administration);

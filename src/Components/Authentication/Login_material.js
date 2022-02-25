@@ -33,13 +33,14 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 
 // colors
 import { green, red } from '@material-ui/core/colors';
+import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 
 
 
 
 Amplify.configure(amplifyConfig)
 const initialFormState = {
-    email: "", password: "", given_name: "", family_name: "", authCode: "", resetCode: ""
+    email: "", password: "", given_name: "", family_name: "", authCode: "", resetCode: "", phone_number: ""
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -117,6 +118,7 @@ function Login(props) {
     const [formState, updateFormState] = useState(initialFormState);
     const [accountCreationEmailExistError, setAccountCreationEmailExistError] = useState(false);
     const [accountCreationPasswordError, setAccountCreationPasswordError] = useState(false);
+    const [accountCreationPhoneNumberError, setAccountCreationPhoneNumberError] = useState(false);
     const [accountLoginError, setAccountLoginError] = useState(false);
     const [verificationError, setVerificationError] = useState(false);
     const [newPasswordError, setNewPasswordError] = useState(false);
@@ -146,7 +148,7 @@ function Login(props) {
     const classes = useStyles();
 
     useEffect(() => {
-        console.log(code)
+        // console.log(code)
         async function retrieveUser() {
             try {
                 Auth.currentAuthenticatedUser().then(user => {
@@ -160,31 +162,6 @@ function Login(props) {
             }
         }
         retrieveUser();
-        async function queryLanguages () {
-            try {
-                const languageRaw = await LocalizationHelper.getLanguageCodes()
-                const languageProcessed = await LocalizationHelper.getLanguagePhrases()
-                try {
-                    updateStringsState(languageProcessed)
-                    updateLanguageCodes(languageRaw)
-                    setPasswordRequirements({
-                        uppercase: { error: false, description: strings.uppercase },
-                        lowercase: { error: false, description: strings.lowercase },
-                        digit: { error: false, description: strings.digit },
-                        special: { error: false, description: strings.special },
-                        minLength: { error: false, description: strings.minLength },
-                        maxLength: { error: false, description: strings.maxLength }
-                    })
-                } catch (error) {
-                    console.log("Invalid Languages", error)
-                }
-                console.log(language)
-            } catch (e) {
-                console.log(e)
-            }
-
-        }
-        queryLanguages()
     }, []);
 
     function clearErrors() {
@@ -195,12 +172,14 @@ function Login(props) {
         setNewVerification(false);
         setNewPasswordError(false);
         setInvalidEmailError(false);
+        setAccountCreationPhoneNumberError(false);
     }
 
     function onChange(e) {
         e.persist();
         clearErrors()
-
+        if (e.target.name === "phone_number")
+            setAccountCreationPhoneNumberError(!/(\+\d{1,3})\d{8,10}/.test(e.target.value))
         updateFormState({...formState, [e.target.name]: e.target.value})
     }
 
@@ -228,17 +207,19 @@ function Login(props) {
             // check if both passwords match first before signing up
             checkMatchingPasswords();
 
-            const {email, password, given_name, family_name} = formState;
+            const {email, password, given_name, family_name, phone_number} = formState;
             checkEmptyString(given_name);
             checkEmptyString(family_name);
-
+            if (accountCreationPhoneNumberError)
+                throw new Error("Bad Phone Number");
             setLoading(true);
             await Auth.signUp({
                 username: email,
                 password: password,
                 attributes: {
                     given_name: given_name,
-                    family_name: family_name
+                    family_name: family_name,
+                    phone_number: phone_number,
                 }
             });
             updateFormState(() => ({...initialFormState, email}))
@@ -258,7 +239,9 @@ function Login(props) {
                 setAccountCreationEmailExistError(true);
             } else if (errorMsg.includes("Passwords do not match")) {
                 setPasswordUnmatchError(true)
-            } else {
+            } else if (errorMsg.includes("Phone Number")) {
+
+            }else {
                 setAccountCreationPasswordError(true);
             }
         }
@@ -272,7 +255,7 @@ function Login(props) {
             const {email, authCode} = formState;
             setLoading(true);
             await Auth.confirmSignUp(email, authCode);
-            resetStates("signedIn");
+            resetStates("signIn");
             setLoading(false);
         } catch (e) {
             setVerificationError(true);
@@ -288,6 +271,7 @@ function Login(props) {
     async function resendConfirmationCode() {
         try {
             const {email} = formState;
+            console.log(email)
             setVerificationError(false);
             await Auth.resendSignUp(email);
             setNewVerification(true);
@@ -421,6 +405,7 @@ function Login(props) {
             throw new Error("empty");
         }
     }
+
 
     function resetStates(state) {
         // clear states when hitting the back button
@@ -559,7 +544,7 @@ function Login(props) {
                                                 <Divider />
                                             </Grid>
                                             <Grid item className={classes.padding}>
-                                                Or
+                                                {strings.or}
                                             </Grid>
                                             <Grid item xs>
                                                 <Divider />
@@ -667,7 +652,7 @@ function Login(props) {
                                         backAction={()=>resetStates("signIn")}
                                         back = {strings.back}
                                         submitAction={resetPassword}
-                                        submitMessage={"Update Password"}
+                                        submitMessage={strings.updatePassword}
                                         loadingState={loading}
                                     />
                                 </Grid>
@@ -704,6 +689,15 @@ function Login(props) {
                                             (!!accountCreationEmailExistError && strings.accountExists) ||
                                             (!!invalidEmailError && strings.validEmail)
                                         }
+                                        onChange={onChange}
+                                    />
+                                    <TextFieldStartAdornment
+                                        startIcon={false}
+                                        label={strings.phoneNumber + " (+123123456789)"}
+                                        name={"phone_number"}
+                                        type="text"
+                                        autoComplete={"new-password"}
+                                        error={accountCreationPhoneNumberError}
                                         onChange={onChange}
                                     />
                                     <TextFieldStartAdornment
@@ -760,9 +754,9 @@ function Login(props) {
                                         />
                                     </Grid>
                                     <Grid>
-                                        <span>Didn't receive your verification code?</span>
+                                        <span>{strings.verificationCode}</span>
                                         <Button onClick={resendConfirmationCode}>
-                                            <span className={classes.underlineText}>Resend Code</span>
+                                            <span className={classes.underlineText}>{strings.resendCode}</span>
                                         </Button>
                                     </Grid>
                                     <BackAndSubmitButtons

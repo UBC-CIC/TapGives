@@ -168,10 +168,14 @@ class mapComponent extends React.Component {
         await getLocationService();
         //make map
         await constructMap("map")
-        map.resize();
+        // map.resize();
+        try {
+            const returnedUser = await Auth.currentAuthenticatedUser();
+            locateSites(await AdministrationBackendHelper.getSitesBySiteManager(returnedUser.attributes.email))
+        } catch (e) {
+            console.log(e)
+        }
 
-        const returnedUser = await Auth.currentAuthenticatedUser();
-        locateSites(await AdministrationBackendHelper.getSitesBySiteManager(returnedUser.attributes.email))
     }
 
     updateInputText=(e)=>{

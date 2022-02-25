@@ -16,20 +16,22 @@ import LocalizationHelper from "../Helpers/LocalizationHelper";
 import Grid from "@material-ui/core/Grid";
 import {center} from "@turf/turf";
 import {GridCell} from "@mui/x-data-grid";
-const languageRequirements = [
-    {
-        id: "id",
-        display: "Language code",
-    },
-    {
-        id: "language",
-        display: "Language Name",
-    },
-]
+import {connect} from "react-redux";
+
 
 class LanguageAdministration extends React.Component {
     constructor(props) {
         super(props);
+        const languageRequirements = [
+            {
+                id: "id",
+                display: this.props.strings.languageCode,
+            },
+            {
+                id: "language",
+                display: this.props.strings.languageName,
+            },
+        ]
         const languagePhrases = LocalizationHelper.getLanguagePhrasesFast()
         // Object.keys(languagePhrases)[0]
         const phraseCodes = Object.entries(languagePhrases["en"])
@@ -40,6 +42,7 @@ class LanguageAdministration extends React.Component {
             return Object.assign(prev, {[currReq.id]: false})
         }, {})
         this.state = {
+            languageRequirements: languageRequirements,
             currentLanguage: "English",
             currentLanguageCode: "en",
             languageCode: LocalizationHelper.getLanguageCodesFast(),
@@ -49,6 +52,7 @@ class LanguageAdministration extends React.Component {
             openNewLanguageMenu: false,
             newLanguageErrors:newLanguageErrors,
             newLanguageInfo:newLanguageInfo,
+            deleteLanguageMenu: false,
         }
     }
     changeLanguage(input) {
@@ -71,7 +75,7 @@ class LanguageAdministration extends React.Component {
         // console.log(this.state.newLanguageInfo)
         // console.log(this.state.newLanguageErrors)
         let allPassed = true
-        let errors = languageRequirements.reduce((prev, req)=> {
+        let errors = this.state.languageRequirements.reduce((prev, req)=> {
             const out = !/.+/.test(this.state.newLanguageInfo[req.id]) || this.state.languageCode.some((language)=>language[req.id] === this.state.newLanguageInfo[req.id])
             if (out)
                 allPassed = false
@@ -84,10 +88,10 @@ class LanguageAdministration extends React.Component {
         })
         if (allPassed) {
             // Empty the values for the next language
-            const newLanguageInfo = languageRequirements.reduce((prev, currReq)=> {
+            const newLanguageInfo = this.state.languageRequirements.reduce((prev, currReq)=> {
                 return Object.assign(prev, {[currReq.id]: ""})
             }, {})
-            const newLanguageErrors = languageRequirements.reduce((prev, currReq)=> {
+            const newLanguageErrors = this.state.languageRequirements.reduce((prev, currReq)=> {
                 return Object.assign(prev, {[currReq.id]: false})
             }, {})
             // Create empty phrase list for the language
@@ -116,12 +120,12 @@ class LanguageAdministration extends React.Component {
             // await all actions together
             let promiseList = []
             for (const phrase in this.state.translatedPhrases) {
-                if (this.state.translatedPhrases[phrase] !== this.state.languagePhrases[this.state.currentLanguageCode][phrase]) {
-                    console.log("pushing "+ phrase)
+                console.log(this.state.translatedPhrases[phrase])
+                if (!this.state.languagePhrases[this.state.currentLanguageCode].hasOwnProperty(phrase)) {
+                    promiseList.push(LocalizationHelper.addLanguagePhrase(this.state.currentLanguageCode, phrase, this.state.translatedPhrases[phrase]))
+                } else if (this.state.translatedPhrases[phrase] !== this.state.languagePhrases[this.state.currentLanguageCode][phrase]) {
                     promiseList.push(LocalizationHelper.editPhrase(this.state.currentLanguageCode, phrase, this.state.translatedPhrases[phrase]))
-
                 }
-
             }
             await Promise.all(promiseList)
             await LocalizationHelper.checkUpdatedLanguages()
@@ -136,19 +140,24 @@ class LanguageAdministration extends React.Component {
             await Promise.all(promiseList)
             await LocalizationHelper.checkUpdatedLanguages()
         }
+        sessionStorage.setItem("updated", "false")
         this.setState({
             languageCode: await LocalizationHelper.getLanguageCodes(),
             languagePhrases: await LocalizationHelper.getLanguagePhrases(),
         })
+        this.setState({
+            languagePhrases: Object.assign(this.state.languagePhrases, {
+                [this.state.currentLanguageCode]: this.state.translatedPhrases
+            })
+        })
+    }
+    async deleteLanguage() {
+
     }
     render() {
         return <div>
             <Grid container direction={"row"} alignItems={"center"} >
                 <FormControl>
-                    <InputLabel variant="standard" >
-                        Language
-                    </InputLabel>
-
                     <NativeSelect
                         value={this.state.currentLanguage}
                         inputProps={{
@@ -159,17 +168,18 @@ class LanguageAdministration extends React.Component {
                     >{this.state.languageCode.map((val) => {return <option > {val.language} </option>})}
                     </NativeSelect>
                 </FormControl>
-                <FormLabel>{"Language code: "   +this.state.currentLanguageCode}</FormLabel>
-                <Button variant={"outlined"} onClick={()=>{this.setState({openNewLanguageMenu: true})}}>Add New Language</Button>
-                <Button variant={"outlined"} onClick={this.updateLanguage.bind(this)}>Sync Language to Cloud</Button>
+                <FormLabel>{this.props.strings.languageCode + ": " + this.state.currentLanguageCode}</FormLabel>
+                <Button variant={"outlined"} onClick={()=>{this.setState({openNewLanguageMenu: true})}}>{this.props.strings.addNewLanguage}</Button>
+                <Button variant={"outlined"} onClick={this.updateLanguage.bind(this)}>{this.props.strings.syncLanguageToCloud}</Button>
+                <Button variant={"outlined"} onClick={()=>{this.setState({deleteLanguageMenu: true})}}>{this.props.strings.delete}</Button>
                 <Dialog open={this.state.openNewLanguageMenu} onClose={()=>{this.setState({openNewLanguageMenu: false})}} maxWidth={"md"} >
                     <DialogActions>
                         <Grid container direction={"column"} justifyContent={"center"}>
                             <DialogContentText>
-                                Add new language template (does not upload until you finish submit phrases)
+                                {this.props.strings.addLanguageTemplate}
                             </DialogContentText>
                             <Grid container direction = "row" spacing = {1}>
-                                {languageRequirements.map((requirement)=> (
+                                {this.state.languageRequirements.map((requirement)=> (
                                     <Grid item>
                                         <TextField
                                             autoFocus
@@ -199,13 +209,27 @@ class LanguageAdministration extends React.Component {
 
                     </DialogActions>
                 </Dialog>
+                <Dialog open={this.state.deleteLanguageMenu} onClose={()=>{this.setState({deleteLanguageMenu: false})}} maxWidth={"md"} >
+                    <DialogActions>
+                        <Grid container direction={"column"} justifyContent={"center"}>
+                            <DialogContentText>
+                                {this.props.strings.deleteLanguageTemplate}
+                            </DialogContentText>
+                            <DialogActions>
+                                <Button onClick={()=>{this.setState({deleteLanguageMenu: false})}}>{this.props.strings.cancel}</Button>
+                                <Button onClick={this.deleteLanguage.bind(this)}>{this.props.strings.delete}</Button>
+                            </DialogActions>
+                        </Grid>
+
+                    </DialogActions>
+                </Dialog>
             </Grid>
             <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell >Phrase Code</TableCell>
-                        <TableCell align={"center"}>English</TableCell>
-                        <TableCell align="right">Translation</TableCell>
+                        <TableCell align={"center"}>{this.props.strings.english}</TableCell>
+                        <TableCell align="right">{this.props.strings.translation}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -233,4 +257,18 @@ class LanguageAdministration extends React.Component {
         </div>
     }
 }
-export default LanguageAdministration
+
+
+const mapStateToProps = (state) => {
+    return {
+        loginState: state.loginState.currentState,
+        language: state.languageState.language,
+        code: state.languageState.code,
+        languageCode: state.languageState.languageCodes,
+        strings: state.languageState.strings,
+    };
+};
+
+
+
+export default connect(mapStateToProps)(LanguageAdministration);

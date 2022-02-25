@@ -9,7 +9,7 @@ export const updateLanguageState = (payload) => {
             language: "English",
         }
      */
-    console.log(payload)
+    // console.log(payload)
     return (dispatch) => {
         dispatch({ type: "SET_LANGUAGE", payload: payload });
     }

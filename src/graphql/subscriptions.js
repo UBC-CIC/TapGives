@@ -8,43 +8,25 @@ export const onCreateSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
         siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
           nextToken
         }
         name
+        nickname
         description
         serviceRadius
         latitude
         longitude
         averageWait
         averageLine
-        online
+        status
         estimatedDaily
+        subscriptionFee
+        expectedJerrycans
         createdAt
         updatedAt
       }
-      name
+      phoneNumber
       createdAt
       updatedAt
       siteSiteManagersId
@@ -58,43 +40,25 @@ export const onUpdateSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
         siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
           nextToken
         }
         name
+        nickname
         description
         serviceRadius
         latitude
         longitude
         averageWait
         averageLine
-        online
+        status
         estimatedDaily
+        subscriptionFee
+        expectedJerrycans
         createdAt
         updatedAt
       }
-      name
+      phoneNumber
       createdAt
       updatedAt
       siteSiteManagersId
@@ -108,43 +72,25 @@ export const onDeleteSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
         siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
           nextToken
         }
         name
+        nickname
         description
         serviceRadius
         latitude
         longitude
         averageWait
         averageLine
-        online
+        status
         estimatedDaily
+        subscriptionFee
+        expectedJerrycans
         createdAt
         updatedAt
       }
-      name
+      phoneNumber
       createdAt
       updatedAt
       siteSiteManagersId
@@ -154,411 +100,111 @@ export const onDeleteSiteManager = /* GraphQL */ `
 export const onCreateCustomer = /* GraphQL */ `
   subscription OnCreateCustomer {
     onCreateCustomer {
-      id
+      IDNumber
       siteID
       site {
         id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
         siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
           nextToken
         }
         name
+        nickname
         description
         serviceRadius
         latitude
         longitude
         averageWait
         averageLine
-        online
+        status
         estimatedDaily
-        createdAt
-        updatedAt
-      }
-      siteSubscriptionID
-      siteSubscription {
-        id
-        siteID
-        pricePerMonth
-        site {
-          id
-          siteSubscriptions {
-            nextToken
-          }
-          siteManagers {
-            nextToken
-          }
-          name
-          description
-          serviceRadius
-          latitude
-          longitude
-          averageWait
-          averageLine
-          online
-          estimatedDaily
-          createdAt
-          updatedAt
-        }
-        name
+        subscriptionFee
         expectedJerrycans
         createdAt
         updatedAt
-        siteSiteSubscriptionsId
       }
       validSubscription
       pin
       phoneNumber
-      name
+      firstName
+      lastName
       language
+      expiration
       createdAt
       updatedAt
-      customerSiteSubscriptionId
     }
   }
 `;
 export const onUpdateCustomer = /* GraphQL */ `
   subscription OnUpdateCustomer {
     onUpdateCustomer {
-      id
+      IDNumber
       siteID
       site {
         id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
         siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
           nextToken
         }
         name
+        nickname
         description
         serviceRadius
         latitude
         longitude
         averageWait
         averageLine
-        online
+        status
         estimatedDaily
-        createdAt
-        updatedAt
-      }
-      siteSubscriptionID
-      siteSubscription {
-        id
-        siteID
-        pricePerMonth
-        site {
-          id
-          siteSubscriptions {
-            nextToken
-          }
-          siteManagers {
-            nextToken
-          }
-          name
-          description
-          serviceRadius
-          latitude
-          longitude
-          averageWait
-          averageLine
-          online
-          estimatedDaily
-          createdAt
-          updatedAt
-        }
-        name
+        subscriptionFee
         expectedJerrycans
         createdAt
         updatedAt
-        siteSiteSubscriptionsId
       }
       validSubscription
       pin
       phoneNumber
-      name
+      firstName
+      lastName
       language
+      expiration
       createdAt
       updatedAt
-      customerSiteSubscriptionId
     }
   }
 `;
 export const onDeleteCustomer = /* GraphQL */ `
   subscription OnDeleteCustomer {
     onDeleteCustomer {
-      id
+      IDNumber
       siteID
       site {
         id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
         siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
           nextToken
         }
         name
+        nickname
         description
         serviceRadius
         latitude
         longitude
         averageWait
         averageLine
-        online
+        status
         estimatedDaily
-        createdAt
-        updatedAt
-      }
-      siteSubscriptionID
-      siteSubscription {
-        id
-        siteID
-        pricePerMonth
-        site {
-          id
-          siteSubscriptions {
-            nextToken
-          }
-          siteManagers {
-            nextToken
-          }
-          name
-          description
-          serviceRadius
-          latitude
-          longitude
-          averageWait
-          averageLine
-          online
-          estimatedDaily
-          createdAt
-          updatedAt
-        }
-        name
+        subscriptionFee
         expectedJerrycans
         createdAt
         updatedAt
-        siteSiteSubscriptionsId
       }
       validSubscription
       pin
       phoneNumber
-      name
+      firstName
+      lastName
       language
+      expiration
       createdAt
       updatedAt
-      customerSiteSubscriptionId
-    }
-  }
-`;
-export const onCreateSiteSubscription = /* GraphQL */ `
-  subscription OnCreateSiteSubscription {
-    onCreateSiteSubscription {
-      id
-      siteID
-      pricePerMonth
-      site {
-        id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
-        siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
-          nextToken
-        }
-        name
-        description
-        serviceRadius
-        latitude
-        longitude
-        averageWait
-        averageLine
-        online
-        estimatedDaily
-        createdAt
-        updatedAt
-      }
-      name
-      expectedJerrycans
-      createdAt
-      updatedAt
-      siteSiteSubscriptionsId
-    }
-  }
-`;
-export const onUpdateSiteSubscription = /* GraphQL */ `
-  subscription OnUpdateSiteSubscription {
-    onUpdateSiteSubscription {
-      id
-      siteID
-      pricePerMonth
-      site {
-        id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
-        siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
-          nextToken
-        }
-        name
-        description
-        serviceRadius
-        latitude
-        longitude
-        averageWait
-        averageLine
-        online
-        estimatedDaily
-        createdAt
-        updatedAt
-      }
-      name
-      expectedJerrycans
-      createdAt
-      updatedAt
-      siteSiteSubscriptionsId
-    }
-  }
-`;
-export const onDeleteSiteSubscription = /* GraphQL */ `
-  subscription OnDeleteSiteSubscription {
-    onDeleteSiteSubscription {
-      id
-      siteID
-      pricePerMonth
-      site {
-        id
-        siteSubscriptions {
-          items {
-            id
-            siteID
-            pricePerMonth
-            name
-            expectedJerrycans
-            createdAt
-            updatedAt
-            siteSiteSubscriptionsId
-          }
-          nextToken
-        }
-        siteManagers {
-          items {
-            id
-            siteID
-            name
-            createdAt
-            updatedAt
-            siteSiteManagersId
-          }
-          nextToken
-        }
-        name
-        description
-        serviceRadius
-        latitude
-        longitude
-        averageWait
-        averageLine
-        online
-        estimatedDaily
-        createdAt
-        updatedAt
-      }
-      name
-      expectedJerrycans
-      createdAt
-      updatedAt
-      siteSiteSubscriptionsId
     }
   }
 `;
@@ -566,52 +212,11 @@ export const onCreateSite = /* GraphQL */ `
   subscription OnCreateSite {
     onCreateSite {
       id
-      siteSubscriptions {
-        items {
-          id
-          siteID
-          pricePerMonth
-          site {
-            id
-            name
-            description
-            serviceRadius
-            latitude
-            longitude
-            averageWait
-            averageLine
-            online
-            estimatedDaily
-            createdAt
-            updatedAt
-          }
-          name
-          expectedJerrycans
-          createdAt
-          updatedAt
-          siteSiteSubscriptionsId
-        }
-        nextToken
-      }
       siteManagers {
         items {
           id
           siteID
-          site {
-            id
-            name
-            description
-            serviceRadius
-            latitude
-            longitude
-            averageWait
-            averageLine
-            online
-            estimatedDaily
-            createdAt
-            updatedAt
-          }
-          name
+          phoneNumber
           createdAt
           updatedAt
           siteSiteManagersId
@@ -619,14 +224,17 @@ export const onCreateSite = /* GraphQL */ `
         nextToken
       }
       name
+      nickname
       description
       serviceRadius
       latitude
       longitude
       averageWait
       averageLine
-      online
+      status
       estimatedDaily
+      subscriptionFee
+      expectedJerrycans
       createdAt
       updatedAt
     }
@@ -636,52 +244,11 @@ export const onUpdateSite = /* GraphQL */ `
   subscription OnUpdateSite {
     onUpdateSite {
       id
-      siteSubscriptions {
-        items {
-          id
-          siteID
-          pricePerMonth
-          site {
-            id
-            name
-            description
-            serviceRadius
-            latitude
-            longitude
-            averageWait
-            averageLine
-            online
-            estimatedDaily
-            createdAt
-            updatedAt
-          }
-          name
-          expectedJerrycans
-          createdAt
-          updatedAt
-          siteSiteSubscriptionsId
-        }
-        nextToken
-      }
       siteManagers {
         items {
           id
           siteID
-          site {
-            id
-            name
-            description
-            serviceRadius
-            latitude
-            longitude
-            averageWait
-            averageLine
-            online
-            estimatedDaily
-            createdAt
-            updatedAt
-          }
-          name
+          phoneNumber
           createdAt
           updatedAt
           siteSiteManagersId
@@ -689,14 +256,17 @@ export const onUpdateSite = /* GraphQL */ `
         nextToken
       }
       name
+      nickname
       description
       serviceRadius
       latitude
       longitude
       averageWait
       averageLine
-      online
+      status
       estimatedDaily
+      subscriptionFee
+      expectedJerrycans
       createdAt
       updatedAt
     }
@@ -706,52 +276,11 @@ export const onDeleteSite = /* GraphQL */ `
   subscription OnDeleteSite {
     onDeleteSite {
       id
-      siteSubscriptions {
-        items {
-          id
-          siteID
-          pricePerMonth
-          site {
-            id
-            name
-            description
-            serviceRadius
-            latitude
-            longitude
-            averageWait
-            averageLine
-            online
-            estimatedDaily
-            createdAt
-            updatedAt
-          }
-          name
-          expectedJerrycans
-          createdAt
-          updatedAt
-          siteSiteSubscriptionsId
-        }
-        nextToken
-      }
       siteManagers {
         items {
           id
           siteID
-          site {
-            id
-            name
-            description
-            serviceRadius
-            latitude
-            longitude
-            averageWait
-            averageLine
-            online
-            estimatedDaily
-            createdAt
-            updatedAt
-          }
-          name
+          phoneNumber
           createdAt
           updatedAt
           siteSiteManagersId
@@ -759,14 +288,53 @@ export const onDeleteSite = /* GraphQL */ `
         nextToken
       }
       name
+      nickname
       description
       serviceRadius
       latitude
       longitude
       averageWait
       averageLine
-      online
+      status
       estimatedDaily
+      subscriptionFee
+      expectedJerrycans
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateVisit = /* GraphQL */ `
+  subscription OnCreateVisit {
+    onCreateVisit {
+      id
+      customerID
+      siteID
+      timeStamp
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateVisit = /* GraphQL */ `
+  subscription OnUpdateVisit {
+    onUpdateVisit {
+      id
+      customerID
+      siteID
+      timeStamp
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteVisit = /* GraphQL */ `
+  subscription OnDeleteVisit {
+    onDeleteVisit {
+      id
+      customerID
+      siteID
+      timeStamp
       createdAt
       updatedAt
     }
