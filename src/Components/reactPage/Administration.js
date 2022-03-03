@@ -149,14 +149,14 @@ class Administration extends React.Component {
                 regex: /\d+(\.\d)?/,
             },
             {
-                id: "averageWait",
-                label: this.props.strings.averageWait,
+                id: "avgWaitMinute",
+                label: this.props.strings.avgWaitMinute,
                 xs: 4,
                 regex: /\d+(\.\d)?/,
             },
             {
-                id: "averageLine",
-                label: this.props.strings.averageLine,
+                id: "avgLineCount",
+                label: this.props.strings.avgLineCount,
                 xs: 4,
                 regex: /\d+/,
             },
@@ -513,8 +513,8 @@ class Administration extends React.Component {
                                 {this.props.strings.deleteSiteWarning}
                             </DialogContentText>
                             <DialogActions>
-                                <Button  onClick={()=>{this.setState({deleteSiteMenu: false})}}>this.props.strings.cancel</Button>
-                                <Button  onClick={this.deleteSite.bind(this)}>this.props.strings.delete</Button>
+                                <Button  onClick={()=>{this.setState({deleteSiteMenu: false})}}>{this.props.strings.cancel}</Button>
+                                <Button  onClick={this.deleteSite.bind(this)}>{this.props.strings.delete}</Button>
                             </DialogActions>
                         </Grid>
 

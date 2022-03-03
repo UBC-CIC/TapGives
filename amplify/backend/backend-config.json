@@ -1,6 +1,6 @@
 {
   "auth": {
-    "tapgiveschallenge541da3e3": {
+    "tapgiveschallengec1d1ec61": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -32,7 +32,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "tapgiveschallenge541da3e3",
+          "resourceName": "tapgiveschallengec1d1ec61",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
@@ -52,7 +52,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authtapgiveschallenge541da3e3"
+              "userPoolId": "authtapgiveschallengec1d1ec61"
             }
           },
           "additionalAuthenticationProviders": [
@@ -70,14 +70,14 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "tapgiveschallenge541da3e3",
+          "resourceName": "tapgiveschallengec1d1ec61",
           "attributes": [
             "UserPoolId"
           ]
         },
         {
           "category": "function",
-          "resourceName": "AdminQueries8a19391d",
+          "resourceName": "AdminQueries9a200474",
           "attributes": [
             "Arn",
             "Name"
@@ -87,19 +87,48 @@
     }
   },
   "function": {
-    "AdminQueries8a19391d": {
+    "AdminQueries9a200474": {
       "service": "Lambda",
       "providerPlugin": "awscloudformation",
       "build": true,
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "tapgiveschallenge541da3e3",
+          "resourceName": "tapgiveschallengec1d1ec61",
           "attributes": [
             "UserPoolId"
           ]
         }
       ]
+    },
+    "historyFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "tapgiveschallenge",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "history",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
+    }
+  },
+  "storage": {
+    "history": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

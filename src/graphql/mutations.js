@@ -20,10 +20,9 @@ export const createSiteManager = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -55,10 +54,9 @@ export const updateSiteManager = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -90,10 +88,9 @@ export const deleteSiteManager = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -112,7 +109,8 @@ export const createCustomer = /* GraphQL */ `
     $condition: ModelCustomerConditionInput
   ) {
     createCustomer(input: $input, condition: $condition) {
-      IDNumber
+      id
+      governmentID
       siteID
       site {
         id
@@ -125,10 +123,9 @@ export const createCustomer = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -139,8 +136,8 @@ export const createCustomer = /* GraphQL */ `
       phoneNumber
       firstName
       lastName
-      language
-      expiration
+      preferredLanguage
+      subscriptionExpiration
       createdAt
       updatedAt
     }
@@ -152,7 +149,8 @@ export const updateCustomer = /* GraphQL */ `
     $condition: ModelCustomerConditionInput
   ) {
     updateCustomer(input: $input, condition: $condition) {
-      IDNumber
+      id
+      governmentID
       siteID
       site {
         id
@@ -165,10 +163,9 @@ export const updateCustomer = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -179,8 +176,8 @@ export const updateCustomer = /* GraphQL */ `
       phoneNumber
       firstName
       lastName
-      language
-      expiration
+      preferredLanguage
+      subscriptionExpiration
       createdAt
       updatedAt
     }
@@ -192,7 +189,8 @@ export const deleteCustomer = /* GraphQL */ `
     $condition: ModelCustomerConditionInput
   ) {
     deleteCustomer(input: $input, condition: $condition) {
-      IDNumber
+      id
+      governmentID
       siteID
       site {
         id
@@ -205,10 +203,9 @@ export const deleteCustomer = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -219,8 +216,8 @@ export const deleteCustomer = /* GraphQL */ `
       phoneNumber
       firstName
       lastName
-      language
-      expiration
+      preferredLanguage
+      subscriptionExpiration
       createdAt
       updatedAt
     }
@@ -250,10 +247,9 @@ export const createSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      averageWait
-      averageLine
+      avgWaitMinute
+      avgLineCount
       status
-      estimatedDaily
       subscriptionFee
       expectedJerrycans
       createdAt
@@ -285,10 +281,9 @@ export const updateSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      averageWait
-      averageLine
+      avgWaitMinute
+      avgLineCount
       status
-      estimatedDaily
       subscriptionFee
       expectedJerrycans
       createdAt
@@ -320,10 +315,9 @@ export const deleteSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      averageWait
-      averageLine
+      avgWaitMinute
+      avgLineCount
       status
-      estimatedDaily
       subscriptionFee
       expectedJerrycans
       createdAt
@@ -430,45 +424,57 @@ export const deletePhrase = /* GraphQL */ `
     }
   }
 `;
-export const createVisit = /* GraphQL */ `
-  mutation CreateVisit(
-    $input: CreateVisitInput!
-    $condition: ModelVisitConditionInput
+export const createCustomerTransactions = /* GraphQL */ `
+  mutation CreateCustomerTransactions(
+    $input: CreateCustomerTransactionsInput!
+    $condition: ModelCustomerTransactionsConditionInput
   ) {
-    createVisit(input: $input, condition: $condition) {
+    createCustomerTransactions(input: $input, condition: $condition) {
       id
-      customerID
+      userPhoneNumber
+      fullName
+      siteName
       siteID
+      action
+      collectedJerryCans
       timeStamp
       createdAt
       updatedAt
     }
   }
 `;
-export const updateVisit = /* GraphQL */ `
-  mutation UpdateVisit(
-    $input: UpdateVisitInput!
-    $condition: ModelVisitConditionInput
+export const updateCustomerTransactions = /* GraphQL */ `
+  mutation UpdateCustomerTransactions(
+    $input: UpdateCustomerTransactionsInput!
+    $condition: ModelCustomerTransactionsConditionInput
   ) {
-    updateVisit(input: $input, condition: $condition) {
+    updateCustomerTransactions(input: $input, condition: $condition) {
       id
-      customerID
+      userPhoneNumber
+      fullName
+      siteName
       siteID
+      action
+      collectedJerryCans
       timeStamp
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteVisit = /* GraphQL */ `
-  mutation DeleteVisit(
-    $input: DeleteVisitInput!
-    $condition: ModelVisitConditionInput
+export const deleteCustomerTransactions = /* GraphQL */ `
+  mutation DeleteCustomerTransactions(
+    $input: DeleteCustomerTransactionsInput!
+    $condition: ModelCustomerTransactionsConditionInput
   ) {
-    deleteVisit(input: $input, condition: $condition) {
+    deleteCustomerTransactions(input: $input, condition: $condition) {
       id
-      customerID
+      userPhoneNumber
+      fullName
+      siteName
       siteID
+      action
+      collectedJerryCans
       timeStamp
       createdAt
       updatedAt

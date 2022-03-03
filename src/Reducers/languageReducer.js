@@ -1,10 +1,11 @@
 import LocalizedStrings from "react-localization";
 import LocalizationHelper from "../Components/Helpers/LocalizationHelper";
-
+const strings = new LocalizedStrings(LocalizationHelper.getLanguagePhrasesFast())
+strings.setLanguage(LocalizationHelper.getLanguage().code)
 const initialState = {
     code: LocalizationHelper.getLanguage().code,
     language: LocalizationHelper.getLanguage().language,
-    strings : new LocalizedStrings(LocalizationHelper.getLanguagePhrasesFast()),
+    strings : strings,
     /*
         shape:
             {

@@ -151,16 +151,17 @@ class AdministrationBackendHelper {
 
     }
 
-    static async createCustomer(customerName, siteIDIn, pinIn, phoneNumberIn) {
+    static async createCustomer(firstName, lastName, siteIDIn, pinIn, phoneNumberIn) {
         const customer = {
-            IDNumber: customerName,
+            governmentID: firstName+lastName,
             siteID: siteIDIn,
-            validSubscription: true,
+            validSubscription: "true",
             pin: pinIn,
             phoneNumber: phoneNumberIn,
-            firstName: customerName,
-            lastName: "",
-            language: "en",
+            firstName: firstName,
+            lastName: lastName,
+            preferredLanguage: "en",
+            subscriptionExpiration: "2022-03-01"
         }
         await API.graphql({
             query: mutations.createCustomer,
@@ -178,10 +179,9 @@ class AdministrationBackendHelper {
                 latitude: parseFloat(siteCreationData.latitude),
                 longitude: parseFloat(siteCreationData.longitude),
                 // subs: this.state.selectedSubs,
-                averageWait: parseInt(siteCreationData.averageWait),
-                averageLine: parseInt(siteCreationData.averageLine),
+                avgWaitMinute: parseInt(siteCreationData.avgWaitMinute),
+                avgLineCount: parseInt(siteCreationData.avgLineCount),
                 status: "online",
-                estimatedDaily: parseInt(siteCreationData.estimatedDaily),
                 subscriptionFee: parseFloat(siteCreationData.subscriptionFee),
                 expectedJerrycans: parseInt(siteCreationData.expectedJerrycans)
             }
@@ -217,10 +217,9 @@ class AdministrationBackendHelper {
             variables: {input: site}
         })
     }
-    static async deleteCustomer(IDNumber, siteID) {
+    static async deleteCustomer(id) {
         const customerData = {
-            IDNumber: IDNumber,
-            siteID: siteID,
+            id: id,
         }
         await API.graphql({
             query: mutations.deleteCustomer,
@@ -233,7 +232,7 @@ class AdministrationBackendHelper {
         const siteManagers = await this.getSiteManagerBySite(siteIDInput)
         let cascadeDeleteSiteList = []
         for (const customer in customers) {
-            cascadeDeleteSiteList.push(deleteCustomer(customers[customer].IDNumber,siteIDInput))
+            cascadeDeleteSiteList.push(AdministrationBackendHelper.deleteCustomer(customers[customer].id))
         }
         console.log(siteManagers)
         for (const siteManager in siteManagers) {

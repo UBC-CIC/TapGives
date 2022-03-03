@@ -2,6 +2,7 @@ import React from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import {Auth} from "aws-amplify";
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
+import {connect} from "react-redux";
 
 
 
@@ -12,23 +13,30 @@ class siteManagement extends React.Component {
         const columns = [
             {
                 field: 'siteID',
-                headerName: this.props.siteID,
+                headerName: this.props.strings.siteID,
                 type: 'string',
                 width: 200,
                 editable: true,
             },
             {
-                field: 'IDNumber',
-                headerName: this.props.customerID,
+                field: 'governmentID',
+                headerName: this.props.strings.customerID,
                 width: 200 
             },
             {
-                field: 'name',
-                headerName: this.props.firstName,
+                field: 'firstName',
+                headerName: this.props.strings.firstName,
+                width: 200,
+                editable: true,
+            },
+            {
+                field: 'lastName',
+                headerName: this.props.strings.lastName,
                 width: 200,
                 editable: true,
             },
         ]
+        console.log(props)
         this.state = {
             customers: [],
             columns: columns,
@@ -48,6 +56,7 @@ class siteManagement extends React.Component {
     }
     async componentDidMount() {
         await this.getlist()
+        console.log(this.state.customers)
     }
 
     render() {
@@ -60,10 +69,22 @@ class siteManagement extends React.Component {
                     rowsPerPageOptions={[10]}
                     checkboxSelection
                     disableSelectionOnClick
-                    getRowId={(row) => row.IDNumber+row.siteID} // Because for customers use IDNumber instead of id
+                    // getRowId={(row) => row.governmentID+row.siteID} // Because for customers use IDNumber instead of id
                 />
             </div>
         );
     }
 }
-export default siteManagement
+const mapStateToProps = (state) => {
+    return {
+        loginState: state.loginState.currentState,
+        language: state.languageState.language,
+        code: state.languageState.code,
+        languageCode: state.languageState.languageCodes,
+        strings: state.languageState.strings,
+    };
+};
+
+
+
+export default connect(mapStateToProps)(siteManagement);

@@ -17,10 +17,9 @@ export const onCreateSiteManager = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -49,10 +48,9 @@ export const onUpdateSiteManager = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -81,10 +79,9 @@ export const onDeleteSiteManager = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -100,7 +97,8 @@ export const onDeleteSiteManager = /* GraphQL */ `
 export const onCreateCustomer = /* GraphQL */ `
   subscription OnCreateCustomer {
     onCreateCustomer {
-      IDNumber
+      id
+      governmentID
       siteID
       site {
         id
@@ -113,10 +111,9 @@ export const onCreateCustomer = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -127,8 +124,8 @@ export const onCreateCustomer = /* GraphQL */ `
       phoneNumber
       firstName
       lastName
-      language
-      expiration
+      preferredLanguage
+      subscriptionExpiration
       createdAt
       updatedAt
     }
@@ -137,7 +134,8 @@ export const onCreateCustomer = /* GraphQL */ `
 export const onUpdateCustomer = /* GraphQL */ `
   subscription OnUpdateCustomer {
     onUpdateCustomer {
-      IDNumber
+      id
+      governmentID
       siteID
       site {
         id
@@ -150,10 +148,9 @@ export const onUpdateCustomer = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -164,8 +161,8 @@ export const onUpdateCustomer = /* GraphQL */ `
       phoneNumber
       firstName
       lastName
-      language
-      expiration
+      preferredLanguage
+      subscriptionExpiration
       createdAt
       updatedAt
     }
@@ -174,7 +171,8 @@ export const onUpdateCustomer = /* GraphQL */ `
 export const onDeleteCustomer = /* GraphQL */ `
   subscription OnDeleteCustomer {
     onDeleteCustomer {
-      IDNumber
+      id
+      governmentID
       siteID
       site {
         id
@@ -187,10 +185,9 @@ export const onDeleteCustomer = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -201,8 +198,8 @@ export const onDeleteCustomer = /* GraphQL */ `
       phoneNumber
       firstName
       lastName
-      language
-      expiration
+      preferredLanguage
+      subscriptionExpiration
       createdAt
       updatedAt
     }
@@ -229,10 +226,9 @@ export const onCreateSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      averageWait
-      averageLine
+      avgWaitMinute
+      avgLineCount
       status
-      estimatedDaily
       subscriptionFee
       expectedJerrycans
       createdAt
@@ -261,10 +257,9 @@ export const onUpdateSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      averageWait
-      averageLine
+      avgWaitMinute
+      avgLineCount
       status
-      estimatedDaily
       subscriptionFee
       expectedJerrycans
       createdAt
@@ -293,48 +288,11 @@ export const onDeleteSite = /* GraphQL */ `
       serviceRadius
       latitude
       longitude
-      averageWait
-      averageLine
+      avgWaitMinute
+      avgLineCount
       status
-      estimatedDaily
       subscriptionFee
       expectedJerrycans
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateVisit = /* GraphQL */ `
-  subscription OnCreateVisit {
-    onCreateVisit {
-      id
-      customerID
-      siteID
-      timeStamp
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateVisit = /* GraphQL */ `
-  subscription OnUpdateVisit {
-    onUpdateVisit {
-      id
-      customerID
-      siteID
-      timeStamp
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteVisit = /* GraphQL */ `
-  subscription OnDeleteVisit {
-    onDeleteVisit {
-      id
-      customerID
-      siteID
-      timeStamp
       createdAt
       updatedAt
     }
@@ -416,6 +374,54 @@ export const onDeletePhrase = /* GraphQL */ `
         updatedAt
       }
       data
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateCustomerTransactions = /* GraphQL */ `
+  subscription OnCreateCustomerTransactions {
+    onCreateCustomerTransactions {
+      id
+      userPhoneNumber
+      fullName
+      siteName
+      siteID
+      action
+      collectedJerryCans
+      timeStamp
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateCustomerTransactions = /* GraphQL */ `
+  subscription OnUpdateCustomerTransactions {
+    onUpdateCustomerTransactions {
+      id
+      userPhoneNumber
+      fullName
+      siteName
+      siteID
+      action
+      collectedJerryCans
+      timeStamp
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteCustomerTransactions = /* GraphQL */ `
+  subscription OnDeleteCustomerTransactions {
+    onDeleteCustomerTransactions {
+      id
+      userPhoneNumber
+      fullName
+      siteName
+      siteID
+      action
+      collectedJerryCans
+      timeStamp
       createdAt
       updatedAt
     }

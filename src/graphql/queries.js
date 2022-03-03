@@ -17,10 +17,9 @@ export const getSiteManager = /* GraphQL */ `
         serviceRadius
         latitude
         longitude
-        averageWait
-        averageLine
+        avgWaitMinute
+        avgLineCount
         status
-        estimatedDaily
         subscriptionFee
         expectedJerrycans
         createdAt
@@ -61,10 +60,9 @@ export const listSiteManagers = /* GraphQL */ `
           serviceRadius
           latitude
           longitude
-          averageWait
-          averageLine
+          avgWaitMinute
+          avgLineCount
           status
-          estimatedDaily
           subscriptionFee
           expectedJerrycans
           createdAt
@@ -74,194 +72,6 @@ export const listSiteManagers = /* GraphQL */ `
         createdAt
         updatedAt
         siteSiteManagersId
-      }
-      nextToken
-    }
-  }
-`;
-export const getCustomer = /* GraphQL */ `
-  query GetCustomer($IDNumber: ID!) {
-    getCustomer(IDNumber: $IDNumber) {
-      IDNumber
-      siteID
-      site {
-        id
-        siteManagers {
-          nextToken
-        }
-        name
-        nickname
-        description
-        serviceRadius
-        latitude
-        longitude
-        averageWait
-        averageLine
-        status
-        estimatedDaily
-        subscriptionFee
-        expectedJerrycans
-        createdAt
-        updatedAt
-      }
-      validSubscription
-      pin
-      phoneNumber
-      firstName
-      lastName
-      language
-      expiration
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listCustomers = /* GraphQL */ `
-  query ListCustomers(
-    $IDNumber: ID
-    $filter: ModelCustomerFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listCustomers(
-      IDNumber: $IDNumber
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        IDNumber
-        siteID
-        site {
-          id
-          name
-          nickname
-          description
-          serviceRadius
-          latitude
-          longitude
-          averageWait
-          averageLine
-          status
-          estimatedDaily
-          subscriptionFee
-          expectedJerrycans
-          createdAt
-          updatedAt
-        }
-        validSubscription
-        pin
-        phoneNumber
-        firstName
-        lastName
-        language
-        expiration
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getSite = /* GraphQL */ `
-  query GetSite($id: ID!) {
-    getSite(id: $id) {
-      id
-      siteManagers {
-        items {
-          id
-          siteID
-          phoneNumber
-          createdAt
-          updatedAt
-          siteSiteManagersId
-        }
-        nextToken
-      }
-      name
-      nickname
-      description
-      serviceRadius
-      latitude
-      longitude
-      averageWait
-      averageLine
-      status
-      estimatedDaily
-      subscriptionFee
-      expectedJerrycans
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listSites = /* GraphQL */ `
-  query ListSites(
-    $filter: ModelSiteFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listSites(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        siteManagers {
-          nextToken
-        }
-        name
-        nickname
-        description
-        serviceRadius
-        latitude
-        longitude
-        averageWait
-        averageLine
-        status
-        estimatedDaily
-        subscriptionFee
-        expectedJerrycans
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getVisit = /* GraphQL */ `
-  query GetVisit($id: ID!) {
-    getVisit(id: $id) {
-      id
-      customerID
-      siteID
-      timeStamp
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listVisits = /* GraphQL */ `
-  query ListVisits(
-    $id: ID
-    $filter: ModelVisitFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listVisits(
-      id: $id
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        id
-        customerID
-        siteID
-        timeStamp
-        createdAt
-        updatedAt
       }
       nextToken
     }
@@ -293,10 +103,9 @@ export const siteManagerByID = /* GraphQL */ `
           serviceRadius
           latitude
           longitude
-          averageWait
-          averageLine
+          avgWaitMinute
+          avgLineCount
           status
-          estimatedDaily
           subscriptionFee
           expectedJerrycans
           createdAt
@@ -337,10 +146,9 @@ export const siteManagerBySite = /* GraphQL */ `
           serviceRadius
           latitude
           longitude
-          averageWait
-          averageLine
+          avgWaitMinute
+          avgLineCount
           status
-          estimatedDaily
           subscriptionFee
           expectedJerrycans
           createdAt
@@ -350,6 +158,133 @@ export const siteManagerBySite = /* GraphQL */ `
         createdAt
         updatedAt
         siteSiteManagersId
+      }
+      nextToken
+    }
+  }
+`;
+export const getCustomer = /* GraphQL */ `
+  query GetCustomer($id: ID!) {
+    getCustomer(id: $id) {
+      id
+      governmentID
+      siteID
+      site {
+        id
+        siteManagers {
+          nextToken
+        }
+        name
+        nickname
+        description
+        serviceRadius
+        latitude
+        longitude
+        avgWaitMinute
+        avgLineCount
+        status
+        subscriptionFee
+        expectedJerrycans
+        createdAt
+        updatedAt
+      }
+      validSubscription
+      pin
+      phoneNumber
+      firstName
+      lastName
+      preferredLanguage
+      subscriptionExpiration
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCustomers = /* GraphQL */ `
+  query ListCustomers(
+    $filter: ModelCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCustomers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        governmentID
+        siteID
+        site {
+          id
+          name
+          nickname
+          description
+          serviceRadius
+          latitude
+          longitude
+          avgWaitMinute
+          avgLineCount
+          status
+          subscriptionFee
+          expectedJerrycans
+          createdAt
+          updatedAt
+        }
+        validSubscription
+        pin
+        phoneNumber
+        firstName
+        lastName
+        preferredLanguage
+        subscriptionExpiration
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const customerByGovernmentID = /* GraphQL */ `
+  query CustomerByGovernmentID(
+    $governmentID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    customerByGovernmentID(
+      governmentID: $governmentID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        governmentID
+        siteID
+        site {
+          id
+          name
+          nickname
+          description
+          serviceRadius
+          latitude
+          longitude
+          avgWaitMinute
+          avgLineCount
+          status
+          subscriptionFee
+          expectedJerrycans
+          createdAt
+          updatedAt
+        }
+        validSubscription
+        pin
+        phoneNumber
+        firstName
+        lastName
+        preferredLanguage
+        subscriptionExpiration
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -371,7 +306,8 @@ export const customerBySite = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        IDNumber
+        id
+        governmentID
         siteID
         site {
           id
@@ -381,10 +317,9 @@ export const customerBySite = /* GraphQL */ `
           serviceRadius
           latitude
           longitude
-          averageWait
-          averageLine
+          avgWaitMinute
+          avgLineCount
           status
-          estimatedDaily
           subscriptionFee
           expectedJerrycans
           createdAt
@@ -395,8 +330,8 @@ export const customerBySite = /* GraphQL */ `
         phoneNumber
         firstName
         lastName
-        language
-        expiration
+        preferredLanguage
+        subscriptionExpiration
         createdAt
         updatedAt
       }
@@ -404,16 +339,16 @@ export const customerBySite = /* GraphQL */ `
     }
   }
 `;
-export const visitByCustomerID = /* GraphQL */ `
-  query VisitByCustomerID(
-    $customerID: ID!
+export const customerByPhoneNumber = /* GraphQL */ `
+  query CustomerByPhoneNumber(
+    $phoneNumber: String!
     $sortDirection: ModelSortDirection
-    $filter: ModelVisitFilterInput
+    $filter: ModelCustomerFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    visitByCustomerID(
-      customerID: $customerID
+    customerByPhoneNumber(
+      phoneNumber: $phoneNumber
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -421,9 +356,31 @@ export const visitByCustomerID = /* GraphQL */ `
     ) {
       items {
         id
-        customerID
+        governmentID
         siteID
-        timeStamp
+        site {
+          id
+          name
+          nickname
+          description
+          serviceRadius
+          latitude
+          longitude
+          avgWaitMinute
+          avgLineCount
+          status
+          subscriptionFee
+          expectedJerrycans
+          createdAt
+          updatedAt
+        }
+        validSubscription
+        pin
+        phoneNumber
+        firstName
+        lastName
+        preferredLanguage
+        subscriptionExpiration
         createdAt
         updatedAt
       }
@@ -431,16 +388,16 @@ export const visitByCustomerID = /* GraphQL */ `
     }
   }
 `;
-export const visitBySite = /* GraphQL */ `
-  query VisitBySite(
-    $siteID: ID!
+export const customerByFirstName = /* GraphQL */ `
+  query CustomerByFirstName(
+    $firstName: String!
     $sortDirection: ModelSortDirection
-    $filter: ModelVisitFilterInput
+    $filter: ModelCustomerFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    visitBySite(
-      siteID: $siteID
+    customerByFirstName(
+      firstName: $firstName
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -448,9 +405,92 @@ export const visitBySite = /* GraphQL */ `
     ) {
       items {
         id
-        customerID
+        governmentID
         siteID
-        timeStamp
+        site {
+          id
+          name
+          nickname
+          description
+          serviceRadius
+          latitude
+          longitude
+          avgWaitMinute
+          avgLineCount
+          status
+          subscriptionFee
+          expectedJerrycans
+          createdAt
+          updatedAt
+        }
+        validSubscription
+        pin
+        phoneNumber
+        firstName
+        lastName
+        preferredLanguage
+        subscriptionExpiration
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getSite = /* GraphQL */ `
+  query GetSite($id: ID!) {
+    getSite(id: $id) {
+      id
+      siteManagers {
+        items {
+          id
+          siteID
+          phoneNumber
+          createdAt
+          updatedAt
+          siteSiteManagersId
+        }
+        nextToken
+      }
+      name
+      nickname
+      description
+      serviceRadius
+      latitude
+      longitude
+      avgWaitMinute
+      avgLineCount
+      status
+      subscriptionFee
+      expectedJerrycans
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSites = /* GraphQL */ `
+  query ListSites(
+    $filter: ModelSiteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSites(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        siteManagers {
+          nextToken
+        }
+        name
+        nickname
+        description
+        serviceRadius
+        latitude
+        longitude
+        avgWaitMinute
+        avgLineCount
+        status
+        subscriptionFee
+        expectedJerrycans
         createdAt
         updatedAt
       }
@@ -561,6 +601,115 @@ export const phraseByLanguage = /* GraphQL */ `
           updatedAt
         }
         data
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getCustomerTransactions = /* GraphQL */ `
+  query GetCustomerTransactions($id: ID!) {
+    getCustomerTransactions(id: $id) {
+      id
+      userPhoneNumber
+      fullName
+      siteName
+      siteID
+      action
+      collectedJerryCans
+      timeStamp
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCustomerTransactions = /* GraphQL */ `
+  query ListCustomerTransactions(
+    $id: ID
+    $filter: ModelCustomerTransactionsFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listCustomerTransactions(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        userPhoneNumber
+        fullName
+        siteName
+        siteID
+        action
+        collectedJerryCans
+        timeStamp
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const customerTransactionByPhoneNumber = /* GraphQL */ `
+  query CustomerTransactionByPhoneNumber(
+    $userPhoneNumber: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCustomerTransactionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    customerTransactionByPhoneNumber(
+      userPhoneNumber: $userPhoneNumber
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userPhoneNumber
+        fullName
+        siteName
+        siteID
+        action
+        collectedJerryCans
+        timeStamp
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const customerTransactionBySite = /* GraphQL */ `
+  query CustomerTransactionBySite(
+    $siteID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCustomerTransactionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    customerTransactionBySite(
+      siteID: $siteID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userPhoneNumber
+        fullName
+        siteName
+        siteID
+        action
+        collectedJerryCans
+        timeStamp
         createdAt
         updatedAt
       }

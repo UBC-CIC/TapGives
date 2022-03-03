@@ -8,26 +8,27 @@ type SiteManager @model @auth(rules:[{ allow: private, operations:[read] }
     id: ID! @primaryKey(sortKeyFields: ["siteID"]) @index(name: "bySiteManagerID", queryField: "siteManagerByID")
     siteID: ID! @index(name: "bySite", queryField: "siteManagerBySite") # Site ID, must be scalar to be a sort key
     site: Site @belongsTo(fields:["siteID"])
-    phoneNumber: String!
+    phoneNumber: String! # eg. +2549991234
 }
 
 # DynamoDB streams for transactions
 type Customer @model @auth(rules:[{ allow: private}]) {
-    IDNumber: ID! @primaryKey # (sortKeyFields: ["siteID"]) @index(name: "byCustomerID", queryField: "customerByID")  This is to make it composite
+    id: ID!
+    governmentID: ID! @index(name: "byGovernmentID", queryField: "customerByGovernmentID") # givernment issued ID
     siteID: ID! @index(name: "bySite", queryField: "customerBySite")# Site ID, must be scalar to be a sort key
     site: Site @hasOne(fields:["siteID"])
-    validSubscription: String!
+    validSubscription: String! # true, false, pending?
     pin: Int!
-    phoneNumber: String!
-    firstName: String!
+    phoneNumber: String! @index(name: "byPhoneNumber", queryField: "customerByPhoneNumber")
+    firstName: String! @index(name: "byFirstName", queryField: "customerByFirstName")
     lastName: String!
-    language: String!
-    expiration: String
+    preferredLanguage: String!
+    subscriptionExpiration: String! # ISO 8601 (AWS timestamp)
 }
 # DynamoDB streams->Lambda to log status changes
 type Site @model @auth(rules:[{ allow: private, operations:[read] }
     {allow: groups, groups:["Admins"]}]) {
-    id: ID! # not used to query
+    id: ID!
     siteManagers: [SiteManager] @hasMany
     name: String!
     nickname: String! # Short code, can be queried
@@ -35,10 +36,9 @@ type Site @model @auth(rules:[{ allow: private, operations:[read] }
     serviceRadius: Float! # Measured in KM
     latitude: Float!
     longitude: Float!
-    averageWait: Int! # Measured in minutes
-    averageLine: Int! # Measured in people
-    status: String! # Change to type
-    estimatedDaily: Int! # Estimation using average of last 30 days?
+    avgWaitMinute: Int! # Measured in minutes
+    avgLineCount : Int! # Measured in people
+    status: String! # online, maintenance, offline
     subscriptionFee: Float!
     expectedJerrycans: Int!
 }
@@ -57,9 +57,14 @@ type Phrase @model @auth(rules: [{allow: public, provider: iam, operations: [rea
     data: String! # eg. password
 }
 # DynamoDB streams->Lambda to process data
-type Visit @model @auth(rules:[{ allow: private}]) {
+type CustomerTransactions @model @auth(rules:[{ allow: private, operations:[read] }
+    {allow: groups, groups:["Admins"]}]) {
     id: ID! @primaryKey
-    customerID: ID! @index(name: "visitByCustomerID", queryField: "visitByCustomerID")
-    siteID: ID! @index(name: "bySite", queryField: "visitBySite") # site ID, must be scalar to be a sort key
-    timeStamp: String!
+    userPhoneNumber: String! @index(name: "byPhoneNumber", queryField: "customerTransactionByPhoneNumber")
+    fullName: String! # firstName+" "+lastName
+    siteName: String!
+    siteID: ID! @index(name: "bySite", queryField: "customerTransactionBySite")
+    action: String!
+    collectedJerryCans: Int!
+    timeStamp: String! # ISO 8601 (AWS timestamp)
 }

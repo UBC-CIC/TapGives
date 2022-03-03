@@ -1,11 +1,12 @@
 import React from "react";
-import {Amplify, Storage} from "aws-amplify";
+import {Amplify, API, Storage} from "aws-amplify";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import awsconfig from '../../aws-exports';
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 import LocalizationHelper from "../Helpers/LocalizationHelper";
 import {baseAssociations, baseLanguages} from "../languageData";
+import * as mutations from "../../graphql/mutations";
 
 const siteLocations = [
     [0.8601723100257656, 32.081114032264246],
@@ -24,12 +25,10 @@ class DataStoreTest extends React.Component {
             data : "",
             sites: [],
             subs: [],
-            customerData: {
+            customerTransaction: {
                 site: [],
-                pin: "",
-                phoneNumber : 0,
-                name: "",
-                sub: null,
+                userPhoneNumber : 0,
+                fullName: "",
             },
             siteManagerData: {
                 name: ""
@@ -57,11 +56,19 @@ class DataStoreTest extends React.Component {
         await LocalizationHelper.addMultipleLanguageCodes(baseAssociations)
     }
     async createUser() {
-        await AdministrationBackendHelper.createCustomer(
-            this.state.customerData.name,
-            this.state.customerData.site,
-            this.state.customerData.pin,
-            this.state.customerData.phoneNumber)
+        const CustomerTransactions = {
+            userPhoneNumber: this.state.customerTransaction.userPhoneNumber,
+            fullName: this.state.customerTransaction.fullName,
+            siteName: this.state.customerTransaction.site,
+            siteID: this.state.customerTransaction.site,
+            action: "register",
+            collectedJerryCans: 0,
+            timeStamp: "2022-03-01",
+        }
+        await API.graphql({
+            query: mutations.createCustomerTransactions,
+            variables: {input: CustomerTransactions}
+        })
     }
     async createManager() {
         try {
@@ -90,7 +97,7 @@ class DataStoreTest extends React.Component {
         for (const site in sites) {
             try {
                 for (let iterator = 0 ; iterator < 5; iterator++) {
-                    AdministrationBackendHelper.createCustomer("customer"+iterator, sites[site].id, 1234, iterator)
+                    AdministrationBackendHelper.createCustomer("first"+iterator, "last"+iterator, sites[site].id, 1234, iterator)
                 }
             } catch (e) {
                 console.log("Error creating customers for site: "+sites[site].id, e)
@@ -102,13 +109,13 @@ class DataStoreTest extends React.Component {
         const siteCreationData = {
             name: "testSite" + number,
             description: "realistic site location " + number,
+            nickname: "nickname" + number,
             serviceRadius: 5,
             latitude: latitude,
             longitude: longitude,
-            averageWait: 5,
-            averageLine: 5,
-            online: true,
-            estimatedDaily: 200,
+            avgWaitMinute: 5,
+            avgLineCount: 5,
+            status: "online",
             subscriptionFee: 5,
             expectedJerrycans: 10,
         }
@@ -149,14 +156,11 @@ class DataStoreTest extends React.Component {
                     </Button>
                 </Grid>
                 <Grid direction={"row"}>
-                    <TextField variant="outlined"  label={"PIN"} onChange={(val) => {
-                        customerData : Object.assign(this.state.customerData, {pin: parseInt(val.target.value) })
-                    }}/>
                     <TextField variant="outlined" label={"Phone Number"} onChange={(val) => {
-                        customerData : Object.assign(this.state.customerData, {phoneNumber: val.target.value})
+                        customerData : Object.assign(this.state.customerTransaction, {userPhoneNumber: val.target.value})
                     }}/>
                     <TextField variant="outlined"  label={"Name"} onChange={(val) => {
-                        customerData : Object.assign(this.state.customerData, {name: val.target.value})
+                        customerData : Object.assign(this.state.customerTransaction, {fullName: val.target.value})
                         console.log(val)
                     }}/>
                     <FormControl style = {{ width: "150px"}}>
@@ -164,7 +168,7 @@ class DataStoreTest extends React.Component {
                         <Select
                             labelId="site-label"
                             id="sites"
-                            value={this.state.customerData.site}
+                            value={this.state.customerTransaction.site}
                             onChange={async (event) => {
                                 const {
                                     target: {value},
@@ -172,9 +176,7 @@ class DataStoreTest extends React.Component {
                                 // const subs = (await DataStore.query(Site, value)).subs
                                 console.log(value)
                                 this.setState({
-                                    customerData: Object.assign(this.state.customerData, {site: value}),
-                                    //Basically subs is equal to the subs that
-                                    subs: await AdministrationBackendHelper.getSiteSubscriptionsBySite(value)
+                                    customerData: Object.assign(this.state.customerTransaction, {site: value}),
                                 });
 
                             }}
@@ -187,33 +189,33 @@ class DataStoreTest extends React.Component {
 
                         </Select>
                     </FormControl>
-                    <FormControl style = {{ width: "120px"}}>
-                        <InputLabel id="subscription-label">Subscriptions</InputLabel>
-                        <Select
-                            labelId="sites"
-                            id="subscriptions"
-                            value={this.state.customerData.sub}
-                            onChange={(event)=>{
-                                const {
-                                    target: { value },
-                                } = event;
-                                this.setState({
-                                    customerData: Object.assign(this.state.customerData, {sub: value})
-                                });
-                                console.log(value)
-                            }}
-                        >
-                            {this.state.subs.map((sub)=> {
-                                const val = sub.name+" ("+sub.expectedJerrycans+"/ $"+sub.pricePerMonth+")"
-                                return <MenuItem key = {val+"key"} value = {sub.id}>
-                                    {val}
-                                </MenuItem>
-                            })}
+                    {/*<FormControl style = {{ width: "120px"}}>*/}
+                    {/*    <InputLabel id="subscription-label">Subscriptions</InputLabel>*/}
+                    {/*    <Select*/}
+                    {/*        labelId="sites"*/}
+                    {/*        id="subscriptions"*/}
+                    {/*        value={this.state.customerData.sub}*/}
+                    {/*        onChange={(event)=>{*/}
+                    {/*            const {*/}
+                    {/*                target: { value },*/}
+                    {/*            } = event;*/}
+                    {/*            this.setState({*/}
+                    {/*                customerData: Object.assign(this.state.customerData, {sub: value})*/}
+                    {/*            });*/}
+                    {/*            console.log(value)*/}
+                    {/*        }}*/}
+                    {/*    >*/}
+                    {/*        {this.state.subs.map((sub)=> {*/}
+                    {/*            const val = sub.name+" ("+sub.expectedJerrycans+"/ $"+sub.pricePerMonth+")"*/}
+                    {/*            return <MenuItem key = {val+"key"} value = {sub.id}>*/}
+                    {/*                {val}*/}
+                    {/*            </MenuItem>*/}
+                    {/*        })}*/}
 
-                        </Select>
-                    </FormControl>
+                    {/*    </Select>*/}
+                    {/*</FormControl>*/}
                     <Button variant="outlined" onClick={this.createUser.bind(this)}>
-                        Create User
+                        Site History
                     </Button>
                 </Grid>
                 <Grid>

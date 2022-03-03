@@ -261,7 +261,6 @@ class LanguageAdministration extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        loginState: state.loginState.currentState,
         language: state.languageState.language,
         code: state.languageState.code,
         languageCode: state.languageState.languageCodes,
