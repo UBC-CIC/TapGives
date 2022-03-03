@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "axios": "^0.26.0",
+    "graphql": "^16.3.0",
+    "graphql-tag": "^2.12.6"
+  }
+}
