@@ -2,6 +2,9 @@ const UssdMenu       = require("ussd-menu-builder");
 const runMenu        = require('./runMenu');
 const invokeGetCustomer    = require('./lambdas/invokeGetCustomer');
 
+// ENSURE USER CAN ONLY SIGN UP TO SITE IN A GIVEN LIST //
+// ONLY WHERE THERE EXIST SITE MANAGERS //
+
 let globalUser;
 
 exports.handler = async (event, context) => {

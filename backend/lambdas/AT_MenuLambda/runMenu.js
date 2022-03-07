@@ -1,6 +1,6 @@
 const UssdMenu    = require("ussd-menu-builder");
 const invokeAddCustomer = require('./lambdas/invokeAddCustomer');
-const invokeRecordVisit = require('./lambdas/invokeRecordVisit');
+const invokeVisitStepFunction = require('./lambdas/invokeVisitStepFunction');
 const invokePaymentStepFunction = require('./lambdas/invokePaymentStepFunction');
 
 let firstName, lastName, idNumber, signUpPin, siteNumber, loginPin;
@@ -152,17 +152,10 @@ async function runMenu(args, context, user) {
             if (!user.validSubscription) {
                 menu.end("Invalid selection. Please retry.");
             } else {
-                // get verification code
-                // send verification code to site manager + customer via pinpoint
-                
-                
-                // store visit on db
-                let res = await invokeRecordVisit(user);
+                let res = await invokeVisitStepFunction(user.idNumber, user.siteID, args.phoneNumber);
                 console.log(res);
                 
-                menu.end("You can now collect water at your nearest station." +
-                "\nYour verification code is PQYX17749." + 
-                "\nGoodbye.");
+                menu.end("You will receive a message shortly with your verification code. Thank you.");
             }
         }
     });
@@ -185,7 +178,7 @@ async function runMenu(args, context, user) {
     
     menu.state("start-mpesa", {
         run: async () => {
-            invokePaymentStepFunction(user.idNumber, args.phoneNumber, subscriptionAmount);
+            await invokePaymentStepFunction(user.idNumber, args.phoneNumber, subscriptionAmount);
             
             menu.end("If you have completed the payment, thank you. " + 
             "If not, please continue to do so. " + 
