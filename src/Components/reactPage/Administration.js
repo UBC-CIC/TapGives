@@ -120,7 +120,13 @@ class Administration extends React.Component {
             },
             {
                 id:"description",
-                label: this.props.strings.siteDescription,
+                label: this.props.strings.description,
+                xs: 12,
+                regex: /.+/,
+            },
+            {
+                id:"smsDescription",
+                label: this.props.strings.smsDescription,
                 xs: 12,
                 regex: /.+/,
             },
@@ -161,12 +167,6 @@ class Administration extends React.Component {
                 regex: /\d+/,
             },
             {
-                id: "estimatedDaily",
-                label: this.props.strings.estimatedDaily,
-                xs: 4,
-                regex: /\d+/,
-            },
-            {
                 id: "subscriptionFee",
                 label: this.props.strings.subscriptionFee,
                 xs: 4,
@@ -181,12 +181,19 @@ class Administration extends React.Component {
         ]
         const siteCreationData = siteRequirements.map((requirement) => {
             return({
-                    [requirement.id]: "",
-                    [requirement.id+"Error"]: false
+                    [requirement.id]: ""
                 })
         }).reduce((prev, curr) => {
             return Object.assign(prev,curr)
         })
+        const siteCreationDataError = siteRequirements.map((requirement) => {
+            return({
+                [requirement.id+"Error"]: false
+            })
+        }).reduce((prev, curr) => {
+            return Object.assign(prev,curr)
+        })
+
         // To create a deep copy
         const siteCreationErrors = JSON.parse(JSON.stringify(siteCreationData))
         const siteEditData = JSON.parse(JSON.stringify(siteCreationData))
@@ -195,8 +202,6 @@ class Administration extends React.Component {
             selectedSites: [],
             siteData : [],
             siteManagerLinkers : [],
-            // siteSubscriptions: [],
-            // selectedSiteSubscriptions: [],
             selectedManager : [],
             createSiteMenu: false,
             siteCreationData: siteCreationData,
@@ -205,14 +210,6 @@ class Administration extends React.Component {
             siteEditData : siteEditData,
             siteEditErrors: siteEditErrors,
             deleteSiteMenu: false,
-            // createSubscriptionMenu: false,
-            // deleteSubscriptionMenu: false,
-            // subscriptionCreationData: {},
-            // leftUsers: [1,2,3,4],
-            // rightUsers: [5,6,7,8],
-            // checked: [],
-            // leftChecked: [],
-            // rightChecked: [],
             siteManagers: [],
             loginState: props.loginState,
             languageState: props.languageState,
@@ -334,13 +331,9 @@ class Administration extends React.Component {
     }
     // Calls datastore to delete selected sites
     async deleteSite() {
-        // try {
-            for (const site in this.state.selectedSites) {
-                await AdministrationBackendHelper.cascadeDeleteSite(this.state.selectedSites[site])
-            }
-        // } catch (error) {
-        //     console.log("Error deleting site", error);
-        // }
+        for (const site in this.state.selectedSites) {
+            await AdministrationBackendHelper.cascadeDeleteSite(this.state.selectedSites[site])
+        }
         this.setState({
             deleteSiteMenu: false
         })
@@ -348,22 +341,6 @@ class Administration extends React.Component {
             siteData: await AdministrationBackendHelper.getSites()
         })
     }
-    // async deleteSiteSubscription(){
-    //     try {
-    //         for (const siteSubscription in this.state.selectedSiteSubscriptions) {
-    //             console.log(this.state.selectedSiteSubscriptions[siteSubscription])
-    //             await AdministrationBackendHelper.cascadeDeleteSiteSubscription(this.state.selectedSiteSubscriptions[siteSubscription])
-    //         }
-    //     } catch (e) {
-    //         console.log("Error deleting site subscriptions", e)
-    //     }
-    //     this.setState({
-    //         deleteSubscriptionMenu: false
-    //     })
-    //     this.setState({
-    //         siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0])
-    //     })
-    // }
     not(a, b) {
         return a.filter((value) => b.indexOf(value) === -1);
     }
@@ -427,7 +404,6 @@ class Administration extends React.Component {
                                     })
                                     this.setState({
                                         editSiteMenu: true,
-                                        // siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
                                         siteEditData: siteEditData
                                     })
                                 }
@@ -505,6 +481,10 @@ class Administration extends React.Component {
                             ))}
                         </Grid>
                     </DialogContent>
+                    <DialogActions>
+                        <Button onClick={()=>{this.setState({editSiteMenu: false})}}>{this.props.strings.cancel}</Button>
+                        <Button onClick={this.updateSite.bind(this)}>{this.props.strings.editSelectedSite}</Button>
+                    </DialogActions>
                 </Dialog>
                 <Dialog open={this.state.deleteSiteMenu} onClose={()=>{this.setState({deleteSiteMenu: false})}} maxWidth={"md"} >
                     <DialogActions>

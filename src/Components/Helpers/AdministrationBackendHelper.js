@@ -170,21 +170,7 @@ class AdministrationBackendHelper {
     }
     static async createSite(siteCreationData) {
         try {
-            const site = {
-                id: siteCreationData.name,
-                name: siteCreationData.name,
-                nickname: siteCreationData.nickname,
-                description: siteCreationData.description,
-                serviceRadius: parseFloat(siteCreationData.serviceRadius),
-                latitude: parseFloat(siteCreationData.latitude),
-                longitude: parseFloat(siteCreationData.longitude),
-                // subs: this.state.selectedSubs,
-                avgWaitMinute: parseInt(siteCreationData.avgWaitMinute),
-                avgLineCount: parseInt(siteCreationData.avgLineCount),
-                status: "online",
-                subscriptionFee: parseFloat(siteCreationData.subscriptionFee),
-                expectedJerrycans: parseInt(siteCreationData.expectedJerrycans)
-            }
+            const site = Object.assign(siteCreationData, {status: "online"})
             await API.graphql({
                 query: mutations.createSite,
                 variables: {input: site},

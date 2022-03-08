@@ -1,6 +1,11 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const echo = /* GraphQL */ `
+  query Echo($msg: String) {
+    echo(msg: $msg)
+  }
+`;
 export const getSiteManager = /* GraphQL */ `
   query GetSiteManager($id: ID!, $siteID: ID!) {
     getSiteManager(id: $id, siteID: $siteID) {
@@ -13,6 +18,7 @@ export const getSiteManager = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -56,6 +62,7 @@ export const listSiteManagers = /* GraphQL */ `
           id
           name
           nickname
+          smsDescription
           description
           serviceRadius
           latitude
@@ -99,6 +106,7 @@ export const siteManagerByID = /* GraphQL */ `
           id
           name
           nickname
+          smsDescription
           description
           serviceRadius
           latitude
@@ -142,6 +150,7 @@ export const siteManagerBySite = /* GraphQL */ `
           id
           name
           nickname
+          smsDescription
           description
           serviceRadius
           latitude
@@ -176,6 +185,7 @@ export const getCustomer = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -215,6 +225,7 @@ export const listCustomers = /* GraphQL */ `
           id
           name
           nickname
+          smsDescription
           description
           serviceRadius
           latitude
@@ -264,6 +275,7 @@ export const customerByGovernmentID = /* GraphQL */ `
           id
           name
           nickname
+          smsDescription
           description
           serviceRadius
           latitude
@@ -313,6 +325,7 @@ export const customerBySite = /* GraphQL */ `
           id
           name
           nickname
+          smsDescription
           description
           serviceRadius
           latitude
@@ -362,6 +375,7 @@ export const customerByPhoneNumber = /* GraphQL */ `
           id
           name
           nickname
+          smsDescription
           description
           serviceRadius
           latitude
@@ -411,6 +425,7 @@ export const customerByFirstName = /* GraphQL */ `
           id
           name
           nickname
+          smsDescription
           description
           serviceRadius
           latitude
@@ -454,6 +469,7 @@ export const getSite = /* GraphQL */ `
       }
       name
       nickname
+      smsDescription
       description
       serviceRadius
       latitude
@@ -482,6 +498,46 @@ export const listSites = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
+        description
+        serviceRadius
+        latitude
+        longitude
+        avgWaitMinute
+        avgLineCount
+        status
+        subscriptionFee
+        expectedJerrycans
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const siteByNickname = /* GraphQL */ `
+  query SiteByNickname(
+    $nickname: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSiteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    siteByNickname(
+      nickname: $nickname
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteManagers {
+          nextToken
+        }
+        name
+        nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -612,13 +668,14 @@ export const getCustomerTransactions = /* GraphQL */ `
   query GetCustomerTransactions($id: ID!) {
     getCustomerTransactions(id: $id) {
       id
+      governmentID
       userPhoneNumber
       fullName
       siteName
       siteID
       action
-      collectedJerryCans
-      timeStamp
+      collectedCount
+      collectedItemType
       createdAt
       updatedAt
     }
@@ -641,13 +698,14 @@ export const listCustomerTransactions = /* GraphQL */ `
     ) {
       items {
         id
+        governmentID
         userPhoneNumber
         fullName
         siteName
         siteID
         action
-        collectedJerryCans
-        timeStamp
+        collectedCount
+        collectedItemType
         createdAt
         updatedAt
       }
@@ -672,13 +730,14 @@ export const customerTransactionByPhoneNumber = /* GraphQL */ `
     ) {
       items {
         id
+        governmentID
         userPhoneNumber
         fullName
         siteName
         siteID
         action
-        collectedJerryCans
-        timeStamp
+        collectedCount
+        collectedItemType
         createdAt
         updatedAt
       }
@@ -703,13 +762,14 @@ export const customerTransactionBySite = /* GraphQL */ `
     ) {
       items {
         id
+        governmentID
         userPhoneNumber
         fullName
         siteName
         siteID
         action
-        collectedJerryCans
-        timeStamp
+        collectedCount
+        collectedItemType
         createdAt
         updatedAt
       }

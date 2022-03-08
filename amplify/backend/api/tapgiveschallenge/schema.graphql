@@ -11,7 +11,6 @@ type SiteManager @model @auth(rules:[{ allow: private, operations:[read] }
     phoneNumber: String! # eg. +2549991234
 }
 
-# DynamoDB streams for transactions
 type Customer @model @auth(rules:[{ allow: private}]) {
     id: ID!
     governmentID: ID! @index(name: "byGovernmentID", queryField: "customerByGovernmentID") # givernment issued ID
@@ -31,12 +30,13 @@ type Site @model @auth(rules:[{ allow: private, operations:[read] }
     id: ID!
     siteManagers: [SiteManager] @hasMany
     name: String!
-    nickname: String! # Short code, can be queried
+    nickname: String! @index(name: "byNickname", queryField: "siteByNickname") # can be queried
+    smsDescription: String! # short description for users (max 160 charc)
     description: String # Can be error message too (?) error can be abstracted away
     serviceRadius: Float! # Measured in KM
     latitude: Float!
     longitude: Float!
-    avgWaitMinute: Int! # Measured in minutes
+    avgWaitMinute: Int! # For customer lines
     avgLineCount : Int! # Measured in people
     status: String! # online, maintenance, offline
     subscriptionFee: Float!
@@ -60,11 +60,15 @@ type Phrase @model @auth(rules: [{allow: public, provider: iam, operations: [rea
 type CustomerTransactions @model @auth(rules:[{ allow: private, operations:[read] }
     {allow: groups, groups:["Admins"]}]) {
     id: ID! @primaryKey
+    governmentID: ID! # Same as from Customer
     userPhoneNumber: String! @index(name: "byPhoneNumber", queryField: "customerTransactionByPhoneNumber")
     fullName: String! # firstName+" "+lastName
     siteName: String!
     siteID: ID! @index(name: "bySite", queryField: "customerTransactionBySite")
     action: String!
-    collectedJerryCans: Int!
-    timeStamp: String! # ISO 8601 (AWS timestamp)
+    collectedCount: Int! # Item count
+    collectedItemType: String! # Item type eg. jerrycans
+}
+type Query {
+    echo(msg: String): String @function(name: "TapGivesAthenaQuery-${env}")
 }

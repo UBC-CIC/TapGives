@@ -16,6 +16,7 @@ export const createSiteManager = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -50,6 +51,7 @@ export const updateSiteManager = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -84,6 +86,7 @@ export const deleteSiteManager = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -119,6 +122,7 @@ export const createCustomer = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -159,6 +163,7 @@ export const updateCustomer = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -199,6 +204,7 @@ export const deleteCustomer = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -243,6 +249,7 @@ export const createSite = /* GraphQL */ `
       }
       name
       nickname
+      smsDescription
       description
       serviceRadius
       latitude
@@ -277,6 +284,7 @@ export const updateSite = /* GraphQL */ `
       }
       name
       nickname
+      smsDescription
       description
       serviceRadius
       latitude
@@ -311,6 +319,7 @@ export const deleteSite = /* GraphQL */ `
       }
       name
       nickname
+      smsDescription
       description
       serviceRadius
       latitude
@@ -431,13 +440,14 @@ export const createCustomerTransactions = /* GraphQL */ `
   ) {
     createCustomerTransactions(input: $input, condition: $condition) {
       id
+      governmentID
       userPhoneNumber
       fullName
       siteName
       siteID
       action
-      collectedJerryCans
-      timeStamp
+      collectedCount
+      collectedItemType
       createdAt
       updatedAt
     }
@@ -450,13 +460,14 @@ export const updateCustomerTransactions = /* GraphQL */ `
   ) {
     updateCustomerTransactions(input: $input, condition: $condition) {
       id
+      governmentID
       userPhoneNumber
       fullName
       siteName
       siteID
       action
-      collectedJerryCans
-      timeStamp
+      collectedCount
+      collectedItemType
       createdAt
       updatedAt
     }
@@ -469,13 +480,14 @@ export const deleteCustomerTransactions = /* GraphQL */ `
   ) {
     deleteCustomerTransactions(input: $input, condition: $condition) {
       id
+      governmentID
       userPhoneNumber
       fullName
       siteName
       siteID
       action
-      collectedJerryCans
-      timeStamp
+      collectedCount
+      collectedItemType
       createdAt
       updatedAt
     }

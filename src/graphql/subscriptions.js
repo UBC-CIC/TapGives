@@ -13,6 +13,7 @@ export const onCreateSiteManager = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -44,6 +45,7 @@ export const onUpdateSiteManager = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -75,6 +77,7 @@ export const onDeleteSiteManager = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -107,6 +110,7 @@ export const onCreateCustomer = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -144,6 +148,7 @@ export const onUpdateCustomer = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -181,6 +186,7 @@ export const onDeleteCustomer = /* GraphQL */ `
         }
         name
         nickname
+        smsDescription
         description
         serviceRadius
         latitude
@@ -222,6 +228,7 @@ export const onCreateSite = /* GraphQL */ `
       }
       name
       nickname
+      smsDescription
       description
       serviceRadius
       latitude
@@ -253,6 +260,7 @@ export const onUpdateSite = /* GraphQL */ `
       }
       name
       nickname
+      smsDescription
       description
       serviceRadius
       latitude
@@ -284,6 +292,7 @@ export const onDeleteSite = /* GraphQL */ `
       }
       name
       nickname
+      smsDescription
       description
       serviceRadius
       latitude
@@ -383,13 +392,14 @@ export const onCreateCustomerTransactions = /* GraphQL */ `
   subscription OnCreateCustomerTransactions {
     onCreateCustomerTransactions {
       id
+      governmentID
       userPhoneNumber
       fullName
       siteName
       siteID
       action
-      collectedJerryCans
-      timeStamp
+      collectedCount
+      collectedItemType
       createdAt
       updatedAt
     }
@@ -399,13 +409,14 @@ export const onUpdateCustomerTransactions = /* GraphQL */ `
   subscription OnUpdateCustomerTransactions {
     onUpdateCustomerTransactions {
       id
+      governmentID
       userPhoneNumber
       fullName
       siteName
       siteID
       action
-      collectedJerryCans
-      timeStamp
+      collectedCount
+      collectedItemType
       createdAt
       updatedAt
     }
@@ -415,13 +426,14 @@ export const onDeleteCustomerTransactions = /* GraphQL */ `
   subscription OnDeleteCustomerTransactions {
     onDeleteCustomerTransactions {
       id
+      governmentID
       userPhoneNumber
       fullName
       siteName
       siteID
       action
-      collectedJerryCans
-      timeStamp
+      collectedCount
+      collectedItemType
       createdAt
       updatedAt
     }

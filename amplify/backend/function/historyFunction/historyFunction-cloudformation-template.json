@@ -104,12 +104,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "tapgiveschallengeLambdaRole699f429f",
+            "tapgiveschallengeLambdaRoleda6c3f93",
             {
               "Fn::Join": [
                 "",
                 [
-                  "tapgiveschallengeLambdaRole699f429f",
+                  "tapgiveschallengeLambdaRoleda6c3f93",
                   "-",
                   {
                     "Ref": "env"
@@ -236,62 +236,6 @@
             }
           ]
         }
-      }
-    },
-    "LambdaTriggerPolicyCustomer": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "amplify-lambda-execution-policy-Customer",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:DescribeStream",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator",
-                "dynamodb:ListStreams"
-              ],
-              "Resource": {
-                "Fn::ImportValue": {
-                  "Fn::Sub": "${apitapgiveschallengeGraphQLAPIIdOutput}:GetAtt:CustomerTable:StreamArn"
-                }
-              }
-            }
-          ]
-        }
-      }
-    },
-    "LambdaEventSourceMappingCustomer": {
-      "Type": "AWS::Lambda::EventSourceMapping",
-      "DependsOn": [
-        "LambdaTriggerPolicyCustomer",
-        "LambdaExecutionRole"
-      ],
-      "Properties": {
-        "BatchSize": 100,
-        "Enabled": true,
-        "EventSourceArn": {
-          "Fn::ImportValue": {
-            "Fn::Sub": "${apitapgiveschallengeGraphQLAPIIdOutput}:GetAtt:CustomerTable:StreamArn"
-          }
-        },
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "LambdaFunction",
-            "Arn"
-          ]
-        },
-        "StartingPosition": "LATEST"
       }
     },
     "LambdaTriggerPolicySite": {

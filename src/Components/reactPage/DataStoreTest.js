@@ -7,6 +7,7 @@ import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper"
 import LocalizationHelper from "../Helpers/LocalizationHelper";
 import {baseAssociations, baseLanguages} from "../languageData";
 import * as mutations from "../../graphql/mutations";
+import * as queries from "../../graphql/queries";
 
 const siteLocations = [
     [0.8601723100257656, 32.081114032264246],
@@ -58,12 +59,13 @@ class DataStoreTest extends React.Component {
     async createUser() {
         const CustomerTransactions = {
             userPhoneNumber: this.state.customerTransaction.userPhoneNumber,
+            governmentID: this.state.customerTransaction.userPhoneNumber,
             fullName: this.state.customerTransaction.fullName,
             siteName: this.state.customerTransaction.site,
             siteID: this.state.customerTransaction.site,
             action: "register",
-            collectedJerryCans: 0,
-            timeStamp: "2022-03-01",
+            collectedCount: 0,
+            collectedItemType: "N/A",
         }
         await API.graphql({
             query: mutations.createCustomerTransactions,
@@ -109,6 +111,7 @@ class DataStoreTest extends React.Component {
         const siteCreationData = {
             name: "testSite" + number,
             description: "realistic site location " + number,
+            smsDescription: "sms description " + number,
             nickname: "nickname" + number,
             serviceRadius: 5,
             latitude: latitude,
@@ -121,9 +124,14 @@ class DataStoreTest extends React.Component {
         }
         await AdministrationBackendHelper.createSite(siteCreationData)
     }
-    async getSite() {
-        console.log(this.state.customerData.site)
-        console.log(await AdministrationBackendHelper.getSite(this.state.customerData.site))
+    async testFunction() {
+        const input = {
+            msg: ""
+        }
+        console.log(await API.graphql({
+            query: queries.echo,
+            variables: {input: input}
+        }))
     }
     async deleteSiteSubscription(){
         // LocalizationHelper.deleteLanguageCascade("test")
@@ -235,8 +243,8 @@ class DataStoreTest extends React.Component {
                 <Button variant="outlined" onClick={this.simulate.bind(this)}>
                     simulate
                 </Button>
-                <Button variant="outlined" onClick={this.getSite.bind(this)}>
-                    test getsite
+                <Button variant="outlined" onClick={this.testFunction.bind(this)}>
+                    test function
                 </Button>
                 <Button variant="outlined" onClick={this.deleteSiteSubscription.bind(this)}>
                     Test button
