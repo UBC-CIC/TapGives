@@ -7,13 +7,12 @@ type SiteManager @model @auth(rules:[{ allow: private, operations:[read] }
     {allow: groups, groups:["Admins"]}]) {
     id: ID! @primaryKey(sortKeyFields: ["siteID"]) @index(name: "bySiteManagerID", queryField: "siteManagerByID")
     siteID: ID! @index(name: "bySite", queryField: "siteManagerBySite") # Site ID, must be scalar to be a sort key
-    site: Site @belongsTo(fields:["siteID"])
+    site: Site @hasOne(fields:["siteID"])
     phoneNumber: String! # eg. +2549991234
 }
 
 type Customer @model @auth(rules:[{ allow: private}]) {
     id: ID!
-    governmentID: ID! @index(name: "byGovernmentID", queryField: "customerByGovernmentID") # givernment issued ID
     siteID: ID! @index(name: "bySite", queryField: "customerBySite")# Site ID, must be scalar to be a sort key
     site: Site @hasOne(fields:["siteID"])
     validSubscription: String! # true, false, pending?
@@ -22,13 +21,13 @@ type Customer @model @auth(rules:[{ allow: private}]) {
     firstName: String! @index(name: "byFirstName", queryField: "customerByFirstName")
     lastName: String!
     preferredLanguage: String!
-    subscriptionExpiration: String! # ISO 8601 (AWS timestamp)
+    subscriptionExpiration: String! @index(name: "bySubscriptionExpiration", queryField: "customerBySubscriptionExpiration") # ISO 8601 (AWS timestamp)
+    monthlySubscriptionCode: String! @index(name: "byMonthlyCode", queryField: "customerByMonthlySubscriptionCode")
 }
 # DynamoDB streams->Lambda to log status changes
 type Site @model @auth(rules:[{ allow: private, operations:[read] }
     {allow: groups, groups:["Admins"]}]) {
     id: ID!
-    siteManagers: [SiteManager] @hasMany
     name: String!
     nickname: String! @index(name: "byNickname", queryField: "siteByNickname") # can be queried
     smsDescription: String! # short description for users (max 160 charc)
@@ -39,36 +38,22 @@ type Site @model @auth(rules:[{ allow: private, operations:[read] }
     avgWaitMinute: Int! # For customer lines
     avgLineCount : Int! # Measured in people
     status: String! # online, maintenance, offline
-    subscriptionFee: Float!
+    subscriptionFee: Int!
     expectedJerrycans: Int!
 }
 
-type Language @model @auth(rules: [{allow: public, provider: iam, operations: [read]}
-    {allow: private}]) {
-    id: ID! # the "code", eg "en"
-    language: String! # language, eg "English"
-}
-
-type Phrase @model @auth(rules: [{allow: public, provider: iam, operations: [read]}
-    {allow: private}]) {
-    id: ID! @primaryKey(sortKeyFields: ["languageID"]) # phrase, eg. passwordField
-    languageID: ID! @index(name: "byLanguage", queryField: "phraseByLanguage") # language ID, must be scalar to be a sort key
-    language: Language @hasOne(fields:["languageID"])
-    data: String! # eg. password
-}
 # DynamoDB streams->Lambda to process data
 type CustomerTransactions @model @auth(rules:[{ allow: private, operations:[read] }
     {allow: groups, groups:["Admins"]}]) {
     id: ID! @primaryKey
-    governmentID: ID! # Same as from Customer
     userPhoneNumber: String! @index(name: "byPhoneNumber", queryField: "customerTransactionByPhoneNumber")
     fullName: String! # firstName+" "+lastName
     siteName: String!
     siteID: ID! @index(name: "bySite", queryField: "customerTransactionBySite")
     action: String!
     collectedCount: Int! # Item count
-    collectedItemType: String! # Item type eg. jerrycans
+    collectedItemType: String! # Item type eg. "KSH", "jerrycans"
 }
 type Query {
-    echo(msg: String): String @function(name: "TapGivesAthenaQuery-${env}")
+    athenaCall(siteID: String!, year: Int!, month: Int!, day: Int!, hour: Int!): String! @function(name: "TapGivesAthenaQuery-${env}")
 }

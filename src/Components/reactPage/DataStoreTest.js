@@ -1,13 +1,14 @@
 import React from "react";
-import {Amplify, API, Storage} from "aws-amplify";
+import {Amplify, API, Auth, Storage} from "aws-amplify";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import awsconfig from '../../aws-exports';
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 import LocalizationHelper from "../Helpers/LocalizationHelper";
-import {baseAssociations, baseLanguages} from "../languageData";
+import {baseLanguages, basePhrases} from "../languageData";
 import * as mutations from "../../graphql/mutations";
 import * as queries from "../../graphql/queries";
+import Lambda from 'aws-sdk/clients/lambda'; // npm install aws-sdk
 
 const siteLocations = [
     [0.8601723100257656, 32.081114032264246],
@@ -45,21 +46,19 @@ class DataStoreTest extends React.Component {
 
     }
 
-    async addPhrase() {
-    }
-
     async syncData() {
     }
     async addBaseData() {
-        await LocalizationHelper.addMultipleLanguagePhrases(baseLanguages)
+        // await LocalizationHelper.addMultipleLanguagePhrases(baseLanguages)
+        await Storage.put("basePhrases.json", basePhrases)
     }
     async addLanguages() {
-        await LocalizationHelper.addMultipleLanguageCodes(baseAssociations)
+        // await LocalizationHelper.addMultipleLanguageCodes(baseAssociations)
+        await Storage.put("baseLanguages.json", baseLanguages)
     }
     async createUser() {
         const CustomerTransactions = {
             userPhoneNumber: this.state.customerTransaction.userPhoneNumber,
-            governmentID: this.state.customerTransaction.userPhoneNumber,
             fullName: this.state.customerTransaction.fullName,
             siteName: this.state.customerTransaction.site,
             siteID: this.state.customerTransaction.site,
@@ -125,17 +124,51 @@ class DataStoreTest extends React.Component {
         await AdministrationBackendHelper.createSite(siteCreationData)
     }
     async testFunction() {
-        const input = {
-            msg: ""
-        }
+        // const input = {
+        //     siteID: "test"
+        // }
+        //(siteID: String!, year: Int!, month: Int!, day: Int!, hour: Int!
         console.log(await API.graphql({
-            query: queries.echo,
-            variables: {input: input}
+            query: queries.athenaCall,
+            variables: {
+                siteID: "157dd0c2-4a22-42d8-becb-d206fcdc6092",
+                year: 2022,
+                month: 3,
+                day: 10,
+                hour: -1,
+            }
         }))
+        // Auth.currentCredentials()
+        //     .then(credentials => {
+        //         const lambda = new Lambda({
+        //             credentials: Auth.essentialCredentials(credentials)
+        //         });
+        //         return lambda.invoke({
+        //             FunctionName: process.env.REACT_APP_FUNCTION,
+        //             Payload: JSON.stringify({siteID: "test" }),
+        //         });
+        //     })
+        // const creds = Auth.essentialCredentials(await Auth.currentCredentials())
+        // const lambda = new Lambda(creds)
+        // console.log(await (lambda.invoke({
+        //     FunctionName: process.env.REACT_APP_FUNCTION,
+        //     Payload: JSON.stringify({siteID: "test" }),
+        // })))
+        // const siteManagerList = (await API.graphql({
+        //     query: queries.siteManagerBySite,
+        //     variables: {
+        //         siteID: "157dd0c2-4a22-42d8-becb-d206fcdc6092"
+        //     }
+        // })).data.siteManagerBySite.items;
+        // const data = {
+        //     siteID: "157dd0c2-4a22-42d8-becb-d206fcdc6092"
+        // }
+        // console.log(siteManagerList)
+
     }
     async deleteSiteSubscription(){
         // LocalizationHelper.deleteLanguageCascade("test")
-        console.log(await AdministrationBackendHelper.listCognito(30))
+        LocalizationHelper.queryPhrases()
     }
     render() {
         return(
@@ -153,9 +186,6 @@ class DataStoreTest extends React.Component {
                     <TextField variant="outlined"  label={"Language Code"} onChange={(val) => {this.setState({id: val.target.value})}}/>
                     <TextField variant="outlined" label={"Phrase Prompt"} onChange={(val) => {this.setState({phrase: val.target.value})}}/>
                     <TextField variant="outlined"  label={"Data"} onChange={(val) => {this.setState({data: val.target.value})}}/>
-                    <Button variant="outlined" onClick={this.addPhrase.bind(this)}>
-                        Add phrase
-                    </Button>
                     <Button variant="outlined" onClick={this.addBaseData.bind(this)}>
                         Add Base Data
                     </Button>
@@ -246,7 +276,7 @@ class DataStoreTest extends React.Component {
                 <Button variant="outlined" onClick={this.testFunction.bind(this)}>
                     test function
                 </Button>
-                <Button variant="outlined" onClick={this.deleteSiteSubscription.bind(this)}>
+                <Button variant="outlined" onClick={()=>{LocalizationHelper.queryPhrases()}}>
                     Test button
                 </Button>
             </Grid>

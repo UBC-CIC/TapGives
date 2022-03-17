@@ -1,13 +1,11 @@
-import {API, Auth} from "aws-amplify";
-import * as queries from "../../graphql/queries";
-import * as mutations from "../../graphql/mutations";
-import {Language, Phrase} from "../../models";
-import LocalizedStrings from "react-localization";
-import {updateLoginState} from "../../Actions/loginActions";
+import {Auth, Storage} from "aws-amplify";
 import {updateLanguageCodes, updateLanguageState, updateStringsState} from "../../Actions/languageActions";
 import {connect} from "react-redux";
-import {baseAssociations, baseLanguages} from "../languageData";
-
+import {baseLanguages, basePhrases} from "../languageData";
+const store = async() => {
+    localStorage.setItem("languages", JSON.stringify(await LocalizationHelper.queryLanguages()))
+    localStorage.setItem("phrases", JSON.stringify(await LocalizationHelper.queryPhrases()))
+}
 class LocalizationHelper {
     static async loggedIn(){
         try {
@@ -19,22 +17,22 @@ class LocalizationHelper {
     }
     // Checks store for languages, if fails, returns the default languages , then queries backend to update for later queries
     static getLanguageCodesFast() {
-        if (!sessionStorage.hasOwnProperty("updated")) {
-            LocalizationHelper.getLanguageCodes().then(LocalizationHelper.getLanguagePhrases)
-        }
-        if (localStorage.hasOwnProperty("languages")) {
-            return JSON.parse(localStorage.getItem("languages"))
-        } else {
-            // for (const languageCode in baseLanguages) {
-            //     if (!localStorage.hasOwnProperty(languageCode)) {
-            //         localStorage.setItem(languageCode, JSON.stringify(baseLanguages[languageCode]))
-            //     }
-            // }
-            try {
-                return baseAssociations
-            } finally {
-                LocalizationHelper.getLanguageCodes().then(LocalizationHelper.getLanguagePhrases)
+        try {
+            if (!sessionStorage.hasOwnProperty("updated")) {
+                sessionStorage.setItem("updated",true)
+
+                store()
             }
+        } catch (e) {
+            console.log("Failed querying phrases",e)
+        }
+        try {
+            if (!localStorage.hasOwnProperty("languages"))
+                throw new Error("No languages")
+            return JSON.parse(localStorage.getItem("languages"))
+        } catch (e) {
+            console.log("Saved languages bad, try deleting cache")
+            return baseLanguages
         }
     }
     /*
@@ -51,168 +49,69 @@ class LocalizationHelper {
         }
      */
     static async getLanguageCodes() {
-        if (localStorage.hasOwnProperty("languages") && sessionStorage.hasOwnProperty("updated")) {
-            return JSON.parse(localStorage.getItem("languages"))
-        } else {
-            if (localStorage.hasOwnProperty("languages")) {
-                try {
-                    return JSON.parse(localStorage.getItem("languages"))
-                } finally {
-                    let languageRaw;
-                    if (await LocalizationHelper.loggedIn()) {
-                        languageRaw = (await API.graphql({query: queries.listLanguages, authMode: 'AMAZON_COGNITO_USER_POOLS'})).data.listLanguages.items
-                    }
-                    else
-                        languageRaw = (await API.graphql({query: queries.listLanguages, authMode: 'AWS_IAM'})).data.listLanguages.items
-                    if (languageRaw !== 0) {
-                        console.log(languageRaw)
-                        localStorage.setItem("languages", JSON.stringify(languageRaw))
-                    }
-                    sessionStorage.setItem("updated", true)
-                }
-            } else {
-                let languageRaw;
-                if (await LocalizationHelper.loggedIn())
-                    languageRaw = (await API.graphql({query: queries.listLanguages, authMode: 'AMAZON_COGNITO_USER_POOLS'})).data.listLanguages.items
-                else
-                    languageRaw = (await API.graphql({query: queries.listLanguages, authMode: 'AWS_IAM'})).data.listLanguages.items
-                if (languageRaw.length !== 0)
-                    localStorage.setItem("languages",
-                        JSON.stringify(languageRaw))
-                sessionStorage.setItem("updated", true)
-
-                return languageRaw
-            }
+        try {
+            const languages = await LocalizationHelper.queryLanguages()
+            localStorage.setItem("languages", JSON.stringify(languages))
+            return languages
+        } catch (e) {
+            console.log("Failed querying languages",e)
+            return baseLanguages
         }
     }
     // Checks store for languages, if fails, returns the default languages , then queries backend to update for later queries
     static getLanguagePhrasesFast() {
-        const languageCodes = LocalizationHelper.getLanguageCodesFast()
-        let languagePhrases = {}
-        for (const language in languageCodes) {
-            const code = languageCodes[language].id
-            if (localStorage.hasOwnProperty(code)) {
-                languagePhrases[code] = JSON.parse(localStorage.getItem(code))
-            } else {
-                return baseLanguages
+        try {
+            if (!sessionStorage.hasOwnProperty("updated")) {
+                sessionStorage.setItem("updated",true)
+                store()
             }
+        } catch (e) {
+            console.log("Failed querying phrases",e)
         }
-        return languagePhrases
+        try {
+            if (!localStorage.hasOwnProperty("phrases"))
+                throw new Error("No phrases")
+            return JSON.parse(localStorage.getItem("phrases"))
+        } catch (e) {
+            console.log("Saved phrases bad, try deleting cache")
+            return basePhrases
+        }
     }
     static async getLanguagePhrases() {
-        const languageCodes = await LocalizationHelper.getLanguageCodes()
-        let languagePhrases = {}
-        for (const language in languageCodes) {
-            const code = languageCodes[language].id
-            if (!localStorage.hasOwnProperty(code)) {
-                languagePhrases[code] = {}
-                // Query and return phrases for each language
-                let phrases;
-                if (await LocalizationHelper.loggedIn())
-                    phrases = (await API.graphql({query: queries.phraseByLanguage, authMode: 'AMAZON_COGNITO_USER_POOLS', variables:{languageID: code}})).data.phraseByLanguage.items
-                else
-                    phrases = (await API.graphql({query: queries.phraseByLanguage, authMode: 'AWS_IAM', variables:{languageID: code}})).data.phraseByLanguage.items
-                console.log(phrases)
-                for (const val in phrases) {
-                    languagePhrases[code][phrases[val].id] = phrases[val].data
-                }
-                localStorage.setItem(code, JSON.stringify(languagePhrases[code]))
-                updateLanguageCodes(languageCodes)
-                updateStringsState(languagePhrases)
-            } else {
-                languagePhrases[code] = JSON.parse(localStorage.getItem(code))
-            }
+        try {
+            await store()
+            console.log(JSON.parse(localStorage.getItem("phrases")))
+            return JSON.parse(localStorage.getItem("phrases"))
+        } catch (e) {
+            console.log("Failed querying phrases",e)
+            return basePhrases
         }
-        return(languagePhrases)
     }
     static async checkUpdatedLanguages() {
         // localStorage.clear()
-        const languageCodes = JSON.parse(localStorage.getItem("languages"))
-        for (const language in languageCodes) {
-            localStorage.removeItem(languageCodes[language].id)
-        }
-        sessionStorage.clear()
         await LocalizationHelper.getLanguagePhrases()
     }
-    static async addMultipleLanguageCodes(languageCode) {
-        for (const code in languageCode){
-            LocalizationHelper.addLanguageCode(languageCode[code].id, languageCode[code].language)
-        }
+    static async updateLanguage(languages, phrases) {
+        await Storage.put("baseLanguages.json", languages)
+        await Storage.put("basePhrases.json", phrases)
+        localStorage.setItem("languages", JSON.stringify(languages))
+        localStorage.setItem("phrases", JSON.stringify(phrases))
     }
-    static async addLanguageCode(languageCode, languageName) {
-        try {
-            const languageInput = {
-                id: languageCode,
-                language: languageName,
-            }
-            await API.graphql({
-                query: mutations.createLanguage,
-                variables: {input: languageInput}
-            })
-        } catch (error) {
-            console.log("Error saving Language: "+ languageCode + languageName, error);
-        }
-    }
-    static async editPhrase(languageCode, phraseID, newData) {
-        try {
-            const languageInput = {
-                id: phraseID,
-                languageID: languageCode,
-                data: newData,
-            }
-            await API.graphql({
-                query: mutations.updatePhrase,
-                variables: {input: languageInput}
-            })
-        } catch (error) {
-            console.log("Error saving phrase: "+languageCode + phraseID, error);
-        }
-    }
-    static async addMultipleLanguagePhrases(languagePhrases) {
-        for (const languageID in languagePhrases) {
-            for (const phrase in languagePhrases[languageID]) {
-                LocalizationHelper.addLanguagePhrase(languageID, phrase, languagePhrases[languageID][phrase])
-            }
-        }
-    }
-    static async addLanguagePhrase(languageID, phraseName, dataName) {
-        try {
-            const phrase = {
-                languageID: languageID,
-                id: phraseName,
-                data: dataName,
-            }
-            await API.graphql({
-                query: mutations.createPhrase,
-                variables: {input: phrase}
-            })
-        } catch (error) {
-            console.log("Error saving phrase: "+languageID+phraseName+dataName, error);
-        }
-    }
+
     static async deleteLanguageCascade(languageID) {
-        let phrases;
-        if (await LocalizationHelper.loggedIn())
-            phrases = (await API.graphql({query: queries.phraseByLanguage, authMode: 'AMAZON_COGNITO_USER_POOLS', variables:{languageID: languageID}})).data.phraseByLanguage.items
-        else
-            phrases = (await API.graphql({query: queries.phraseByLanguage, authMode: 'AWS_IAM', variables:{languageID: languageID}})).data.phraseByLanguage.items
-        for (const phrase in phrases) {
-            const phraseData = {
-                id: phrases[phrase].id,
-                languageID: phrases[phrase].languageID
-            }
-            API.graphql({
-                query: mutations.deletePhrase,
-                variables: { input: phraseData}
-            })
+        if (languageID === "en") {
+            console.log("Cannot delete english")
+            return
         }
-        const languageData = {
-            id: languageID
-        }
-        await API.graphql({
-            query: mutations.deleteLanguage,
-            variables: {input: languageData}
-        })
+        let languages = await LocalizationHelper.queryLanguages()
+        let phrases = await LocalizationHelper.queryPhrases()
+        console.log(languages)
+        languages = languages.splice(languages.findIndex((language)=>language.id ===languageID),1)
+        delete phrases[languageID]
+        console.log(languages)
+        console.log(phrases)
+        await Storage.put("baseLanguages.json", languages)
+        await Storage.put("baseLanguages.json", phrases)
     }
     static getLanguage() {
         if (localStorage.hasOwnProperty("code") && localStorage.hasOwnProperty("language")) {
@@ -232,6 +131,15 @@ class LocalizationHelper {
     static setLanguage(code, language) {
         localStorage.setItem("code", code)
         localStorage.setItem("language", language)
+    }
+    // eg: en -> English
+    static async queryLanguages() {
+        return JSON.parse(await (await Storage.get(`baseLanguages.json`, { download: true })).Body.text())
+    }
+    // eg: username: Enter Username here
+    static async queryPhrases() {
+        console.log(JSON.parse(await (await Storage.get(`basePhrases.json`, { download: true })).Body.text()))
+         return JSON.parse(await (await Storage.get(`basePhrases.json`, { download: true })).Body.text())
     }
 }
 

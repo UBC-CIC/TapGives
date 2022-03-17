@@ -1,6 +1,6 @@
 
 // ===================================---CHANGE LOGIN STATE---=======================================
-// Updates the login state of the application
+// Updates language used
 export const updateLanguageState = (payload) => {
     /*
         payload in shape:
@@ -14,6 +14,7 @@ export const updateLanguageState = (payload) => {
         dispatch({ type: "SET_LANGUAGE", payload: payload });
     }
 }
+// Changes the stringed object (phrases)
 export const updateStringsState = (payload) => {
     /*
         payload in shape:
@@ -32,6 +33,7 @@ export const updateStringsState = (payload) => {
         dispatch({ type: "SET_STRINGS", payload: payload });
     }
 }
+// Changes the language bank
 export const updateLanguageCodes = (payload) => {
     /*
         payload in shape:

@@ -4,14 +4,13 @@ import {
     Button, Container, Dialog, DialogActions, DialogContentText,
     FormControl, FormLabel,
     InputLabel,
-    NativeSelect,
+    NativeSelect, Paper,
     Table, TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow, TextField
 } from "@material-ui/core";
-import LocalizedStrings from "react-localization";
 import LocalizationHelper from "../Helpers/LocalizationHelper";
 import Grid from "@material-ui/core/Grid";
 import {center} from "@turf/turf";
@@ -113,37 +112,21 @@ class LanguageAdministration extends React.Component {
         }
     }
     async updateLanguage() {
-        const languages = await LocalizationHelper.getLanguageCodes()
-        // Language is in storage, only update language
+        let languages = await LocalizationHelper.queryLanguages()
+        let phrases = await LocalizationHelper.queryPhrases()
+        phrases = Object.assign(phrases, {[this.state.currentLanguageCode]:this.state.translatedPhrases})
         if (languages.some((language) => language.id === this.state.currentLanguageCode)) {
-            console.log("update")
-            // await all actions together
-            let promiseList = []
-            for (const phrase in this.state.translatedPhrases) {
-                console.log(this.state.translatedPhrases[phrase])
-                if (!this.state.languagePhrases[this.state.currentLanguageCode].hasOwnProperty(phrase)) {
-                    promiseList.push(LocalizationHelper.addLanguagePhrase(this.state.currentLanguageCode, phrase, this.state.translatedPhrases[phrase]))
-                } else if (this.state.translatedPhrases[phrase] !== this.state.languagePhrases[this.state.currentLanguageCode][phrase]) {
-                    promiseList.push(LocalizationHelper.editPhrase(this.state.currentLanguageCode, phrase, this.state.translatedPhrases[phrase]))
-                }
-            }
-            await Promise.all(promiseList)
-            await LocalizationHelper.checkUpdatedLanguages()
-        } else { //Language is not in storage, will upload
-            console.log("upload")
-            // await all actions together
-            let promiseList = []
-            promiseList.push(LocalizationHelper.addLanguageCode(this.state.currentLanguageCode, this.state.currentLanguage))
-            for (const phrase in this.state.translatedPhrases) {
-                promiseList.push(LocalizationHelper.addLanguagePhrase(this.state.currentLanguageCode, phrase, this.state.translatedPhrases[phrase]))
-            }
-            await Promise.all(promiseList)
-            await LocalizationHelper.checkUpdatedLanguages()
+            languages.find((language) => language.id === this.state.currentLanguageCode).language = this.state.currentLanguage
+        } else {
+            languages.push({id: this.state.currentLanguageCode, language: this.state.currentLanguage})
         }
+
+        await LocalizationHelper.updateLanguage(languages, phrases)
+
         sessionStorage.setItem("updated", "false")
         this.setState({
-            languageCode: await LocalizationHelper.getLanguageCodes(),
-            languagePhrases: await LocalizationHelper.getLanguagePhrases(),
+            languageCode: languages,
+            languagePhrases: phrases,
         })
         this.setState({
             languagePhrases: Object.assign(this.state.languagePhrases, {
@@ -152,7 +135,7 @@ class LanguageAdministration extends React.Component {
         })
     }
     async deleteLanguage() {
-
+        LocalizationHelper.deleteLanguageCascade(this.state.currentLanguageCode)
     }
     render() {
         return <div>
@@ -224,36 +207,39 @@ class LanguageAdministration extends React.Component {
                     </DialogActions>
                 </Dialog>
             </Grid>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell >Phrase Code</TableCell>
-                        <TableCell align={"center"}>{this.props.strings.english}</TableCell>
-                        <TableCell align="right">{this.props.strings.translation}</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {this.state.phraseCodes.map((phrase) =>
-                        <TableRow key = {phrase[0]}>
-                            <TableCell>{phrase[0]}</TableCell>
-                            <TableCell align={"center"}>{phrase[1]}</TableCell>
-                            <TableCell align="right">
-                                <TextField
-                                    fullWidth
-                                    value={this.state.translatedPhrases[phrase[0]]}
-                                    onChange={(value) => {
-                                        this.setState({
-                                            translatedPhrases: Object.assign(this.state.translatedPhrases, {
-                                                [phrase[0]]: value.target.value
-                                            })
-                                        })
-                                    }}
-                                />
-                            </TableCell>
+            <Paper>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell >Phrase Code</TableCell>
+                            <TableCell align={"center"}>{this.props.strings.english}</TableCell>
+                            <TableCell align="right">{this.props.strings.translation}</TableCell>
                         </TableRow>
-                    )}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                        {this.state.phraseCodes.map((phrase) =>
+                            <TableRow key = {phrase[0]}>
+                                <TableCell  width="20%">{phrase[0]}</TableCell>
+                                <TableCell align={"center"} width="30%">{phrase[1]}</TableCell>
+                                <TableCell align="right">
+                                    <TextField
+                                        fullWidth
+                                        value={this.state.translatedPhrases[phrase[0]]}
+                                        onChange={(value) => {
+                                            this.setState({
+                                                translatedPhrases: Object.assign(this.state.translatedPhrases, {
+                                                    [phrase[0]]: value.target.value
+                                                })
+                                            })
+                                        }}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </Paper>
+
         </div>
     }
 }

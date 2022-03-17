@@ -485,6 +485,7 @@ function Login(props) {
                             {languageCode.map((val) => {return <option > {val.language} </option>})}
                         </NativeSelect>
                     </FormControl>
+
                 </Grid>
                 <Grid container item xs={12} md={6} className={`page-info ${classes.centerBox}`}>
                     <Grid container item justify={"space-evenly"} alignItems={"center"} /*style={{height: "60vh"}}*/>

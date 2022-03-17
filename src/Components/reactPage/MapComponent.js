@@ -33,11 +33,11 @@ async function getLocationService(){
 
 //Construct a container to render a map, add navigation (zoom in and out button),
 //geolocate(top right button to locate user location) control and drawl tools
-async function constructMap(container){
+async function constructMap(container, center){
     try {
         // UBC Coords -123.14229959999999, 49.2194576
         // Ghana -1.6555773994213594, 9.91574634807085
-        map = await locationHelper.constructMapWithCenter(container,[-1.6555773994213594, 9.91574634807085])
+        map = await locationHelper.constructMapWithCenter(container,center, 7)
     } catch (error) {
         console.log("Error print map: " + error)
         return
@@ -90,9 +90,6 @@ function createCircle(lng, lat, radius) {
             });
         })
     }
-
-
-
 }
 //Generates a Marker with a clickable description on the map
 function createMarker(lng, lat, description, radius) {
@@ -111,97 +108,41 @@ function createMarker(lng, lat, description, radius) {
     marker2.setPopup(popup);
     return marker2;
 }
-//Triggers when search button is pressed
-//reads the content from the search bar, makes an API request to location services
-//flies to the location found on the map view.
-function searchAndUpdateMapview(map, text){
-    let longitude = -123.11335999999994;
-    let latitude = 49.260380000000055;
-    locationService.searchPlaceIndexForText(
-        {
-            IndexName: placeIndex,
-            Text: text,
-            MaxResults: 1,
-            BiasPosition: [longitude, latitude]
-        },
-        (err, response) => {
-            if (err) {
-                console.error(err)
-            }
-            else if (response&&response.Results.length>0) {
-                longitude = response.Summary.ResultBBox[0]
-                latitude = response.Summary.ResultBBox[1]
-                marker.setLngLat([longitude, latitude])
-                marker.addTo(map)
-                map.flyTo({
-                    center: [longitude, latitude],
-                    essential: true,
-                    zoom: 12,
-                });
-            }
-        }
-    )
-}
-
-function locateSites (data){
-    console.log(data)
-
-    for (const site in data) {
-        console.log(JSON.stringify(data[site]))
-        createMarker(data[site].longitude, data[site].latitude, data[site].description, data[site].serviceRadius)
-    }
-
-}
 
 // Calls API to grab all sites hosted by the admin, and the list of sites.  Then filters for all of the sites belonging
 // to the admin, and sends those to be plotted by locateAllWells
 class mapComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            searchBarText: "",
-        };
+        if (props.siteID != null)
+            this.state = {
+                searchBarText: "",
+                siteID: props.siteID
+            };
+        else
+            this.state = {
+                searchBarText: "",
+            };
     }
 
     async componentDidMount() {
         // get current user credentials
         await getLocationService();
         //make map
-        await constructMap("map")
-        // map.resize();
-        try {
-            const returnedUser = await Auth.currentAuthenticatedUser();
-            locateSites(await AdministrationBackendHelper.getSitesBySiteManager(returnedUser.attributes.email))
-        } catch (e) {
-            console.log(e)
+        if (this.state.siteID != null) {
+            this.setState({site: await AdministrationBackendHelper.getSite(this.state.siteID)})
+            await constructMap("map", [this.state.site.longitude, this.state.site.latitude])
+            createMarker(this.state.site.longitude, this.state.site.latitude, this.state.site.description, this.state.site.radius)
+        } else {
+            await constructMap("map", [-1.6555773994213594, 9.91574634807085])
         }
+        // map.resize();
 
-    }
-
-    updateInputText=(e)=>{
-        this.setState({
-            searchBarText:e.target.value
-        });
-    }
-    handleSearch=()=>{
-        searchAndUpdateMapview(map, this.state.searchBarText)
     }
 
     render(){
-        const disableButton=this.state.searchBarText.length===0
         return (
-            <Grid direction={"column"} alignItems="center" justify={"center"} >
-                <div id={"sbContainer"}>
-                    <TextField id="textInput" label="Enter location" type="outlined" value={this.state.text} onChange={e=>this.updateInputText(e)}/>
-                    <Button disabled={disableButton} id={'navBtn'} variant="contained" color="primary" style={{textTransform: 'none'}} onClick={this.handleSearch} >
-                        Search
-                    </Button><Button variant="contained" color="primary" style={{textTransform: 'none'}} onClick={createMarker} >
-                        Circle
-                    </Button>
-                </div>
-                <div id="map"/>
-            </Grid>
-
+            <div id="map" />
         )
     }
 }

@@ -13,15 +13,18 @@ let s3 = new AWS.S3({apiVersion: '2006-03-01'});
 let firehose = new AWS.Firehose();
 // Choose what data to store
 const modelParams = {
-  CustomerTransactions: ["userPhoneNumber", "fullName", "siteName", "action", "collectedJerryCans", "timeStamp"],
-  Site: ["expectedJerrycans", "status", "name"],
-  Customer: ["validSubscription", "governmentID", "firstName", "lastName", "phoneNumber"],
+  CustomerTransactions: ["userPhoneNumber", "fullName", "siteName", "action", "collectedCount", "collectedItemType"],
+  Site: ["expectedJerrycans", "status", "nickname"],
+}
+function delay(milliseconds){
+  return new Promise(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
 }
 exports.handler = async event => {
-  console.log(JSON.stringify(event, null, 2));
   let promiseList = []
   for (const record in event.Records) {
-    if (event.Records[record].dynamodb.hasOwnProperty("newImage")) {
+    if (event.Records[record].dynamodb.hasOwnProperty("NewImage")) {
       let newImage = event.Records[record].dynamodb.NewImage
       if (newImage.__typename.S in modelParams) {
         const type = newImage.__typename.S.toLowerCase() // get model type
@@ -40,36 +43,41 @@ exports.handler = async event => {
           ContentType: 'application/json',
         };
         // console.log(params)
-        let s3Promise = s3.putObject(params, function (err, data) {
-          if (err) {
-            console.log(err);
-            console.log('Error uploading data: ', data);
-          } else {
-            console.log('succesfully uploaded');
-          }
-        }).promise();
+        // let s3Promise = s3.putObject(params, function (err, data) {
+        //   if (err) {
+        //     console.log(err);
+        //     console.log('Error uploading data: ', data);
+        //   } else {
+        //     console.log('succesfully uploaded');
+        //   }
+        // }).promise();
+        // promiseList.push(s3Promise)
         params = {
           DeliveryStreamName: "tapgives-dynamic-"+type, /* required */
           Record: { /* required */
             Data: JSON.stringify(model)/* Strings will be Base-64 encoded on your behalf */ /* required */
           }
         }
-        const firehosePromise = firehose.putRecord(params, function(err, data) {
+        const firehosePromise = firehose.putRecord(params).promise().then(function(err, data) {
           if (err) console.log(err, err.stack); // an error occurred
           else     console.log(data);           // successful response
-        }).promise()
+        })
         promiseList.push(firehosePromise)
-        promiseList.push(s3Promise)
+
 
         // return s3Promise
       } else {
         // return Promise.resolve('Type Error: ' + newImage.__typename.S + " not supported");
         console.log('Type Error: ' + newImage.__typename.S + " not supported")
       }
+    } else {
+      console.log('Type Error: ' + event.Records[record].eventName + " not supported")
     }
 
     // return Promise.resolve("Sucessfully processed " + event.Records.length + " events")
   }
   // return Promise.all(promiseList)
+  await Promise.all(promiseList)
+  // await delay(1000)
   return Promise.resolve("Sucessfully processed " + event.Records.length + " events")
 };

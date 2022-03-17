@@ -133,7 +133,7 @@ function PageContainer(props) {
             <Switch>
                 <Route exact path={"/"} component={MapComponent} />
                 <Route exact path={"/home"} component={MapComponent} />
-                <Route exact path={"/siteManagement"} component={siteManagement} />
+                <Route path={"/siteManagement"} component={siteManagement} />
                 <Route exact path={"/Administration"} component={Administration} />
                 <Route exact path={"/dataStoreTest"} component={DataStoreTest} />
                 <Route exact path={"/languageAdministration"} component={LanguageAdministration}/>

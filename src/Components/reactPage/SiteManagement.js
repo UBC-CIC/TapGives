@@ -3,43 +3,24 @@ import { DataGrid } from '@mui/x-data-grid';
 import {Auth} from "aws-amplify";
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 import {connect} from "react-redux";
-
-
+import Grid from "@material-ui/core/Grid";
+import {Paper, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
+import List from "@material-ui/core/List";
+import SiteInformation from "./SiteInformation";
+import "./SiteManagement.css"
 
 class siteManagement extends React.Component {
 
     constructor(props) {
         super(props)
-        const columns = [
-            {
-                field: 'siteID',
-                headerName: this.props.strings.siteID,
-                type: 'string',
-                width: 200,
-                editable: true,
-            },
-            {
-                field: 'governmentID',
-                headerName: this.props.strings.customerID,
-                width: 200 
-            },
-            {
-                field: 'firstName',
-                headerName: this.props.strings.firstName,
-                width: 200,
-                editable: true,
-            },
-            {
-                field: 'lastName',
-                headerName: this.props.strings.lastName,
-                width: 200,
-                editable: true,
-            },
-        ]
         console.log(props)
+        //extracts the /siteManagement/[siteID]
+        const url = window.location.pathname
+        const siteID = url.substring(16)
+        console.log(siteID)
         this.state = {
-            customers: [],
-            columns: columns,
+            sites: [],
+            siteID:siteID,
         }
     }
     async getlist() {
@@ -55,23 +36,66 @@ class siteManagement extends React.Component {
         })
     }
     async componentDidMount() {
-        await this.getlist()
-        console.log(this.state.customers)
+        let id = "";
+        try {
+            const site = await AdministrationBackendHelper.getSite(this.state.siteID)
+            if (site == null)
+                throw new Error("No Site found")
+            console.log(site)
+        } catch (e) {
+            console.log(e)
+            id = (await Auth.currentAuthenticatedUser()).attributes.sub;
+            const sites = await AdministrationBackendHelper.getSitesBySiteManager(id)
+            if (sites.length === 0) {
+                // this.setState
+            }
+            else {
+                this.props.history.push('/siteManagement/'+sites[0].id)
+                this.setState({siteID:sites[0].id})
+            }
+            console.log(sites)
+        }
+        if (id == "")
+            id = (await Auth.currentAuthenticatedUser()).attributes.sub;
+        this.setState({
+            sites: await AdministrationBackendHelper.getSitesBySiteManager(id)
+        })
     }
 
     render() {
         return (
-            <div style={{ height: "80vh", width: '100%' }}>
-                <DataGrid
-                    rows={this.state.customers}
-                    columns={this.state.columns}
-                    pageSize={10}
-                    rowsPerPageOptions={[10]}
-                    checkboxSelection
-                    disableSelectionOnClick
-                    // getRowId={(row) => row.governmentID+row.siteID} // Because for customers use IDNumber instead of id
-                />
-            </div>
+            <Grid container>
+                <Grid item xs={12} md={2}>
+                    <Paper>
+                        <div style={{ height: "800px", width: '100%', overflowY: "scroll"}}>
+                            <Table>
+                                <TableHead>
+                                    <TableCell align={"center"} >
+                                        <div class="title">{this.props.strings.sites}</div>
+                                    </TableCell>
+                                </TableHead>
+                                <TableBody sx={{overflowY: "scroll"}}>
+                                    {this.state.sites.map((site)=>(
+                                        <TableRow hover  >
+                                            <TableCell onClick={()=>{
+                                                this.props.history.push('/siteManagement/'+site.id)
+                                                this.setState({siteID:site.id})
+                                                window.location.reload()
+                                            }}>
+                                                <div><b>{site.name}</b>{" ("+site.nickname+')'}</div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md = {10} id="siteInfo">
+                        {(this.state.siteID!="")?<SiteInformation siteID={this.state.siteID} />:null}
+                </Grid>
+            </Grid>
+
         );
     }
 }

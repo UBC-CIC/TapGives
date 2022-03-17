@@ -100,44 +100,6 @@ class AdministrationBackendHelper {
         }
         return fullListOfCustomers;
     }
-    // static async getCustomersBySiteSubscription(siteSubscriptionIDInput) {
-    //     console.log("Site sub id " + siteSubscriptionIDInput)
-    //     let query = (await API.graphql({
-    //         query: queries.customerBySiteSubscription,
-    //         variables: {
-    //             siteSubscriptionID: siteSubscriptionIDInput
-    //         }
-    //     }))
-    //     console.log(query)
-    //     let fullListOfCustomers = query.data.customerBySiteSubscription.items;
-    //     let nextToken = query.data.customerBySiteSubscription.nextToken;
-    //     while (nextToken != null) {
-    //         query = (await API.graphql({
-    //             query: queries.customerBySiteSubscription,
-    //             variables: {
-    //                 nextToken: nextToken,
-    //                 siteSubscriptionID: siteSubscriptionIDInput
-    //             }
-    //         }));
-    //         fullListOfCustomers.push(...query.data.customerBySiteSubscription.items)
-    //         nextToken = query.data.customerBySiteSubscription.nextToken
-    //     }
-    //     return fullListOfCustomers;
-    // }
-    // static async createSubscription(subscriptionCreationData, siteIDIn) {
-    //     const siteSubscription = {
-    //         siteSiteSubscriptionsId: siteIDIn,
-    //         siteID: siteIDIn,
-    //         name: subscriptionCreationData.name,
-    //         pricePerMonth: parseFloat(subscriptionCreationData.pricePerMonth),
-    //         expectedJerrycans: parseInt(subscriptionCreationData.softCapVisits)
-    //         // weeklyJerryCans: 0,
-    //     }
-    //     await API.graphql({
-    //         query: mutations.createSiteSubscription,
-    //         variables: {input: siteSubscription}
-    //     })
-    // }
     static async createSiteManager(siteManagerID, siteID, phoneNumber) {
         const siteManager = {
             id: siteManagerID,
@@ -153,7 +115,6 @@ class AdministrationBackendHelper {
 
     static async createCustomer(firstName, lastName, siteIDIn, pinIn, phoneNumberIn) {
         const customer = {
-            governmentID: firstName+lastName,
             siteID: siteIDIn,
             validSubscription: "true",
             pin: pinIn,
@@ -229,46 +190,15 @@ class AdministrationBackendHelper {
         await Promise.all(cascadeDeleteSiteList)
         await this.deleteSite(siteIDInput)
     }
-    // static async cascadeDeleteSiteSubscription(siteSubscriptionIDInput){
-    //     // Delete all associated customers
-    //     const customerIDs = await this.getCustomersBySiteSubscription(siteSubscriptionIDInput)
-    //     let deletionPromiseList = []
-    //     for (const customer in customerIDs) {
-    //         const customerData = {
-    //             id: customerIDs[customer].id,
-    //             siteID: customerIDs[customer].siteID,
-    //         }
-    //         deletionPromiseList.push(API.graphql({
-    //             query: mutations.deleteCustomer,
-    //             variables: {input: customerData}
-    //         }))
-    //     }
-    //     const siteSubscriptionData = {
-    //         id: siteSubscriptionIDInput
-    //     }
-    //     deletionPromiseList.push(API.graphql({
-    //         query: mutations.deleteSiteSubscription,
-    //         variables: {input: siteSubscriptionData}
-    //     }))
-    //     await Promise.all(deletionPromiseList)
-    //
-    // }
 
-    // Moves customer subscriptions
-    static async switchSiteSubscription(subsciptionStartID, subscriptionEndID) {
-        const customerIDs = await this.getCustomersBySiteSubscriptionFast(subsciptionStartID)
-        let mutationPromiseList = []
-        for (const customer in customerIDs) {
-            const customerData = {
-                id: customerIDs[customer].id,
-                siteID: customerIDs[customer].siteID,
+    static async getTransactionsBySite(siteID) {
+        const transactionList = (await API.graphql({
+            query: queries.customerTransactionBySite,
+            variables: {
+                siteID: siteID
             }
-            mutationPromiseList.push(API.graphql({
-                query: mutations.deleteCustomer,
-                variables: {input: customerData}
-            }))
-        }
-        await Promise.all(mutationPromiseList)
+        })).data.customerTransactionBySite.items;
+        return transactionList
     }
 
     static async updateSite(idInput, siteChanges) {

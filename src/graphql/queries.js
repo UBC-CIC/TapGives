@@ -1,9 +1,21 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const echo = /* GraphQL */ `
-  query Echo($msg: String) {
-    echo(msg: $msg)
+export const athenaCall = /* GraphQL */ `
+  query AthenaCall(
+    $siteID: String!
+    $year: Int!
+    $month: Int!
+    $day: Int!
+    $hour: Int!
+  ) {
+    athenaCall(
+      siteID: $siteID
+      year: $year
+      month: $month
+      day: $day
+      hour: $hour
+    )
   }
 `;
 export const getSiteManager = /* GraphQL */ `
@@ -13,9 +25,6 @@ export const getSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -34,7 +43,6 @@ export const getSiteManager = /* GraphQL */ `
       phoneNumber
       createdAt
       updatedAt
-      siteSiteManagersId
     }
   }
 `;
@@ -78,7 +86,6 @@ export const listSiteManagers = /* GraphQL */ `
         phoneNumber
         createdAt
         updatedAt
-        siteSiteManagersId
       }
       nextToken
     }
@@ -122,7 +129,6 @@ export const siteManagerByID = /* GraphQL */ `
         phoneNumber
         createdAt
         updatedAt
-        siteSiteManagersId
       }
       nextToken
     }
@@ -166,7 +172,6 @@ export const siteManagerBySite = /* GraphQL */ `
         phoneNumber
         createdAt
         updatedAt
-        siteSiteManagersId
       }
       nextToken
     }
@@ -176,13 +181,9 @@ export const getCustomer = /* GraphQL */ `
   query GetCustomer($id: ID!) {
     getCustomer(id: $id) {
       id
-      governmentID
       siteID
       site {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -205,6 +206,7 @@ export const getCustomer = /* GraphQL */ `
       lastName
       preferredLanguage
       subscriptionExpiration
+      monthlySubscriptionCode
       createdAt
       updatedAt
     }
@@ -219,7 +221,6 @@ export const listCustomers = /* GraphQL */ `
     listCustomers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        governmentID
         siteID
         site {
           id
@@ -245,56 +246,7 @@ export const listCustomers = /* GraphQL */ `
         lastName
         preferredLanguage
         subscriptionExpiration
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const customerByGovernmentID = /* GraphQL */ `
-  query CustomerByGovernmentID(
-    $governmentID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelCustomerFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    customerByGovernmentID(
-      governmentID: $governmentID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        governmentID
-        siteID
-        site {
-          id
-          name
-          nickname
-          smsDescription
-          description
-          serviceRadius
-          latitude
-          longitude
-          avgWaitMinute
-          avgLineCount
-          status
-          subscriptionFee
-          expectedJerrycans
-          createdAt
-          updatedAt
-        }
-        validSubscription
-        pin
-        phoneNumber
-        firstName
-        lastName
-        preferredLanguage
-        subscriptionExpiration
+        monthlySubscriptionCode
         createdAt
         updatedAt
       }
@@ -319,7 +271,6 @@ export const customerBySite = /* GraphQL */ `
     ) {
       items {
         id
-        governmentID
         siteID
         site {
           id
@@ -345,6 +296,7 @@ export const customerBySite = /* GraphQL */ `
         lastName
         preferredLanguage
         subscriptionExpiration
+        monthlySubscriptionCode
         createdAt
         updatedAt
       }
@@ -369,7 +321,6 @@ export const customerByPhoneNumber = /* GraphQL */ `
     ) {
       items {
         id
-        governmentID
         siteID
         site {
           id
@@ -395,6 +346,7 @@ export const customerByPhoneNumber = /* GraphQL */ `
         lastName
         preferredLanguage
         subscriptionExpiration
+        monthlySubscriptionCode
         createdAt
         updatedAt
       }
@@ -419,7 +371,6 @@ export const customerByFirstName = /* GraphQL */ `
     ) {
       items {
         id
-        governmentID
         siteID
         site {
           id
@@ -445,6 +396,107 @@ export const customerByFirstName = /* GraphQL */ `
         lastName
         preferredLanguage
         subscriptionExpiration
+        monthlySubscriptionCode
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const customerBySubscriptionExpiration = /* GraphQL */ `
+  query CustomerBySubscriptionExpiration(
+    $subscriptionExpiration: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    customerBySubscriptionExpiration(
+      subscriptionExpiration: $subscriptionExpiration
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteID
+        site {
+          id
+          name
+          nickname
+          smsDescription
+          description
+          serviceRadius
+          latitude
+          longitude
+          avgWaitMinute
+          avgLineCount
+          status
+          subscriptionFee
+          expectedJerrycans
+          createdAt
+          updatedAt
+        }
+        validSubscription
+        pin
+        phoneNumber
+        firstName
+        lastName
+        preferredLanguage
+        subscriptionExpiration
+        monthlySubscriptionCode
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const customerByMonthlySubscriptionCode = /* GraphQL */ `
+  query CustomerByMonthlySubscriptionCode(
+    $monthlySubscriptionCode: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelCustomerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    customerByMonthlySubscriptionCode(
+      monthlySubscriptionCode: $monthlySubscriptionCode
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteID
+        site {
+          id
+          name
+          nickname
+          smsDescription
+          description
+          serviceRadius
+          latitude
+          longitude
+          avgWaitMinute
+          avgLineCount
+          status
+          subscriptionFee
+          expectedJerrycans
+          createdAt
+          updatedAt
+        }
+        validSubscription
+        pin
+        phoneNumber
+        firstName
+        lastName
+        preferredLanguage
+        subscriptionExpiration
+        monthlySubscriptionCode
         createdAt
         updatedAt
       }
@@ -456,17 +508,6 @@ export const getSite = /* GraphQL */ `
   query GetSite($id: ID!) {
     getSite(id: $id) {
       id
-      siteManagers {
-        items {
-          id
-          siteID
-          phoneNumber
-          createdAt
-          updatedAt
-          siteSiteManagersId
-        }
-        nextToken
-      }
       name
       nickname
       smsDescription
@@ -493,9 +534,6 @@ export const listSites = /* GraphQL */ `
     listSites(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -532,9 +570,6 @@ export const siteByNickname = /* GraphQL */ `
     ) {
       items {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -554,121 +589,10 @@ export const siteByNickname = /* GraphQL */ `
     }
   }
 `;
-export const getLanguage = /* GraphQL */ `
-  query GetLanguage($id: ID!) {
-    getLanguage(id: $id) {
-      id
-      language
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listLanguages = /* GraphQL */ `
-  query ListLanguages(
-    $filter: ModelLanguageFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listLanguages(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        language
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getPhrase = /* GraphQL */ `
-  query GetPhrase($id: ID!, $languageID: ID!) {
-    getPhrase(id: $id, languageID: $languageID) {
-      id
-      languageID
-      language {
-        id
-        language
-        createdAt
-        updatedAt
-      }
-      data
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listPhrases = /* GraphQL */ `
-  query ListPhrases(
-    $id: ID
-    $languageID: ModelIDKeyConditionInput
-    $filter: ModelPhraseFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listPhrases(
-      id: $id
-      languageID: $languageID
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        id
-        languageID
-        language {
-          id
-          language
-          createdAt
-          updatedAt
-        }
-        data
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const phraseByLanguage = /* GraphQL */ `
-  query PhraseByLanguage(
-    $languageID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelPhraseFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    phraseByLanguage(
-      languageID: $languageID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        languageID
-        language {
-          id
-          language
-          createdAt
-          updatedAt
-        }
-        data
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const getCustomerTransactions = /* GraphQL */ `
   query GetCustomerTransactions($id: ID!) {
     getCustomerTransactions(id: $id) {
       id
-      governmentID
       userPhoneNumber
       fullName
       siteName
@@ -698,7 +622,6 @@ export const listCustomerTransactions = /* GraphQL */ `
     ) {
       items {
         id
-        governmentID
         userPhoneNumber
         fullName
         siteName
@@ -730,7 +653,6 @@ export const customerTransactionByPhoneNumber = /* GraphQL */ `
     ) {
       items {
         id
-        governmentID
         userPhoneNumber
         fullName
         siteName
@@ -762,7 +684,6 @@ export const customerTransactionBySite = /* GraphQL */ `
     ) {
       items {
         id
-        governmentID
         userPhoneNumber
         fullName
         siteName

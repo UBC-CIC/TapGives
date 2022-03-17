@@ -11,9 +11,6 @@ export const createSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -32,7 +29,6 @@ export const createSiteManager = /* GraphQL */ `
       phoneNumber
       createdAt
       updatedAt
-      siteSiteManagersId
     }
   }
 `;
@@ -46,9 +42,6 @@ export const updateSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -67,7 +60,6 @@ export const updateSiteManager = /* GraphQL */ `
       phoneNumber
       createdAt
       updatedAt
-      siteSiteManagersId
     }
   }
 `;
@@ -81,9 +73,6 @@ export const deleteSiteManager = /* GraphQL */ `
       siteID
       site {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -102,7 +91,6 @@ export const deleteSiteManager = /* GraphQL */ `
       phoneNumber
       createdAt
       updatedAt
-      siteSiteManagersId
     }
   }
 `;
@@ -113,13 +101,9 @@ export const createCustomer = /* GraphQL */ `
   ) {
     createCustomer(input: $input, condition: $condition) {
       id
-      governmentID
       siteID
       site {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -142,6 +126,7 @@ export const createCustomer = /* GraphQL */ `
       lastName
       preferredLanguage
       subscriptionExpiration
+      monthlySubscriptionCode
       createdAt
       updatedAt
     }
@@ -154,13 +139,9 @@ export const updateCustomer = /* GraphQL */ `
   ) {
     updateCustomer(input: $input, condition: $condition) {
       id
-      governmentID
       siteID
       site {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -183,6 +164,7 @@ export const updateCustomer = /* GraphQL */ `
       lastName
       preferredLanguage
       subscriptionExpiration
+      monthlySubscriptionCode
       createdAt
       updatedAt
     }
@@ -195,13 +177,9 @@ export const deleteCustomer = /* GraphQL */ `
   ) {
     deleteCustomer(input: $input, condition: $condition) {
       id
-      governmentID
       siteID
       site {
         id
-        siteManagers {
-          nextToken
-        }
         name
         nickname
         smsDescription
@@ -224,6 +202,7 @@ export const deleteCustomer = /* GraphQL */ `
       lastName
       preferredLanguage
       subscriptionExpiration
+      monthlySubscriptionCode
       createdAt
       updatedAt
     }
@@ -236,17 +215,6 @@ export const createSite = /* GraphQL */ `
   ) {
     createSite(input: $input, condition: $condition) {
       id
-      siteManagers {
-        items {
-          id
-          siteID
-          phoneNumber
-          createdAt
-          updatedAt
-          siteSiteManagersId
-        }
-        nextToken
-      }
       name
       nickname
       smsDescription
@@ -271,17 +239,6 @@ export const updateSite = /* GraphQL */ `
   ) {
     updateSite(input: $input, condition: $condition) {
       id
-      siteManagers {
-        items {
-          id
-          siteID
-          phoneNumber
-          createdAt
-          updatedAt
-          siteSiteManagersId
-        }
-        nextToken
-      }
       name
       nickname
       smsDescription
@@ -306,17 +263,6 @@ export const deleteSite = /* GraphQL */ `
   ) {
     deleteSite(input: $input, condition: $condition) {
       id
-      siteManagers {
-        items {
-          id
-          siteID
-          phoneNumber
-          createdAt
-          updatedAt
-          siteSiteManagersId
-        }
-        nextToken
-      }
       name
       nickname
       smsDescription
@@ -334,105 +280,6 @@ export const deleteSite = /* GraphQL */ `
     }
   }
 `;
-export const createLanguage = /* GraphQL */ `
-  mutation CreateLanguage(
-    $input: CreateLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    createLanguage(input: $input, condition: $condition) {
-      id
-      language
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateLanguage = /* GraphQL */ `
-  mutation UpdateLanguage(
-    $input: UpdateLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    updateLanguage(input: $input, condition: $condition) {
-      id
-      language
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteLanguage = /* GraphQL */ `
-  mutation DeleteLanguage(
-    $input: DeleteLanguageInput!
-    $condition: ModelLanguageConditionInput
-  ) {
-    deleteLanguage(input: $input, condition: $condition) {
-      id
-      language
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createPhrase = /* GraphQL */ `
-  mutation CreatePhrase(
-    $input: CreatePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    createPhrase(input: $input, condition: $condition) {
-      id
-      languageID
-      language {
-        id
-        language
-        createdAt
-        updatedAt
-      }
-      data
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updatePhrase = /* GraphQL */ `
-  mutation UpdatePhrase(
-    $input: UpdatePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    updatePhrase(input: $input, condition: $condition) {
-      id
-      languageID
-      language {
-        id
-        language
-        createdAt
-        updatedAt
-      }
-      data
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deletePhrase = /* GraphQL */ `
-  mutation DeletePhrase(
-    $input: DeletePhraseInput!
-    $condition: ModelPhraseConditionInput
-  ) {
-    deletePhrase(input: $input, condition: $condition) {
-      id
-      languageID
-      language {
-        id
-        language
-        createdAt
-        updatedAt
-      }
-      data
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createCustomerTransactions = /* GraphQL */ `
   mutation CreateCustomerTransactions(
     $input: CreateCustomerTransactionsInput!
@@ -440,7 +287,6 @@ export const createCustomerTransactions = /* GraphQL */ `
   ) {
     createCustomerTransactions(input: $input, condition: $condition) {
       id
-      governmentID
       userPhoneNumber
       fullName
       siteName
@@ -460,7 +306,6 @@ export const updateCustomerTransactions = /* GraphQL */ `
   ) {
     updateCustomerTransactions(input: $input, condition: $condition) {
       id
-      governmentID
       userPhoneNumber
       fullName
       siteName
@@ -480,7 +325,6 @@ export const deleteCustomerTransactions = /* GraphQL */ `
   ) {
     deleteCustomerTransactions(input: $input, condition: $condition) {
       id
-      governmentID
       userPhoneNumber
       fullName
       siteName

@@ -30,13 +30,12 @@ function transformRequest(url, resourceType) {
 class LocationServiceHelper {
     //create a map instance with center location, then return it
     async constructMapWithCenter(container, center, zoom ) {
-        // console.log(process.env.REACT_APP_MAP_NAME)
         credentials = await Auth.currentCredentials();
         if(container){
             return new mapboxgl.Map({
                 container: container,
                 center: center,
-                zoom: 5,
+                zoom: zoom,
                 style: mapName,
                 transformRequest,
             })
@@ -46,42 +45,6 @@ class LocationServiceHelper {
             window.location.reload()
         }
     }
-
-    //render the geofence on the map using an array of coordinates
-    //bound the map view to the polygon
-    renderGeofence(map, coordinates, id){
-        map.on('load',function(){
-            if(map.getLayer(id)) map.removeLayer(id)
-            if(map.getSource(id)) map.removeSource(id)
-        })
-        map.on('load', function () {
-            map.addSource(id, {
-                'type': 'geojson',
-                'data': {'type': 'Feature',
-                    'geometry': {
-                        'type': 'Polygon',
-                        'coordinates': [coordinates]
-                    }
-                }
-            });
-            map.addLayer({
-                'id': id,
-                'type': 'fill',
-                'source': id,
-                'layout': {},
-                'paint': {
-                    'fill-color': '#4db2fa',
-                    'fill-opacity': [
-                        'case',
-                        ['boolean', ['feature-state', 'hover'], false],
-                        1,
-                        0.4
-                    ]
-                }
-            });
-        });
-    }
-
 }
 
 export default LocationServiceHelper

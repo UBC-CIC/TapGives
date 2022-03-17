@@ -50,6 +50,7 @@ class Administration extends React.Component {
 
     constructor(props) {
         super(props);
+        // Columns for site table
         const siteColumns = [
             {
                 field: 'name',
@@ -83,6 +84,7 @@ class Administration extends React.Component {
                 editable: true,
             },
         ]
+        // Columns for site manager table
         const adminColumn = [
             {
                 field: 'id',

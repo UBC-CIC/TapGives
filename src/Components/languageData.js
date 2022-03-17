@@ -1,4 +1,4 @@
-export const baseLanguages  = {
+export const basePhrases  = {
     en:{
         signIn:"Sign In",
         email:"Email",
@@ -86,6 +86,74 @@ export const baseLanguages  = {
         add: "Add",
         delete: "Delete",
         language: "Language",
+        sites: "Sites",
+        siteInformation: "Site Information",
+        recentVisits: "Recent Visits",
+        ////////////////////// MENU LAMBDA /////////////////////
+
+        // should first two be under en? cause they're bilingual
+        // maybe have a third language: Unknown, 'uk'
+        menu_unknownUserStartState: "Welcome to TapGives!" +
+            "\n Karibu TapGives!" +
+            "\n———" +
+            "\n Select a language: " +
+            "\n Chagua lugha: " +
+            "\n1. English" +
+            "\n2. Swahili" +
+            "\n0. Exit",
+        menu_multilingualExit: "Thank you. Goodbye." +
+            "\nAsante. Kwaheri.",
+
+        /* signup text */
+        menu_firstNamePrompt: "Enter your first name:",
+        menu_lastNamePrompt: "Enter your last name:",
+        menu_idNumberPrompt: "Enter your ID number:",
+        menu_pinSignUpPrompt: "Enter a 4 digit pin:",
+        menu_siteNicknamePrompt: "Enter your site nickname:",
+        menu_registrationConfirmation: "You are now being registered!" +
+            "\nPlease allow 1 minute, then restart the session " +
+            "and proceed to 'Purchase/Renew Subscription' to activate " +
+            "your subscription.",
+        menu_invalidSiteNickname: "No site matches the provided nickname." +
+            "\nPlease confirm the site nickname and retry. Thank you.",
+
+        /* known customer text */
+        menu_welcomeBack: "Welcome back, ",
+        menu_pinPrompt: "Please enter your 4 digit pin to proceed:",
+        menu_incorrectPin: "Incorrect pin.",
+        menu_validSubscriptionOptions: "Your subscription is valid for the month." +
+            "\n---" +
+            "\n What would you like to do?" +
+            "\n1. Collect water" +
+            "\n0. Exit",
+        menu_invalidSubscriptionOptions: "Your subscription is not valid for the month." +
+            "\n---" +
+            "\n What would you like to do?" +
+            "\n2. Purchase/Renew Subscription" +
+            "\n0. Exit",
+        menu_invalidSelectionInCollectWater: "Invalid selection. Please retry.",
+        menu_collectWaterVerification: "You will receive a message shortly with your verification code. Thank you.",
+        menu_invalidSelectionInPurchaseSubscription: "Invalid selection. Subscription is already valid.",
+        menu_purchaseSubscriptionConfirmationPt1: "Press 1 to proceed with the transaction of ",
+        menu_purchaseSubscriptionConfirmationPt2: " shillings for a monthly subscription." + "\nPress 0 to exit.",
+        menu_paymentAndNotification: "Please proceed to pay for the subscription. " +
+            "You will receive a notification shortly afterwards. Thank you.",
+        menu_exit: "Thank you. Goodbye.",
+
+
+        ////////////////////// SEND SUBSCRIPTION MESSAGES LAMBDA /////////////////////
+        // edit
+        subscriptionSuccess: "you have been subscribed",
+        subscriptionFailure: "problem subscribing you. retry",
+        reminder:"remember to subscribe",
+        unsubscription: "you have been unsubscribed",
+
+
+        ////////////////////// SEND VISIT MESSAGES LAMBDA /////////////////////
+        // edit
+        customerMessage: "dear customer, verification is: ",
+        siteManagerMessage: "dear manager, customer verification is: ",
+
     },
     sw: {
         signIn:"Weka sahihi ",
@@ -173,9 +241,78 @@ export const baseLanguages  = {
         add: "Ongeza",
         delete: "Futa",
         language: "Lugha",
+        sites: "Maeneo",
+        siteInformation: "Habari za Tovuti",
+        recentVisits: "Ziara za Hivi Karibuni",
+
+        ////////////////////// MENU LAMBDA /////////////////////
+
+        // should first two be under en? cause they're bilingual
+        // maybe have a third language: Unknown, 'uk'
+        menu_unknownUserStartState: "Welcome to TapGives!" +
+            "\n Karibu TapGives!" +
+            "\n———" +
+            "\n Select a language: " +
+            "\n Chagua lugha: " +
+            "\n1. English" +
+            "\n2. Swahili" +
+            "\n0. Exit",
+        menu_multilingualExit: "Thank you. Goodbye." +
+            "\nAsante. Kwaheri.",
+
+        /* signup text */
+        menu_firstNamePrompt: "Ingiza jina lako la kwanza:",
+        menu_lastNamePrompt: "Ingiza jina lako la mwisho:",
+        menu_idNumberPrompt: "Ingiza nambari yako ya kitambulisho:",
+        menu_pinSignUpPrompt: "Ingiza pini ya tarakimu 4:",
+        menu_siteNicknamePrompt: "Ingiza jina la utani la tovuti yako ya maji:",
+        menu_registrationConfirmation: "Sasa unaandikishwa!" +
+            "\nTafadhali ruhusu dakika 1, kisha uanze upya kipindi " +
+            "na uendelee na 'Nunua/Usasishe Usajili' ili kuamilisha " +
+            "usajili wako.",
+        menu_invalidSiteNickname: "Hakuna tovuti ya maji inayolingana na jina la utani lililotolewa." +
+            "\nTafadhali thibitisha jina la utani la tovuti ya maji na ujaribu tena. Asante.",
+
+        /* known customer text */
+        menu_welcomeBack: "Karibu tena, ",
+        menu_pinPrompt: "Tafadhali weka pin yako ya tarakimu 4 ili kuendelea:",
+        menu_incorrectPin: "Nenosiri mbaya.",
+        menu_validSubscriptionOptions: "Usajili wako ni halali kwa mwezi." +
+            "\n---" +
+            "\n Ungependa kufanya nini?" +
+            "\n1. Kusanya maji" +
+            "\n0. Toka",
+        menu_invalidSubscriptionOptions: "Usajili wako si halali kwa mwezi." +
+            "\n---" +
+            "\n Ungependa kufanya nini?" +
+            "\n2. Nunua/Sasisha Usajili" +
+            "\n0. Toka",
+        menu_invalidSelectionInCollectWater: "Uteuzi mbaya. Tafadhali jaribu tena.",
+        menu_collectWaterVerification: "Utapokea ujumbe baada ya muda mfupi ulio na nambari yako ya uthibitishaji. Asante.",
+        menu_invalidSelectionInPurchaseSubscription: "Uteuzi mbaya. Usajili tayari ni halali.",
+        menu_purchaseSubscriptionConfirmationPt1: "Bonyeza 1 ili kuendelea na shughuli ya ",
+        menu_purchaseSubscriptionConfirmationPt2: "shilingi kwa usajili wa kila mwezi." + "\nBonyeza 0 ili kuondoka.",
+        menu_paymentAndNotification: "Tafadhali endelea kulipia usajili." +
+            "Utapokea arifa muda mfupi baadaye. Asante.",
+        menu_exit: "Asante kwaheri.",
+
+
+        ////////////////////// SEND SUBSCRIPTION MESSAGES LAMBDA /////////////////////
+        // edit
+        subscriptionSuccess: "umesajiliwa",
+        subscriptionFailure: "tatizo la kukusajili. jaribu tena",
+        reminder: "kumbuka kujiandikisha",
+        unsubscription: "umeondolewa",
+
+
+        ////////////////////// SEND VISIT MESSAGES LAMBDA /////////////////////
+        // edit
+        customerMessage: "mpendwa mteja, uthibitishaji ni:",
+        siteManagerMessage: "mpendwa meneja, uthibitishaji wa mteja ni: ",
+
     }
 }
-export const baseAssociations = [
+export const baseLanguages = [
     {id: "en", language: "English"},
     {id: "sw", language: "Swahili"},
 ]

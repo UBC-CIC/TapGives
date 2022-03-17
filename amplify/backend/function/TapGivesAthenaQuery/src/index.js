@@ -26,16 +26,26 @@ function delay(milliseconds){
 
 exports.handler = async (event) => {
     // TODO implement
+    console.log(event)
+    let {siteID, year, month, day, hour} = event.arguments
+    // Making sure all inputs are 2 "digits" long
+    if (month < 10)
+        month = "0"+month
+    if (day < 10 && day >= 0)
+        day = "0"+day
+    if (hour < 10)
+        hour = "0"+hour
     var params = {
-        QueryString: 'select * from customertransactions', /* required */
+        QueryString: "select count(*), partition_4 from customertransactions where partition_0 = '"
+            + siteID + "' and partition_1 = '"
+            + year + "' and partition_2 = '"
+            + month + ((parseInt(day) >= 0 )?"' and partition_3 = '"+ day:"")+
+            "' group by partition_4",
         QueryExecutionContext: {
             Catalog: catalog,
             Database: database,
         },
         ResultConfiguration: {
-            // AclConfiguration: {
-            //   S3AclOption: "BUCKET_OWNER_FULL_CONTROL" /* required */
-            // },
             EncryptionConfiguration: {
                 EncryptionOption: "SSE_S3", /* required */
             },
@@ -50,31 +60,20 @@ exports.handler = async (event) => {
         Bucket: bucketName,
         Key: path,
     }
-    let vals;
+    let vals = null;
     // Even when awaiting for athena to finish, you must wait a bit longer due to S3 put not being instant
-    // Sometimes it takes longer than a second for s3 to upload the item, we'll give up to 3 retries then
-    for (let retries = 0; retries < 3; retries++) {
+    // Sometimes it takes longer than a second for s3 to upload the item, we'll give up to 5 retries then
+    for (let retries = 0; retries < 5; retries++) {
         try {
-            await delay(1000)
+            await delay(3000)
             vals = await s3.getObject(params).promise()
             break
         } catch (e) {
-            console.log("Error on s3 retrieval")
+            console.log("Error on s3 retrieval", e)
         }
-        throw new Error("Failed 3 times")
     }
+    if (vals == null)
+        throw new Error("Failed 5 times")
 
-    // .Body.toString('utf-8')
-    // return params
-    const response = {
-        statusCode: 200,
-        //  Uncomment below to enable CORS requests
-        //  headers: {
-        //      "Access-Control-Allow-Origin": "*",
-        //      "Access-Control-Allow-Headers": "*"
-        //  },
-        body: vals.Body.toString('utf-8'),
-
-    };
-    return response;
+    return  vals.Body.toString('utf-8')
 };

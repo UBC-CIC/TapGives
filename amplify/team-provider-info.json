@@ -14,7 +14,8 @@
     "categories": {
       "auth": {
         "tapgiveschallengec1d1ec61": {},
-        "userPoolGroups": {}
+        "userPoolGroups": {},
+        "true": {}
       },
       "function": {
         "AdminQueries9a200474": {
@@ -23,11 +24,11 @@
         },
         "TapGivesAthenaQuery": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-120914-deployment",
-          "s3Key": "amplify-builds/TapGivesAthenaQuery-517a50704f4d50465a55-build.zip"
+          "s3Key": "amplify-builds/TapGivesAthenaQuery-344a5171587a444e4355-build.zip"
         },
         "historyFunction": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-120914-deployment",
-          "s3Key": "amplify-builds/historyFunction-7550765a6b367043414b-build.zip"
+          "s3Key": "amplify-builds/historyFunction-6773394c46454f717832-build.zip"
         }
       }
     }
