@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import { Route, Switch, useHistory} from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
@@ -19,7 +19,12 @@ import siteManagement from '../../Components/reactPage/SiteManagement'
 import Administration from '../../Components/reactPage/Administration'
 import DataStoreTest from '../../Components/reactPage/DataStoreTest'
 import SiteInformation from "../../Components/reactPage/SiteInformation";
+import SiteCustomers from "../../Components/reactPage/SiteCustomers";
 import LanguageAdministration from "../../Components/reactPage/LanguageAdministration";
+import Customer from "../../Components/reactPage/Customer";
+import AdministrationBackendHelper from "../../Components/Helpers/AdministrationBackendHelper";
+import {Auth} from "aws-amplify";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -48,11 +53,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 function PageContainer(props) {
-    const { menuEnabled, updateMenuState } = props;
+    const { menuEnabled, updateMenuState, strings } = props;
     const classes = useStyles();
     const history = useHistory();
-
-
+    const [admin, setAdmin] = useState(false);
+    useEffect(async ()=> {
+        const user =  await Auth.currentAuthenticatedUser();
+        const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
+        if (groups.includes("Admins"))
+            setAdmin(true)
+        // Get customer info and query by their phone number
+    },[])
     /*
     * Handles closing side menu if an event occurs
     * */
@@ -72,40 +83,34 @@ function PageContainer(props) {
             onKeyDown={handleSideMenuClose(false)}
         >
             <List>
-                <ListItem button key={"home"} onClick={() => history.push("/home")}>
+                <ListItem button key={"home"} onClick={() => history.push("/siteManagement")}>
                     <ListItemIcon><HomeIcon/></ListItemIcon>
-                    <ListItemText primary={"Home"}/>
+                    <ListItemText primary={strings.home}/>
                 </ListItem>
-                <ListItem button key={"siteManagement"} onClick={() => history.push("/siteManagement")}>
-                    <ListItemIcon><DashboardIcon/></ListItemIcon>
-                    <ListItemText primary={"Site Management"}/>
-                </ListItem>
-                <ListItem button key={"administration"} onClick={() => history.push("/Administration")}>
-                    <ListItemIcon><DashboardIcon/></ListItemIcon>
-                    <ListItemText primary={"Administration"}/>
-                </ListItem>
-                <ListItem button key={"languageAdministration"} onClick={() => history.push("/languageAdministration")}>
+                <ListItem button key={"siteCustomers"} onClick={() => history.push("/SiteCustomers")}>
                     <ListItemIcon><DashboardIcon /></ListItemIcon>
-                    <ListItemText primary={"Language Administration"} />
+                    <ListItemText primary={strings.siteCustomers} />
                 </ListItem>
-                <ListItem button key={"dataStoreTest"} onClick={() => history.push("/dataStoreTest")}>
-                    <ListItemIcon><DashboardIcon /></ListItemIcon>
-                    <ListItemText primary={"DataStore Test"} />
-                </ListItem>
-                <ListItem button key={"siteInformation"} onClick={() => history.push("/siteInformation/949630ec-85c7-4b59-b3d3-b2ac51749509")}>
-                    <ListItemIcon><DashboardIcon /></ListItemIcon>
-                    <ListItemText primary={"Temporary link to siteinfo"} />
-                </ListItem>
+                {
+                    admin?
+                        <div>
+                            <ListItem button key={"administration"} onClick={() => history.push("/Administration")}>
+                                <ListItemIcon><DashboardIcon/></ListItemIcon>
+                                <ListItemText primary={strings.administration}/>
+                            </ListItem>
+                            <ListItem button key={"languageAdministration"} onClick={() => history.push("/languageAdministration")}>
+                                <ListItemIcon><DashboardIcon /></ListItemIcon>
+                                <ListItemText primary={strings.languageAdministration} />
+                            </ListItem>
+                            <ListItem button key={"dataStoreTest"} onClick={() => history.push("/dataStoreTest")}>
+                                <ListItemIcon><DashboardIcon /></ListItemIcon>
+                                <ListItemText primary={"DataStore Test"} />
+                            </ListItem>
+                        </div>:
+                        null
+                }
             </List>
             <Divider/>
-            {/*<List>*/}
-            {/*    {['Inactive', 'Inactive', 'Inactive'].map((text, index) => (*/}
-            {/*        <ListItem button key={text}>*/}
-            {/*            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-            {/*            <ListItemText primary={text} />*/}
-            {/*        </ListItem>*/}
-            {/*    ))}*/}
-            {/*</List>*/}
         </div>
     );
 
@@ -131,13 +136,15 @@ function PageContainer(props) {
             {/* Routes are added here if you need multiple page views. otherwise this Switch can be deleted and replaced
             with your app's contents */}
             <Switch>
-                <Route exact path={"/"} component={MapComponent} />
-                <Route exact path={"/home"} component={MapComponent} />
+                <Route exact path={"/"} component={siteManagement} />
+                <Route exact path={"/home"} component={siteManagement} />
                 <Route path={"/siteManagement"} component={siteManagement} />
                 <Route exact path={"/Administration"} component={Administration} />
                 <Route exact path={"/dataStoreTest"} component={DataStoreTest} />
                 <Route exact path={"/languageAdministration"} component={LanguageAdministration}/>
                 <Route path={"/siteInformation"} component={SiteInformation} />
+                <Route path={"/siteCustomers"} component={SiteCustomers} />
+                <Route path={"/customer"} component={Customer}/>
             </Switch>
         </main>
     </Grid>)
@@ -146,6 +153,7 @@ function PageContainer(props) {
 const mapStateToProps = (state) => {
     return {
         menuEnabled: state.appState.showSideBar,
+        strings: state.languageState.strings,
     };
 };
 

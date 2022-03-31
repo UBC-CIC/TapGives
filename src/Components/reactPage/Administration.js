@@ -136,7 +136,7 @@ class Administration extends React.Component {
                 id: "nickname",
                 label: this.props.strings.nickname,
                 xs: 4,
-                regex: /.+/,
+                regex: /([A-Z]|[0-9])+/,
             },
             {
                 id: "serviceRadius",
@@ -277,6 +277,11 @@ class Administration extends React.Component {
         this.setState({
             siteManagerLinkers: await AdministrationBackendHelper.getSiteManagers(),
         })
+        if (selectedSites.length > 0) {
+            await AdministrationBackendHelper.addUserToGroup(selectedManager)
+        } else {
+            await AdministrationBackendHelper.removeUserFromGroup(selectedManager)
+        }
 
     }
     // Checks if the User Input is valid, then calls createSite if it is

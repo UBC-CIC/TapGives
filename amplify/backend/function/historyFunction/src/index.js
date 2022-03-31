@@ -5,16 +5,18 @@
 Amplify Params - DO NOT EDIT */
 const bucket = process.env.STORAGE_HISTORY_BUCKETNAME
 const region = process.env.REGION
+const table = process.env.API_TAPGIVESCHALLENGE_SITETABLE_NAME
 // Load the AWS SDK for Node.js
 let AWS = require('aws-sdk');
 // Set the region
 AWS.config.update({region: region});
 let s3 = new AWS.S3({apiVersion: '2006-03-01'});
 let firehose = new AWS.Firehose();
+let dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 // Choose what data to store
 const modelParams = {
-  CustomerTransactions: ["userPhoneNumber", "fullName", "siteName", "action", "collectedCount", "collectedItemType"],
-  Site: ["expectedJerrycans", "status", "nickname"],
+  CustomerTransactions: ["userPhoneNumber", "fullName", "siteName", "action", "collectedCount", "collectedItemType", "status"],
+  // Site: ["expectedJerrycans", "status", "nickname"],
 }
 function delay(milliseconds){
   return new Promise(resolve => {
@@ -23,10 +25,48 @@ function delay(milliseconds){
 }
 exports.handler = async event => {
   let promiseList = []
+  // console.log(event.Records[0].dynamodb)
   for (const record in event.Records) {
     if (event.Records[record].dynamodb.hasOwnProperty("NewImage")) {
       let newImage = event.Records[record].dynamodb.NewImage
-      if (newImage.__typename.S in modelParams) {
+      if (newImage.__typename.S in modelParams)   {
+        if (newImage.action.S === "subscribe") {
+          const params = {
+            Key: {
+              "id": {
+                S: newImage.siteID.S
+              }
+            },
+            ExpressionAttributeValues: {
+              ":n": {
+                N: "1"
+              }
+            },
+            ReturnValues: "ALL_NEW",
+            TableName: table,
+            UpdateExpression: "SET currentSubscribers = currentSubscribers + :n"
+          }
+          const dynamodbPromise = dynamodb.updateItem(params).promise()
+          promiseList.push(dynamodbPromise)
+        } else if (newImage.action.S === "unsubscribe") {
+          const params = {
+            Key: {
+              "id": {
+                S: newImage.siteID.S
+              }
+            },
+            ExpressionAttributeValues: {
+              ":n": {
+                N: "1"
+              }
+            },
+            ReturnValues: "ALL_NEW",
+            TableName: table,
+            UpdateExpression: "SET currentSubscribers = currentSubscribers - :n"
+          }
+          const dynamodbPromise = dynamodb.updateItem(params).promise()
+          promiseList.push(dynamodbPromise)
+        }
         const type = newImage.__typename.S.toLowerCase() // get model type
         // Clean the model of unneeded values
         const model = modelParams[newImage.__typename.S].reduce((prev, currParam)=> (

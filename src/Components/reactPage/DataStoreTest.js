@@ -9,15 +9,9 @@ import {baseLanguages, basePhrases} from "../languageData";
 import * as mutations from "../../graphql/mutations";
 import * as queries from "../../graphql/queries";
 import Lambda from 'aws-sdk/clients/lambda'; // npm install aws-sdk
+import {siteData, surnames, names} from "../nameData";
 
-const siteLocations = [
-    [0.8601723100257656, 32.081114032264246],
-    [1.9263576758795882, 34.684589004602465],
-    [3.1332438033296173, 31.66345987298884],
-    [-0.469978477756793, 30.81226239329865],
-    [-0.9886157700640454, 29.843974915072906],
-    [0.22664695872836463, 32.926285624776376]
-]
+
 class DataStoreTest extends React.Component {
     constructor() {
         super();
@@ -57,48 +51,104 @@ class DataStoreTest extends React.Component {
         await Storage.put("baseLanguages.json", baseLanguages)
     }
     async createUser() {
-        const CustomerTransactions = {
-            userPhoneNumber: this.state.customerTransaction.userPhoneNumber,
-            fullName: this.state.customerTransaction.fullName,
-            siteName: this.state.customerTransaction.site,
-            siteID: this.state.customerTransaction.site,
-            action: "register",
-            collectedCount: 0,
-            collectedItemType: "N/A",
+        const date = new Date()
+        date.setMonth(date.getMonth()+1)
+
+        let customers = (await API.graphql({
+            query: queries.listCustomers,
+        })).data.listCustomers.items;
+        console.log(customers)
+        for (const customer in customers) {
+            try {
+                const CustomerTransactions = {
+                    userPhoneNumber: customers[customer].phoneNumber,
+                    fullName: `${customers[customer].firstName} ${customers[customer].lastName}`,
+                    siteName: customers[customer].site.name,
+                    siteID: customers[customer].siteID,
+                    action: "visit",
+                    status: "success",
+                    collectedCount: 1,
+                    collectedItemType: "jerrycan",
+                    ttl: Math.round(date.getTime()/1000)
+                }
+                console.log(CustomerTransactions)
+                API.graphql({
+                    query: mutations.createCustomerTransactions,
+                    variables: {input: CustomerTransactions}
+                })
+            } catch (e) {
+                console.log(e)
+            }
+
         }
-        await API.graphql({
-            query: mutations.createCustomerTransactions,
-            variables: {input: CustomerTransactions}
-        })
     }
     async createManager() {
+        const date = new Date()
+        date.setMonth(date.getMonth()+1)
+        const customer = await AdministrationBackendHelper.getCustomer("d8f170a4-89a6-49ec-9b3b-3335a47892e8")
         try {
-            await AdministrationBackendHelper.createSiteManager(this.state.siteManagerData.name, this.state.siteManagerData.site)
-        } catch (error) {
-            console.log("Error Creating Site Manager: ",error)
+            const CustomerTransactions = {
+                userPhoneNumber: customer.phoneNumber,
+                fullName: `${customer.firstName} ${customer.lastName}`,
+                siteName: customer.site.name,
+                siteID: customer.siteID,
+                action: "unsubscribe",
+                status: "success",
+                collectedCount: 1,
+                collectedItemType: "jerrycan",
+                ttl: Math.round(date.getTime()/1000)
+            }
+            console.log(CustomerTransactions)
+            API.graphql({
+                query: mutations.createCustomerTransactions,
+                variables: {input: CustomerTransactions}
+            })
+        } catch (e) {
+            console.log(e)
         }
 
     }
     async tests3() {
-        // try {
-        //     const result = await Storage.put("test.txt", "this is to override hello?");
-        //     console.log(result)
-        // } catch (error) {
-        //     console.log("Error pushing to s3", error)
-        // }
-        await LocalizationHelper.getLanguagePhrases()
+        let customers = (await API.graphql({
+            query: queries.listCustomers,
+        })).data.listCustomers.items;
+        const customer =  0
+        const date = new Date()
+        date.setMonth(date.getMonth()+1)
+        const CustomerTransactions = {
+            userPhoneNumber: customers[customer].phoneNumber,
+            fullName: `${customers[customer].firstName} ${customers[customer].lastName}`,
+            siteName: customers[customer].site.name,
+            siteID: customers[customer].siteID,
+            action: "subscription",
+            status: "success",
+            collectedCount: 1,
+            collectedItemType: "jerrycan",
+            ttl: Math.round(date.getTime()/1000)
+        }
+        console.log(CustomerTransactions)
+        API.graphql({
+            query: mutations.createCustomerTransactions,
+            variables: {input: CustomerTransactions}
+        })
     }
     async simulate() {
-        let siteCreationPromises = []
-        for (const pair in siteLocations) {
-            siteCreationPromises.push(this.simpleCreateSite(pair, siteLocations[pair][0], siteLocations[pair][1]))
+        let sites = await AdministrationBackendHelper.getSites()
+        if (sites.length === 0) {
+            let siteCreationPromises = []
+            // for (const pair in siteLocations) {
+            //     siteCreationPromises.push(this.simpleCreateSite(pair, siteLocations[pair][0], siteLocations[pair][1]))
+            // }
+            for (const site in siteData) {
+                siteCreationPromises.push(this.simpleCreateSite(siteData[site].name, siteData[site].nickname, siteData[site].location[0],siteData[site].location[1]))
+            }
+            await Promise.all(siteCreationPromises)
+            sites = await AdministrationBackendHelper.getSites()
         }
-        await Promise.all(siteCreationPromises)
-        const sites = await AdministrationBackendHelper.getSites()
         for (const site in sites) {
             try {
                 for (let iterator = 0 ; iterator < 5; iterator++) {
-                    AdministrationBackendHelper.createCustomer("first"+iterator, "last"+iterator, sites[site].id, 1234, iterator)
+                    AdministrationBackendHelper.createCustomer(names[Math.floor(Math.random()*names.length)], surnames[Math.floor(Math.random()*surnames.length)], sites[site].id, Math.floor(Math.random()*10000), "+254"+Math.floor(Math.random()*10000000))
                 }
             } catch (e) {
                 console.log("Error creating customers for site: "+sites[site].id, e)
@@ -106,20 +156,20 @@ class DataStoreTest extends React.Component {
 
         }
     }
-    async simpleCreateSite(number, latitude, longitude) {
+    async simpleCreateSite(name, nickname, latitude, longitude) {
         const siteCreationData = {
-            name: "testSite" + number,
-            description: "realistic site location " + number,
-            smsDescription: "sms description " + number,
-            nickname: "nickname" + number,
-            serviceRadius: 5,
+            name: name,
+            description: "Water site located at " + name,
+            smsDescription: "sms description at " + name,
+            nickname: nickname,
+            serviceRadius: Math.floor(Math.random()*5+5),
             latitude: latitude,
             longitude: longitude,
-            avgWaitMinute: 5,
-            avgLineCount: 5,
+            avgWaitMinute: Math.floor(Math.random()*5+3),
+            avgLineCount: Math.floor(Math.random()*10+3),
             status: "online",
-            subscriptionFee: 5,
-            expectedJerrycans: 10,
+            subscriptionFee: Math.floor(Math.random()*15+3),
+            expectedJerrycans: Math.floor(Math.random()*5+5),
         }
         await AdministrationBackendHelper.createSite(siteCreationData)
     }
@@ -216,7 +266,6 @@ class DataStoreTest extends React.Component {
                                 this.setState({
                                     customerData: Object.assign(this.state.customerTransaction, {site: value}),
                                 });
-
                             }}
                         >
                             {this.state.sites.map((site)=> {
@@ -268,13 +317,7 @@ class DataStoreTest extends React.Component {
                     </Button>
                 </Grid>
                 <Button variant="outlined" onClick={this.tests3.bind(this)}>
-                    test s3
-                </Button>
-                <Button variant="outlined" onClick={this.simulate.bind(this)}>
-                    simulate
-                </Button>
-                <Button variant="outlined" onClick={this.testFunction.bind(this)}>
-                    test function
+                    Single
                 </Button>
                 <Button variant="outlined" onClick={()=>{LocalizationHelper.queryPhrases()}}>
                     Test button

@@ -3,8 +3,8 @@ import {API, Auth} from "aws-amplify";
 import {Site} from "../../models";
 import "./SiteInformation.css"
 import Grid from "@material-ui/core/Grid";
-import { Chart } from "react-google-charts";
 import {
+    CircularProgress,
     Paper,
     Table,
     TableBody,
@@ -12,7 +12,7 @@ import {
     TableContainer,
     TableHead,
     TablePagination,
-    TableRow
+    TableRow, TextField
 } from "@material-ui/core";
 import theme from "../../themes";
 import * as PropTypes from "prop-types";
@@ -20,6 +20,12 @@ import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper"
 import MapComponent from "./MapComponent";
 import * as queries from "../../graphql/queries";
 import {connect} from "react-redux";
+import {DataGrid} from "@mui/x-data-grid";
+import Chart from "react-apexcharts";
+import DatePicker from '@mui/lab/DatePicker';
+import {LocalizationProvider} from "@mui/lab";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import {Stack} from "@mui/material";
 
 function ThemeProvider(props) {
     return null;
@@ -41,8 +47,20 @@ class SiteInformation extends React.Component {
                 processor: (input)=>(input),
             },
             {
+                id: "id",
+                label: "id",
+                xs: 12,
+                processor: (input)=>(input),
+            },
+            {
                 id:"description",
                 label: this.props.strings.description,
+                xs: 12,
+                processor: (input)=>(input),
+            },
+            {
+                id:"currentSubscribers",
+                label: this.props.strings.siteCustomers,
                 xs: 12,
                 processor: (input)=>(input),
             },
@@ -101,74 +119,158 @@ class SiteInformation extends React.Component {
                 processor: (input)=>(input),
             },
         ]
-        let graphData = [
-            ["Hour", "Visits"],
-            [0,0],
-            [23,0],
-        ];
-        // for (let hour = 0; hour < 24; hour++) {
-        //     graphData.push([hour, 1150-Math.abs(hour*100-1150)])
-        // }
-        const graphOptions = {
-            title: "Site Visits",
-            legend: { position: "bottom" },
-            hAxis: {
-                title: graphData[0][0],
+        const columns = [
+            {
+                field: "fullName",
+                headerName: props.strings.fullName,
+                flex: 1,
             },
-            vAxis: {
-                title: graphData[0][1],
+            {
+                field: "userPhoneNumber",
+                headerName: props.strings.phoneNumber,
+                flex: 1,
             },
-        };
-        const siteID = props.siteID
+            {
+                field: "action",
+                headerName: props.strings.action,
+                flex: 1,
+            },
+            {
+                field: "status",
+                headerName: props.strings.status,
+                flex: 1,
+            },
+            {
+                field: "collectedCount",
+                headerName: props.strings.collectedItemCount,
+                flex:1,
+            },
+            {
+                field: "collectedItemType",
+                headerName: props.strings.collectedItemType,
+                flex:1,
+            },
+        ]
+        const {siteID} = props
 
         this.state = {
             siteID: siteID,
             site: null,
-            graphData: graphData,
-            graphOptions: graphOptions,
             siteData: {},
-            siteVisits: [],
+            rows: [],
             siteRequirements: siteRequirements,
+            athenaLoaded: false,
+            columns: columns,
+            nextToken: null,
+            series: [{
+                name: "Visitors",
+                data: []
+            }],
+            options: {
+                chart: {
+                    height: 400,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'straight'
+                },
+                title: {
+                    text: this.props.strings.recentVisits,
+                    align: 'left'
+                },
+                grid: {
+                    row: {
+                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.5
+                    },
+                },
+                xaxis: {
+                    categories: [...Array(24).keys()],
+                }
+            },
+            date: new Date(),
         }
-        this.processAthena()
-    }
-    async processAthena() {
-        let data = (await API.graphql({
-            query: queries.athenaCall,
-            variables: {
-                siteID: this.state.siteID,
-                year: 2022,
-                month: 3,
-                day: -1,
-                hour: -1,
-            }
-        })).data.athenaCall
-        let split = (data.split('\n')) // last row is just an empty row
-        split.pop()
-        split.shift()
-        let regex = new RegExp(/"/, "g")
-        for (let row in split) {
-            // in shape string "col", "col",
-            split[row] = split[row].replaceAll(regex,"")
-            split[row] = split[row].split(",").map((num)=>(parseInt(num)))
-        }
-        split.sort((hour)=>(hour[0]))
-        split.unshift(this.state.graphData[0])
-        this.setState({graphData: split})
-        console.log(this.state.graphData)
     }
     async componentDidMount() {
         this.setState({
             siteData: await AdministrationBackendHelper.getSite(this.state.siteID),
-            siteVisits: await AdministrationBackendHelper.getTransactionsBySite(this.state.siteID),
+            rows: await AdministrationBackendHelper.getTransactionsBySite(this.state.siteID),
         })
-        console.log(this.state.siteVisits)
+        this.callAthenaUpdate()
     }
-
+    async callAthenaUpdate() {
+        this.setState({
+            athenaLoaded:false
+        })
+        console.log(this.state.date.getMonth())
+        console.log(this.state.date)
+        let data = (await API.graphql({
+            query: queries.athenaCall,
+            // Day and
+            variables: {
+                siteName: this.state.siteData.name,
+                year: parseInt(this.state.date.getFullYear()),
+                month: parseInt(this.state.date.getMonth()+1), //date returns index 0, and athena uses index 1
+                day: -1,
+                hour: -1,
+            }
+        })).data.athenaCall
+        // Athena call returns a string seperated by \n for rows, and , for columns.  All values are in strings
+        // After processing will be in the shape [[hour, visits], [hour, visits]]
+        let split = (data.split('\n'))
+        split.pop() // last row is just an empty row, this removes it
+        split.shift() // first row is just column names. this removes it
+        for (let row in split) {
+            // processing of rows
+            split[row] = split[row].replaceAll('"',"") // Removes all quotes
+            split[row] = split[row].split(",").map((num)=>(parseInt(num))) // Converts entries to numbers, instead of strings
+        }
+        split.sort((item0, item1)=>(item0[0]-item1[0])) // Ensures the hours are in order, for better processing later
+        console.log(split)
+        if (split.length !== 0) {
+            let index = 0
+            let graphData = []
+            // Entering either the visits during each hour, or zero if there was none
+            for (let hour = 0; hour < 24; hour++) {
+                if (index < split.length && split[index][0] === hour) {
+                    graphData.push(split[index][1])
+                    index++
+                } else {
+                    graphData.push(0)
+                }
+            }
+            this.setState({
+                series: [
+                    {
+                        name: this.props.strings.visitors,
+                        data: graphData
+                    }
+                ],
+            })
+            console.log(this.state.graphData)
+        } else {
+            console.log("No athena data")
+            this.setState({
+                series: [
+                    {
+                        name: this.props.strings.visitors,
+                        data: [],
+                    }
+                ],
+            })
+        }
+        this.setState({athenaLoaded: true})
+    }
     render(){
         return(
-            <Grid container direction={"row"} spacing={2} >
-                <Grid item xs={6} md={4}>
+            <Grid container direction={"row"} spacing={1} >
+                <Grid item xs={12} md={6}>
                     <Paper >
                         <div style ={{width: "100%", height: "800px", overflowY: "scroll"}}>
                             <TableContainer>
@@ -196,53 +298,55 @@ class SiteInformation extends React.Component {
                     </Paper>
 
                 </Grid>
-                <Grid item xs={6} md={4} >
+                <Grid item xs={12} md={6} >
                     <Paper>
-                        <Grid container direction={"column"} alignContent={"center"}>
-                            <Chart
-                                chartType="LineChart"
-                                width="100%"
-                                height="400px"
-                                data={this.state.graphData}
-                                options={this.state.graphOptions}
-                            />
+                        <Stack >
+                            {
+                                !this.state.athenaLoaded?
+                                    <CircularProgress/>:
+                                    this.state.series[0].data.length===0?
+                                        <div>No Information</div>:
+                                        <Chart options={this.state.options} series={this.state.series} type="line" height={350} />
+                            }
+                            {/*<Chart options={this.state.options} series={this.state.series} type="line" height={350} />*/}
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    label={this.props.strings.yearAndMonth}
+                                    openTo="month"
+                                    views={["year","month"]}
+                                    minDate={new Date(Date.UTC(this.state.date.getFullYear()-4, 0, 0, 0, 0, 0))}
+                                    maxDate={new Date(Date.UTC(this.state.date.getFullYear()+4, 0, 0, 0, 0, 0))}
+                                    value={this.state.date}
+                                    onChange={(newValue) => {
+                                        console.log(newValue)
+                                        this.setState(
+                                            {date: newValue},
+                                                this.callAthenaUpdate
+                                            )
+                                    }}
+                                    renderInput={(params) => <TextField {...params} helperText={null} />}
+                                />
+                            </LocalizationProvider>
                             <MapComponent siteID = {this.state.siteID}/>
-                        </Grid>
+                        </Stack>
+
                     </Paper>
                 </Grid>
-                <Grid item xs = {12} md={4}>
+                <Grid item container xs = {12} direction={"column"}>
+                    <Grid item container >
 
-                    <Paper>
-                        <div style={{ height: "800px", width: '100%', overflowY: "scroll"}}>
-                            <TableContainer>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell align="center" colSpan="100%">
-                                            <div className="title">
-                                                {this.props.strings.recentVisits}
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>Customer Name</TableCell>
-                                        <TableCell align="right">Phone Number</TableCell>
-                                        <TableCell align="right">Action</TableCell>
-                                        <TableCell align="right">Collected Item Type</TableCell>
-                                        <TableCell align="right">Collected item Count</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                {this.state.siteVisits.map((visit)=> (
-                                    <TableRow key = {visit.userPhoneNumber}>
-                                        <TableCell align="right">{visit.fullName}</TableCell>
-                                        <TableCell align="right">{visit.userPhoneNumber}</TableCell>
-                                        <TableCell align="right">{visit.action}</TableCell>
-                                        <TableCell align="right">{visit.collectedItemType}</TableCell>
-                                        <TableCell align="right">{visit.collectedCount}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableContainer>
-                        </div>
-                    </Paper>
+                    </Grid>
+                    <Grid item>
+                        <Paper>
+                            <div style={{ height: "800px", width: '100%'}}>
+                                <DataGrid
+                                    columns = {this.state.columns}
+                                    rows = {this.state.rows}
+                                    autoPageSize
+                                />
+                            </div>
+                        </Paper>
+                    </Grid>
                 </Grid>
             </Grid>
 

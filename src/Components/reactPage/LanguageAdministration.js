@@ -139,73 +139,87 @@ class LanguageAdministration extends React.Component {
     }
     render() {
         return <div>
-            <Grid container direction={"row"} alignItems={"center"} >
-                <FormControl>
-                    <NativeSelect
-                        value={this.state.currentLanguage}
-                        inputProps={{
-                            name: "Language",
-                            id: "selectLanguage"
-                        }}
-                        onChange={this.changeLanguage.bind(this)}
-                    >{this.state.languageCode.map((val) => {return <option > {val.language} </option>})}
-                    </NativeSelect>
-                </FormControl>
-                <FormLabel>{this.props.strings.languageCode + ": " + this.state.currentLanguageCode}</FormLabel>
-                <Button variant={"outlined"} onClick={()=>{this.setState({openNewLanguageMenu: true})}}>{this.props.strings.addNewLanguage}</Button>
-                <Button variant={"outlined"} onClick={this.updateLanguage.bind(this)}>{this.props.strings.syncLanguageToCloud}</Button>
-                <Button variant={"outlined"} onClick={()=>{this.setState({deleteLanguageMenu: true})}}>{this.props.strings.delete}</Button>
-                <Dialog open={this.state.openNewLanguageMenu} onClose={()=>{this.setState({openNewLanguageMenu: false})}} maxWidth={"md"} >
-                    <DialogActions>
-                        <Grid container direction={"column"} justifyContent={"center"}>
-                            <DialogContentText>
-                                {this.props.strings.addLanguageTemplate}
-                            </DialogContentText>
-                            <Grid container direction = "row" spacing = {1}>
-                                {this.state.languageRequirements.map((requirement)=> (
-                                    <Grid item>
-                                        <TextField
-                                            autoFocus
-                                            margin="dense"
-                                            type="text"
-                                            fullWidth
-                                            variant="standard"
-                                            label = {requirement.display}
-                                            error = {this.state.newLanguageErrors[requirement.id]}
-                                            defaultValue = {this.state.newLanguageInfo[requirement.id]}
-                                            onChange={(input)=> {
-                                                const text = input.target.value
-                                                this.setState({
-                                                    newLanguageInfo: Object.assign(this.state.newLanguageInfo, {
-                                                        [requirement.id]:text
+            <Grid container direction={"row"} alignItems={"center"} spacing = {2}>
+                <Grid item>
+                    <FormControl>
+                        <NativeSelect
+                            value={this.state.currentLanguage}
+                            inputProps={{
+                                name: "Language",
+                                id: "selectLanguage"
+                            }}
+                            onChange={this.changeLanguage.bind(this)}
+                        >{this.state.languageCode.map((val) => {return <option > {val.language} </option>})}
+                        </NativeSelect>
+                    </FormControl>
+                </Grid>
+                <Grid item>
+                    <FormLabel>{this.props.strings.languageCode + ": " + this.state.currentLanguageCode}</FormLabel>
+                </Grid>
+                <Grid item>
+                    <Button variant={"outlined"} onClick={()=>{this.setState({openNewLanguageMenu: true})}}>{this.props.strings.addNewLanguage}</Button>
+                </Grid>
+                <Grid item>
+                    <Button variant={"outlined"} onClick={this.updateLanguage.bind(this)}>{this.props.strings.syncLanguageToCloud}</Button>
+                </Grid>
+                <Grid item>
+                    <Button variant={"outlined"} onClick={()=>{this.setState({deleteLanguageMenu: true})}}>{this.props.strings.delete}</Button>
+                </Grid>
+                <Grid item>
+                    <Dialog open={this.state.openNewLanguageMenu} onClose={()=>{this.setState({openNewLanguageMenu: false})}} maxWidth={"md"} >
+                        <DialogActions>
+                            <Grid container direction={"column"} justifyContent={"center"}>
+                                <DialogContentText>
+                                    {this.props.strings.addLanguageTemplate}
+                                </DialogContentText>
+                                <Grid container direction = "row" spacing = {1}>
+                                    {this.state.languageRequirements.map((requirement)=> (
+                                        <Grid item>
+                                            <TextField
+                                                autoFocus
+                                                margin="dense"
+                                                type="text"
+                                                fullWidth
+                                                variant="standard"
+                                                label = {requirement.display}
+                                                error = {this.state.newLanguageErrors[requirement.id]}
+                                                defaultValue = {this.state.newLanguageInfo[requirement.id]}
+                                                onChange={(input)=> {
+                                                    const text = input.target.value
+                                                    this.setState({
+                                                        newLanguageInfo: Object.assign(this.state.newLanguageInfo, {
+                                                            [requirement.id]:text
+                                                        })
                                                     })
-                                                })
-                                            }}/>
-                                    </Grid>
-                                ))}
+                                                }}/>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                                <DialogActions>
+                                    <Button onClick={()=>{this.setState({openNewLanguageMenu: false})}}>Cancel</Button>
+                                    <Button onClick={this.createNewLanguage.bind(this)}>Add</Button>
+                                </DialogActions>
                             </Grid>
-                            <DialogActions>
-                                <Button onClick={()=>{this.setState({openNewLanguageMenu: false})}}>Cancel</Button>
-                                <Button onClick={this.createNewLanguage.bind(this)}>Add</Button>
-                            </DialogActions>
-                        </Grid>
 
-                    </DialogActions>
-                </Dialog>
-                <Dialog open={this.state.deleteLanguageMenu} onClose={()=>{this.setState({deleteLanguageMenu: false})}} maxWidth={"md"} >
-                    <DialogActions>
-                        <Grid container direction={"column"} justifyContent={"center"}>
-                            <DialogContentText>
-                                {this.props.strings.deleteLanguageTemplate}
-                            </DialogContentText>
-                            <DialogActions>
-                                <Button onClick={()=>{this.setState({deleteLanguageMenu: false})}}>{this.props.strings.cancel}</Button>
-                                <Button onClick={this.deleteLanguage.bind(this)}>{this.props.strings.delete}</Button>
-                            </DialogActions>
-                        </Grid>
+                        </DialogActions>
+                    </Dialog>
+                </Grid>
+                <Grid item>
+                    <Dialog open={this.state.deleteLanguageMenu} onClose={()=>{this.setState({deleteLanguageMenu: false})}} maxWidth={"md"} >
+                        <DialogActions>
+                            <Grid container direction={"column"} justifyContent={"center"}>
+                                <DialogContentText>
+                                    {this.props.strings.deleteLanguageTemplate}
+                                </DialogContentText>
+                                <DialogActions>
+                                    <Button onClick={()=>{this.setState({deleteLanguageMenu: false})}}>{this.props.strings.cancel}</Button>
+                                    <Button onClick={this.deleteLanguage.bind(this)}>{this.props.strings.delete}</Button>
+                                </DialogActions>
+                            </Grid>
 
-                    </DialogActions>
-                </Dialog>
+                        </DialogActions>
+                    </Dialog>
+                </Grid>
             </Grid>
             <Paper>
                 <Table>

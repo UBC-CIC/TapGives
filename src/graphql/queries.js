@@ -3,14 +3,16 @@
 
 export const athenaCall = /* GraphQL */ `
   query AthenaCall(
-    $siteID: String!
+    $userPhoneNumber: String
+    $siteName: String!
     $year: Int!
     $month: Int!
     $day: Int!
     $hour: Int!
   ) {
     athenaCall(
-      siteID: $siteID
+      userPhoneNumber: $userPhoneNumber
+      siteName: $siteName
       year: $year
       month: $month
       day: $day
@@ -37,10 +39,12 @@ export const getSiteManager = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
       phoneNumber
+      preferredLanguage
       createdAt
       updatedAt
     }
@@ -80,10 +84,12 @@ export const listSiteManagers = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
         phoneNumber
+        preferredLanguage
         createdAt
         updatedAt
       }
@@ -123,10 +129,12 @@ export const siteManagerByID = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
         phoneNumber
+        preferredLanguage
         createdAt
         updatedAt
       }
@@ -166,10 +174,57 @@ export const siteManagerBySite = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
         phoneNumber
+        preferredLanguage
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const siteManagerByPhoneNumber = /* GraphQL */ `
+  query SiteManagerByPhoneNumber(
+    $phoneNumber: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSiteManagerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    siteManagerByPhoneNumber(
+      phoneNumber: $phoneNumber
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        siteID
+        site {
+          id
+          name
+          nickname
+          smsDescription
+          description
+          serviceRadius
+          latitude
+          longitude
+          avgWaitMinute
+          avgLineCount
+          status
+          subscriptionFee
+          expectedJerrycans
+          currentSubscribers
+          createdAt
+          updatedAt
+        }
+        phoneNumber
+        preferredLanguage
         createdAt
         updatedAt
       }
@@ -196,6 +251,7 @@ export const getCustomer = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
@@ -207,6 +263,7 @@ export const getCustomer = /* GraphQL */ `
       preferredLanguage
       subscriptionExpiration
       monthlySubscriptionCode
+      jerrycansAllowed
       createdAt
       updatedAt
     }
@@ -236,6 +293,7 @@ export const listCustomers = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
@@ -247,6 +305,7 @@ export const listCustomers = /* GraphQL */ `
         preferredLanguage
         subscriptionExpiration
         monthlySubscriptionCode
+        jerrycansAllowed
         createdAt
         updatedAt
       }
@@ -286,6 +345,7 @@ export const customerBySite = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
@@ -297,6 +357,7 @@ export const customerBySite = /* GraphQL */ `
         preferredLanguage
         subscriptionExpiration
         monthlySubscriptionCode
+        jerrycansAllowed
         createdAt
         updatedAt
       }
@@ -336,6 +397,7 @@ export const customerByPhoneNumber = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
@@ -347,6 +409,7 @@ export const customerByPhoneNumber = /* GraphQL */ `
         preferredLanguage
         subscriptionExpiration
         monthlySubscriptionCode
+        jerrycansAllowed
         createdAt
         updatedAt
       }
@@ -386,6 +449,7 @@ export const customerByFirstName = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
@@ -397,6 +461,7 @@ export const customerByFirstName = /* GraphQL */ `
         preferredLanguage
         subscriptionExpiration
         monthlySubscriptionCode
+        jerrycansAllowed
         createdAt
         updatedAt
       }
@@ -436,6 +501,7 @@ export const customerBySubscriptionExpiration = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
@@ -447,6 +513,7 @@ export const customerBySubscriptionExpiration = /* GraphQL */ `
         preferredLanguage
         subscriptionExpiration
         monthlySubscriptionCode
+        jerrycansAllowed
         createdAt
         updatedAt
       }
@@ -486,6 +553,7 @@ export const customerByMonthlySubscriptionCode = /* GraphQL */ `
           status
           subscriptionFee
           expectedJerrycans
+          currentSubscribers
           createdAt
           updatedAt
         }
@@ -497,6 +565,7 @@ export const customerByMonthlySubscriptionCode = /* GraphQL */ `
         preferredLanguage
         subscriptionExpiration
         monthlySubscriptionCode
+        jerrycansAllowed
         createdAt
         updatedAt
       }
@@ -520,6 +589,7 @@ export const getSite = /* GraphQL */ `
       status
       subscriptionFee
       expectedJerrycans
+      currentSubscribers
       createdAt
       updatedAt
     }
@@ -546,6 +616,7 @@ export const listSites = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
@@ -582,6 +653,7 @@ export const siteByNickname = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
@@ -598,8 +670,10 @@ export const getCustomerTransactions = /* GraphQL */ `
       siteName
       siteID
       action
+      status
       collectedCount
       collectedItemType
+      ttl
       createdAt
       updatedAt
     }
@@ -607,18 +681,14 @@ export const getCustomerTransactions = /* GraphQL */ `
 `;
 export const listCustomerTransactions = /* GraphQL */ `
   query ListCustomerTransactions(
-    $id: ID
     $filter: ModelCustomerTransactionsFilterInput
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
     listCustomerTransactions(
-      id: $id
       filter: $filter
       limit: $limit
       nextToken: $nextToken
-      sortDirection: $sortDirection
     ) {
       items {
         id
@@ -627,8 +697,10 @@ export const listCustomerTransactions = /* GraphQL */ `
         siteName
         siteID
         action
+        status
         collectedCount
         collectedItemType
+        ttl
         createdAt
         updatedAt
       }
@@ -658,8 +730,10 @@ export const customerTransactionByPhoneNumber = /* GraphQL */ `
         siteName
         siteID
         action
+        status
         collectedCount
         collectedItemType
+        ttl
         createdAt
         updatedAt
       }
@@ -689,8 +763,10 @@ export const customerTransactionBySite = /* GraphQL */ `
         siteName
         siteID
         action
+        status
         collectedCount
         collectedItemType
+        ttl
         createdAt
         updatedAt
       }

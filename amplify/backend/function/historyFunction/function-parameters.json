@@ -1,7 +1,24 @@
 {
   "permissions": {
+    "api": {
+      "tapgiveschallenge": [
+        "Mutation"
+      ]
+    },
     "storage": {
       "history": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Site:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "CustomerTransactions:@model(appsync)": [
         "create",
         "read",
         "update",

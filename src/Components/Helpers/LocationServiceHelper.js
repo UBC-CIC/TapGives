@@ -36,7 +36,7 @@ class LocationServiceHelper {
                 container: container,
                 center: center,
                 zoom: zoom,
-                style: mapName,
+                style: "MyMapName", // Set in the custom cloudformation in the amplify files.  I do not believe there's a robust way to do this with current amplify technologies.  Replace this when the time comes
                 transformRequest,
             })
 

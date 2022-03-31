@@ -1,15 +1,12 @@
 import React from 'react';
-import {API, Auth, graphqlOperation} from "aws-amplify";
+import {Auth} from "aws-amplify";
 import amplifyConfig from "../../aws-exports";
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './MapPage.css'
 import LocationServiceHelper from '../Helpers/LocationServiceHelper'
-import {Button, Grid, TextField} from "@material-ui/core";
 import * as turf from "@turf/turf";
-import {listManagerSiteLinkers, listSites} from "../../graphql/queries";
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
-
 
 let map;
 let marker;
@@ -17,7 +14,6 @@ let credentials;
 let locationService;
 let count = 0;
 const AWS = require("aws-sdk");
-const placeIndex = process.env.REACT_APP_PLACE_INDEX_NAME;
 const locationHelper = new LocationServiceHelper()
 // Amplify.configure(amplifyConfig);
 mapboxgl.accessToken = process.env.accessToken

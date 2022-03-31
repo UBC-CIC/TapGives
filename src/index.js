@@ -8,16 +8,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import reducers from "./Reducers";
-import Amplify, {AuthModeStrategyType, Hub} from 'aws-amplify';
+import Amplify from 'aws-amplify';
 
 Amplify.configure(awsExports);
-Amplify.configure({
-    DataStore: {
-        authModeStrategyType: AuthModeStrategyType.MULTI_AUTH
-    }
-})
 
-Hub.listen("datastore", (test) => {console.log(test.payload)})
 const enhancers = compose(applyMiddleware(thunk))
 const store = createStore(
     reducers, enhancers

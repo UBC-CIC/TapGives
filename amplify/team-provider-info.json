@@ -24,11 +24,11 @@
         },
         "TapGivesAthenaQuery": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-120914-deployment",
-          "s3Key": "amplify-builds/TapGivesAthenaQuery-344a5171587a444e4355-build.zip"
+          "s3Key": "amplify-builds/TapGivesAthenaQuery-786147586c4645666b65-build.zip"
         },
         "historyFunction": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-120914-deployment",
-          "s3Key": "amplify-builds/historyFunction-6773394c46454f717832-build.zip"
+          "s3Key": "amplify-builds/historyFunction-45497679457564705965-build.zip"
         }
       }
     }

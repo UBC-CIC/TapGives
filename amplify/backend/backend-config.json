@@ -151,5 +151,11 @@
       ]
     }
   },
-  "custom": {}
+  "custom": {
+    "location": {
+      "service": "customCloudformation",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
+  }
 }

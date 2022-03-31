@@ -61,22 +61,57 @@ class AdministrationBackendHelper {
     // By limits of Appsync, you're limited to queries of 100mb/100 items, this is just one query.  Below has the
     // recursive operation which will call queries until you reach all the items
     static async getCustomersBySiteFast(siteIDInput) {
-        return (await API.graphql({
+        const out = (await API.graphql({
             query: queries.customerBySite,
             variables: {
                 siteID: siteIDInput
             }
-        })).data.customerBySite.items;
+        })).data.customerBySite
+        return {
+            data:out.items,
+            next:out.nextToken,
+        };
     }
-    // static async getCustomersBySiteSubscriptionFast(siteSubscriptionIDInput) {
-    //     return (await API.graphql({
-    //         query: queries.customerBySiteSubscription,
-    //         variables: {
-    //             siteSubscriptionID: siteSubscriptionIDInput
-    //         }
-    //     })).data.customerBySiteSubscription.items
-    // }
-
+    static async getCustomersBySiteFastNextToken(siteIDInput, nextToken) {
+        const out = (await API.graphql({
+            query: queries.customerBySite,
+            variables: {
+                siteID: siteIDInput,
+                nextToken: nextToken,
+            }
+        })).data.customerBySite
+        return {
+            data:out.items,
+            next:out.nextToken,
+        };
+    }
+    static async getCustomersBySiteFastFilter(siteID, filter) {
+        const out = (await API.graphql({
+            query: queries.customerBySite,
+            variables: {
+                siteID: siteID,
+                filter: filter,
+            }
+        })).data.customerBySite
+        return {
+            data:out.items,
+            next:out.nextToken,
+        };
+    }
+    static async getCustomersBySiteFastNextTokenFilter(siteID, nextToken, filter) {
+        const out = (await API.graphql({
+            query: queries.customerBySite,
+            variables: {
+                siteID: siteID,
+                nextToken: nextToken,
+                filter: filter,
+            }
+        })).data.customerBySite
+        return {
+            data:out.items,
+            next:out.nextToken,
+        };
+    }
     // The slower, full versions of the above queries
     static async getCustomersBySite(siteIDInput) {
         let query = (await API.graphql({
@@ -100,11 +135,49 @@ class AdministrationBackendHelper {
         }
         return fullListOfCustomers;
     }
+    static async getCustomersByDynamic(queryType, field, value) {
+        let out = (await API.graphql({
+            query: queryType,
+            variables: {
+                [field]: value,
+            }
+        })).data
+        out = out[Object.keys(out)]
+        return {
+            data:out.items,
+            next:out.nextToken,
+        };
+    }
+    static async getCustomersByDynamicFilter(queryType, field, value, filter) {
+        let out = (await API.graphql({
+            query: queryType,
+            variables: {
+                [field]: value,
+                filter: filter,
+            }
+        })).data
+        out = out[Object.keys(out)]
+        return {
+            data:out.items,
+            next:out.nextToken,
+        };
+    }
+    static async getCustomer(customerID) {
+        const customerList = (await API.graphql({
+            query: queries.getCustomer,
+            variables: {
+                id: customerID
+            }
+        })).data.getCustomer;
+        return customerList
+    }
+
     static async createSiteManager(siteManagerID, siteID, phoneNumber) {
         const siteManager = {
             id: siteManagerID,
             siteID: siteID,
             phoneNumber: phoneNumber,
+            preferredLanguage: "en",
         }
         await API.graphql({
             query: mutations.createSiteManager,
@@ -122,7 +195,9 @@ class AdministrationBackendHelper {
             firstName: firstName,
             lastName: lastName,
             preferredLanguage: "en",
-            subscriptionExpiration: "2022-03-01"
+            subscriptionExpiration: "2022-04-"+Math.floor(Math.random()*30),
+            monthlySubscriptionCode: Math.ceil(Math.random()*9)*1000+Math.floor(Math.random()*1000),
+            jerrycansAllowed: Math.floor(Math.random()*5),
         }
         await API.graphql({
             query: mutations.createCustomer,
@@ -131,7 +206,7 @@ class AdministrationBackendHelper {
     }
     static async createSite(siteCreationData) {
         try {
-            const site = Object.assign(siteCreationData, {status: "online"})
+            const site = Object.assign(siteCreationData, {status: "online", currentSubscribers: 0})
             await API.graphql({
                 query: mutations.createSite,
                 variables: {input: site},
@@ -173,6 +248,7 @@ class AdministrationBackendHelper {
             variables: {input: customerData}
         })
     }
+    //Delete Site and all associated sitemanagers and customers
     static async cascadeDeleteSite(siteIDInput) {
         const site = await this.getSite(siteIDInput)
         const customers = await this.getCustomersBySite(siteIDInput)
@@ -269,6 +345,36 @@ class AdministrationBackendHelper {
         })
         // console.log(rest)
         return list;
+    }
+    static async addUserToGroup(username){
+        let apiName = 'AdminQueries';
+        let path = '/addUserToGroup';
+        let myInit = {
+            body: {
+                "username" : username,
+                "groupname": "SiteManagers"
+            },
+            headers: {
+                'Content-Type' : 'application/json',
+                Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+            }
+        }
+        return await API.post(apiName, path, myInit);
+    }
+    static async removeUserFromGroup(username){
+        let apiName = 'AdminQueries';
+        let path = '/removeUserFromGroup';
+        let myInit = {
+            body: {
+                "username" : username,
+                "groupname": "SiteManagers"
+            },
+            headers: {
+                'Content-Type' : 'application/json',
+                Authorization: `${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+            }
+        }
+        return await API.post(apiName, path, myInit);
     }
 }
 

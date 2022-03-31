@@ -89,11 +89,41 @@ export const basePhrases  = {
         sites: "Sites",
         siteInformation: "Site Information",
         recentVisits: "Recent Visits",
-        ////////////////////// MENU LAMBDA /////////////////////
+        action: "Action",
+        collectedItemType: "Collected Item Type",
+        collectedItemCount: "Collected Item Count",
+        hour: "Hour",
+        visits: "Visits",
+        year: "Year",
+        month: "Month",
+        day: "Day",
+        subscriptionExpiration: "Subscription Expiration",
+        subscriptionStatus: "Subscription status",
+        pin: "view",
+        queryHistory: "Query History",
+        jerrycansAllowed: "Jerrycans Allowed",
+        phraseCode: "Phrase Code",
+        status: "Status",
+        query: "Query",
+        search: "Search",
+        scan: "Scan",
+        getMoreResults: "Get More Results",
+        addFilter: "Add Filter",
+        remove: "Remove",
+        property: "Property",
+        value: "Value",
+        monthlySubscriptionCode: "Monthly Code",
+        visitors: "Visitors",
+        noInformation: "No Information",
+        yearAndMonth: "Year and Month",
+        fullName: "Full Name",
+        home: "Home",
+        siteCustomers: "Site Customers",
+        administration: "Administration",
+        languageAdministration: "Language Administration",
 
-        // should first two be under en? cause they're bilingual
-        // maybe have a third language: Unknown, 'uk'
-        menu_unknownUserStartState: "Welcome to TapGives!" +
+        ////////////////////// MENU LAMBDA /////////////////////
+        startRegistration: "Welcome to TapGives!" +
             "\n Karibu TapGives!" +
             "\n———" +
             "\n Select a language: " +
@@ -101,58 +131,70 @@ export const basePhrases  = {
             "\n1. English" +
             "\n2. Swahili" +
             "\n0. Exit",
-        menu_multilingualExit: "Thank you. Goodbye." +
+        multilingualExit: "Thank you. Goodbye." +
             "\nAsante. Kwaheri.",
-
-        /* signup text */
-        menu_firstNamePrompt: "Enter your first name:",
-        menu_lastNamePrompt: "Enter your last name:",
-        menu_idNumberPrompt: "Enter your ID number:",
-        menu_pinSignUpPrompt: "Enter a 4 digit pin:",
-        menu_siteNicknamePrompt: "Enter your site nickname:",
-        menu_registrationConfirmation: "You are now being registered!" +
-            "\nPlease allow 1 minute, then restart the session " +
-            "and proceed to 'Purchase/Renew Subscription' to activate " +
-            "your subscription.",
-        menu_invalidSiteNickname: "No site matches the provided nickname." +
+        exit: "Thank you. Goodbye.",
+        /* unknown customer menu*/
+        actionSelection: "Select an action:" +
+            "\n1.Register" +
+            "\n2.Change phone number" +
+            "\n0.Exit",
+        // registration
+        firstNamePrompt: "Enter your first name:",
+        lastNamePrompt: "Enter your last name:",
+        registrationPinPrompt: "Enter a 4 digit pin:",
+        siteNicknamePrompt: "Enter your site nickname:",
+        registrationError: "There has been a problem registering you. " +
+            "Please try again. Thank you.",
+        registrationConfirmation: "You have now been registered to the Tapgives project! " +
+            "Rejoin the menu to purchase a subscription. Thank you.",
+        invalidSiteNickname: "No site matches the provided nickname." +
             "\nPlease confirm the site nickname and retry. Thank you.",
 
-        /* known customer text */
-        menu_welcomeBack: "Welcome back, ",
-        menu_pinPrompt: "Please enter your 4 digit pin to proceed:",
-        menu_incorrectPin: "Incorrect pin.",
-        menu_validSubscriptionOptions: "Your subscription is valid for the month." +
-            "\n---" +
-            "\n What would you like to do?" +
-            "\n1. Collect water" +
-            "\n0. Exit",
-        menu_invalidSubscriptionOptions: "Your subscription is not valid for the month." +
-            "\n---" +
-            "\n What would you like to do?" +
-            "\n2. Purchase/Renew Subscription" +
-            "\n0. Exit",
-        menu_invalidSelectionInCollectWater: "Invalid selection. Please retry.",
-        menu_collectWaterVerification: "You will receive a message shortly with your verification code. Thank you.",
-        menu_invalidSelectionInPurchaseSubscription: "Invalid selection. Subscription is already valid.",
-        menu_purchaseSubscriptionConfirmationPt1: "Press 1 to proceed with the transaction of ",
-        menu_purchaseSubscriptionConfirmationPt2: " shillings for a monthly subscription." + "\nPress 0 to exit.",
-        menu_paymentAndNotification: "Please proceed to pay for the subscription. " +
+        // change number
+        oldPhoneNumberPrompt: "Enter your old phone number in +254 format:",
+        oldPinPrompt: "Enter your old pin:",
+        accountUpdated: "Your account has been updated. The phone number currently " +
+            "in use is your new number. Thank you.",
+        invalidCombination: "Invalid phoneNumber - pin combination.",
+        /* known customer menu */
+        welcomeBack: "Welcome back, ",
+        pinPrompt: "! Please enter your PIN to proceed:",
+        customerOptions: "Please select an option:" +
+            "\n1.Show subscription code." +
+            "\n2.Purchase subscription." +
+            "\n3.Show jerrycan balance for the month." +
+            "\n0.Exit",
+        incorrectPin: "Incorrect PIN. Please try again.",
+        showSubscription: "Your monthly subscription code is: ",
+        showJerrycanBalance: "You have the following number of jerrycans remaining for the month: ",
+        invalidSelectionInPurchaseSubscription: "Invalid selection. Subscription is already valid.",
+        purchaseSubscriptionConfirmationPt1: "Press 1 to proceed with the transaction of ",
+        purchaseSubscriptionConfirmationPt2: " shillings for a monthly subscription." + "\nPress 0 to exit.",
+        paymentPrompt: "Please proceed to pay for the subscription. " +
             "You will receive a notification shortly afterwards. Thank you.",
-        menu_exit: "Thank you. Goodbye.",
-
-
-        ////////////////////// SEND SUBSCRIPTION MESSAGES LAMBDA /////////////////////
-        // edit
-        subscriptionSuccess: "you have been subscribed",
-        subscriptionFailure: "problem subscribing you. retry",
-        reminder:"remember to subscribe",
-        unsubscription: "you have been unsubscribed",
-
-
-        ////////////////////// SEND VISIT MESSAGES LAMBDA /////////////////////
-        // edit
-        customerMessage: "dear customer, verification is: ",
-        siteManagerMessage: "dear manager, customer verification is: ",
+        /* site manager menu */
+        siteManagerOptions: "Welcome site manager. Please select an option:" +
+            "\n1.Verify customer subscription" +
+            "\n0.Exit",
+        customerCodePrompt: "Enter the customer's subscription code: ",
+        notAuthorized: "You are not authorized to validate this customer.",
+        customerSubscriptionInvalid: "The customer's subscription is invalid.",
+        noJerrycansLeft: "The customer has used up all allowed jerrycans.",
+        validCustomerOptionsPt1: "This customer is allowed to collect the following number of jerrycans: ",
+        validCustomerOptionsPt2: "\nSelect an option:" +
+            "\n1.Validate 1 collection." +
+            "\n0.Exit",
+        collectionConfirmation: "The customer is now allowed to take 1 jerrycan of water. Thank you.",
+        ////// SEND SUBSCRIPTION MESSAGES LAMBDA //////
+        subscriptionSuccessMessage: "Dear customer, you have successfully purchased a monthly " +
+            "subscription to the TapGives project. Start the menu to see your updated account.",
+        subscriptionFailureMessage: "Dear customer, there has been a problem in subscribing you. " +
+            "If you have not yet paid for the subscription, please retry.",
+        reminderMessage:"Dear customer, you have two days until your subscription expires. " +
+            "Make sure you purchase a subscription when it does!",
+        unsubscriptionMessage: "Dear customer, your subscription has expired. " +
+            "Start the menu to purchase a new subscription!",
 
     },
     sw: {
@@ -181,6 +223,7 @@ export const basePhrases  = {
         helperText:"Nenosiri lako lazima liwe na yafuatayo:",
         firstName:"Jina la kwanza",
         lastName:"Jina la familia",
+        phoneNumber: "Nambari ya simu",
         passwordRequirements: "Nenosiri lako lazima liwe na yafuatayo:",
         confirmPassword: "Thibitisha Nenosiri",
         signUp: "Jisajili",
@@ -244,12 +287,41 @@ export const basePhrases  = {
         sites: "Maeneo",
         siteInformation: "Habari za Tovuti",
         recentVisits: "Ziara za Hivi Karibuni",
+        action: "Kitendo",
+        collectedItemType: "Aina ya Kipengee Kilichokusanywa",
+        collectedItemCount: "Hesabu ya Bidhaa Zilizokusanywa",
+        hour: "Saa",
+        visits: "Ziara",
+        year: "Mwaka",
+        month: "Mwezi",
+        day: "Siku",
+        subscriptionExpiration: "Kuisha kwa Usajili",
+        subscriptionStatus: "Hali ya usajili",
+        pin: "mtazamo",
+        queryHistory: "Historia ya Maswali",
+        jerrycansAllowed: "Makopo ya Jerry Yanaruhusiwa",
+        phraseCode: "Kanuni ya Maneno",
+        status: "Hali",
+        query: "Hoja",
+        search: "Tafuta",
+        scan: "Changanua",
+        getMoreResults: "Pata Matokeo Zaidi",
+        addFilter: "Ongeza Kichujio",
+        remove: "Ondoa",
+        property: "Mali",
+        value: "Thamani",
+        monthlySubscriptionCode: "Kanuni ya Kila Mwezi",
+        visitors: "Wageni",
+        noInformation: "Hakuna Taarifa",
+        yearAndMonth: "Mwaka na Mwezi",
+        fullName: "Jina kamili",
+        home: "Nyumbani",
+        siteCustomers: "Wateja wa Tovuti",
+        administration: "Utawala",
+        languageAdministration: "Utawala wa Lugha",
 
         ////////////////////// MENU LAMBDA /////////////////////
-
-        // should first two be under en? cause they're bilingual
-        // maybe have a third language: Unknown, 'uk'
-        menu_unknownUserStartState: "Welcome to TapGives!" +
+        startRegistration: "Welcome to TapGives!" +
             "\n Karibu TapGives!" +
             "\n———" +
             "\n Select a language: " +
@@ -257,58 +329,71 @@ export const basePhrases  = {
             "\n1. English" +
             "\n2. Swahili" +
             "\n0. Exit",
-        menu_multilingualExit: "Thank you. Goodbye." +
+        multilingualExit: "Thank you. Goodbye." +
             "\nAsante. Kwaheri.",
+        exit: "Asante. Kwaheri.",
+        /* unknown customer menu*/
+        actionSelection: "Chagua kitendo:" +
+            "\n1.Jiandikishe" +
+            "\n2.Badilisha nambari ya simu" +
+            "\n0.Toka",
+        // registration
+        firstNamePrompt: "Ingiza jina lako la kwanza:",
+        lastNamePrompt: "Ingiza jina lako la mwisho:",
+        registrationPinPrompt: "Ingiza PIN yenye tarakimu 4:",
+        siteNicknamePrompt: "Ingiza jina la utani la tovuti yako:",
+        registrationError: "Kumekuwa na tatizo katika kukusajili. " +
+            "Tafadhali jaribu tena. Asante.",
+        registrationConfirmation: "Sasa umeandikishwa kwa mradi wa Tapgives! " +
+            "Anzisha menyu ili ununue usajili. Asante.",
+        invalidSiteNickname: "Hakuna tovuti inayolingana na lakabu iliyotolewa." +
+            "\nTafadhali thibitisha jina la utani la tovuti na ujaribu tena. Asante.",
 
-        /* signup text */
-        menu_firstNamePrompt: "Ingiza jina lako la kwanza:",
-        menu_lastNamePrompt: "Ingiza jina lako la mwisho:",
-        menu_idNumberPrompt: "Ingiza nambari yako ya kitambulisho:",
-        menu_pinSignUpPrompt: "Ingiza pini ya tarakimu 4:",
-        menu_siteNicknamePrompt: "Ingiza jina la utani la tovuti yako ya maji:",
-        menu_registrationConfirmation: "Sasa unaandikishwa!" +
-            "\nTafadhali ruhusu dakika 1, kisha uanze upya kipindi " +
-            "na uendelee na 'Nunua/Usasishe Usajili' ili kuamilisha " +
-            "usajili wako.",
-        menu_invalidSiteNickname: "Hakuna tovuti ya maji inayolingana na jina la utani lililotolewa." +
-            "\nTafadhali thibitisha jina la utani la tovuti ya maji na ujaribu tena. Asante.",
-
-        /* known customer text */
-        menu_welcomeBack: "Karibu tena, ",
-        menu_pinPrompt: "Tafadhali weka pin yako ya tarakimu 4 ili kuendelea:",
-        menu_incorrectPin: "Nenosiri mbaya.",
-        menu_validSubscriptionOptions: "Usajili wako ni halali kwa mwezi." +
-            "\n---" +
-            "\n Ungependa kufanya nini?" +
-            "\n1. Kusanya maji" +
-            "\n0. Toka",
-        menu_invalidSubscriptionOptions: "Usajili wako si halali kwa mwezi." +
-            "\n---" +
-            "\n Ungependa kufanya nini?" +
-            "\n2. Nunua/Sasisha Usajili" +
-            "\n0. Toka",
-        menu_invalidSelectionInCollectWater: "Uteuzi mbaya. Tafadhali jaribu tena.",
-        menu_collectWaterVerification: "Utapokea ujumbe baada ya muda mfupi ulio na nambari yako ya uthibitishaji. Asante.",
-        menu_invalidSelectionInPurchaseSubscription: "Uteuzi mbaya. Usajili tayari ni halali.",
-        menu_purchaseSubscriptionConfirmationPt1: "Bonyeza 1 ili kuendelea na shughuli ya ",
-        menu_purchaseSubscriptionConfirmationPt2: "shilingi kwa usajili wa kila mwezi." + "\nBonyeza 0 ili kuondoka.",
-        menu_paymentAndNotification: "Tafadhali endelea kulipia usajili." +
+        // change number
+        oldPhoneNumberPrompt: "Weka nambari yako ya simu ya zamani katika umbizo la +254:",
+        oldPinPrompt: "Weka pin yako ya zamani:",
+        accountUpdated: "Akaunti yako imesasishwa. Nambari ya simu kwa sasa " +
+            "inatumika ni nambari yako mpya. Asante.",
+        invalidCombination: "Nambari ya simu na mseto wa pini ni batili.",
+        /* known customer menu */
+        welcomeBack: "Karibu tena, ",
+        pinPrompt: "! Tafadhali ingiza PIN yako ili kuendelea:",
+        customerOptions: "Tafadhali chagua:" +
+            "\n1.Onyesha nambari ya usajili." +
+            "\n2.Nunua usajili." +
+            "\n3.Onyesha salio la jerrycan kwa mwezi." +
+            "\n0.Toka",
+        incorrectPin: "PIN mbaya. Tafadhali jaribu tena.",
+        showSubscription: "Msimbo wako wa usajili wa kila mwezi ni: ",
+        showJerrycanBalance: "Una nambari ifuatayo ya mikebe iliyosalia kwa mwezi: ",
+        invalidSelectionInPurchaseSubscription: "Uchaguzi batili. Usajili tayari ni halali.",
+        purchaseSubscriptionConfirmationPt1: "Bonyeza 1 ili kuendelea na shughuli ya ",
+        purchaseSubscriptionConfirmationPt2: " shilingi kwa usajili wa kila mwezi." +
+            "\nBonyeza 0 ili kuondoka.",
+        paymentPrompt: "Tafadhali endelea kulipia usajili. " +
             "Utapokea arifa muda mfupi baadaye. Asante.",
-        menu_exit: "Asante kwaheri.",
-
-
-        ////////////////////// SEND SUBSCRIPTION MESSAGES LAMBDA /////////////////////
-        // edit
-        subscriptionSuccess: "umesajiliwa",
-        subscriptionFailure: "tatizo la kukusajili. jaribu tena",
-        reminder: "kumbuka kujiandikisha",
-        unsubscription: "umeondolewa",
-
-
-        ////////////////////// SEND VISIT MESSAGES LAMBDA /////////////////////
-        // edit
-        customerMessage: "mpendwa mteja, uthibitishaji ni:",
-        siteManagerMessage: "mpendwa meneja, uthibitishaji wa mteja ni: ",
+        /* site manager menu */
+        siteManagerOptions: "Karibu msimamizi wa tovuti. Tafadhali chagua:" +
+            "\n1.Thibitisha usajili wa mteja" +
+            "\n0.Toka",
+        customerCodePrompt: "Ingiza nambari ya usajili ya mteja: ",
+        notAuthorized: "Hujaidhinishwa kuthibitisha mteja huyu.",
+        customerSubscriptionInvalid: "Usajili wa mteja ni batili.",
+        noJerrycansLeft: "Mteja ametumia jeri zote zinazoruhusiwa.",
+        validCustomerOptionsPt1: "Mteja huyu anaruhusiwa kukusanya idadi ifuatayo ya makopo ya jeri: ",
+        validCustomerOptionsPt2: "\nChagua chaguo:" +
+            "\n1.Thibitisha mkusanyiko mmoja." +
+            "\n0.Toka",
+        collectionConfirmation: "Mteja sasa anaruhusiwa kuchukua jeri moja ya maji. Asante.",
+        ////// SEND SUBSCRIPTION MESSAGES LAMBDA //////
+        subscriptionSuccessMessage: "Mpendwa mteja, umefaulu kununua usajili " +
+            "kwa mradi wa TapGives. Anzisha menyu ili kuona akaunti yako iliyosasishwa.",
+        subscriptionFailureMessage: "Mpendwa mteja, kumekuwa na tatizo katika kukusajili. " +
+            "Ikiwa bado hujalipia usajili, tafadhali jaribu tena.",
+        reminderMessage:"Mpendwa mteja, una siku mbili hadi muda wa usajili wako ukamilike. " +
+            "Hakikisha kununua usajili baadaye!",
+        unsubscriptionMessage: "Mpendwa mteja, muda wa usajili wako umeisha. " +
+            "Anzisha menyu ili ununue usajili mpya!",
 
     }
 }

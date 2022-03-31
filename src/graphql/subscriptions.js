@@ -20,10 +20,12 @@ export const onCreateSiteManager = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
       phoneNumber
+      preferredLanguage
       createdAt
       updatedAt
     }
@@ -48,10 +50,12 @@ export const onUpdateSiteManager = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
       phoneNumber
+      preferredLanguage
       createdAt
       updatedAt
     }
@@ -76,10 +80,12 @@ export const onDeleteSiteManager = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
       phoneNumber
+      preferredLanguage
       createdAt
       updatedAt
     }
@@ -104,6 +110,7 @@ export const onCreateCustomer = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
@@ -115,6 +122,7 @@ export const onCreateCustomer = /* GraphQL */ `
       preferredLanguage
       subscriptionExpiration
       monthlySubscriptionCode
+      jerrycansAllowed
       createdAt
       updatedAt
     }
@@ -139,6 +147,7 @@ export const onUpdateCustomer = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
@@ -150,6 +159,7 @@ export const onUpdateCustomer = /* GraphQL */ `
       preferredLanguage
       subscriptionExpiration
       monthlySubscriptionCode
+      jerrycansAllowed
       createdAt
       updatedAt
     }
@@ -174,6 +184,7 @@ export const onDeleteCustomer = /* GraphQL */ `
         status
         subscriptionFee
         expectedJerrycans
+        currentSubscribers
         createdAt
         updatedAt
       }
@@ -185,6 +196,7 @@ export const onDeleteCustomer = /* GraphQL */ `
       preferredLanguage
       subscriptionExpiration
       monthlySubscriptionCode
+      jerrycansAllowed
       createdAt
       updatedAt
     }
@@ -206,6 +218,7 @@ export const onCreateSite = /* GraphQL */ `
       status
       subscriptionFee
       expectedJerrycans
+      currentSubscribers
       createdAt
       updatedAt
     }
@@ -227,6 +240,7 @@ export const onUpdateSite = /* GraphQL */ `
       status
       subscriptionFee
       expectedJerrycans
+      currentSubscribers
       createdAt
       updatedAt
     }
@@ -248,6 +262,7 @@ export const onDeleteSite = /* GraphQL */ `
       status
       subscriptionFee
       expectedJerrycans
+      currentSubscribers
       createdAt
       updatedAt
     }
@@ -262,8 +277,10 @@ export const onCreateCustomerTransactions = /* GraphQL */ `
       siteName
       siteID
       action
+      status
       collectedCount
       collectedItemType
+      ttl
       createdAt
       updatedAt
     }
@@ -278,8 +295,10 @@ export const onUpdateCustomerTransactions = /* GraphQL */ `
       siteName
       siteID
       action
+      status
       collectedCount
       collectedItemType
+      ttl
       createdAt
       updatedAt
     }
@@ -294,8 +313,10 @@ export const onDeleteCustomerTransactions = /* GraphQL */ `
       siteName
       siteID
       action
+      status
       collectedCount
       collectedItemType
+      ttl
       createdAt
       updatedAt
     }

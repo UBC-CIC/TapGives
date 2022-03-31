@@ -1,11 +1,9 @@
 import React from "react";
-import { DataGrid } from '@mui/x-data-grid';
 import {Auth} from "aws-amplify";
 import AdministrationBackendHelper from "../Helpers/AdministrationBackendHelper";
 import {connect} from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import {Paper, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
-import List from "@material-ui/core/List";
 import SiteInformation from "./SiteInformation";
 import "./SiteManagement.css"
 
@@ -13,27 +11,13 @@ class siteManagement extends React.Component {
 
     constructor(props) {
         super(props)
-        console.log(props)
         //extracts the /siteManagement/[siteID]
         const url = window.location.pathname
         const siteID = url.substring(16)
-        console.log(siteID)
         this.state = {
             sites: [],
             siteID:siteID,
         }
-    }
-    async getlist() {
-        // // username of current user
-        const id = (await Auth.currentAuthenticatedUser()).attributes.sub;
-        const sites = await AdministrationBackendHelper.getSiteIDsBySiteManager(id)
-        let totalCustomers = []
-        for (const site in sites) {
-            totalCustomers.push(...(await AdministrationBackendHelper.getCustomersBySiteFast(sites[site])))
-        }
-        this.setState({
-            customers: totalCustomers
-        })
     }
     async componentDidMount() {
         let id = "";
@@ -41,7 +25,6 @@ class siteManagement extends React.Component {
             const site = await AdministrationBackendHelper.getSite(this.state.siteID)
             if (site == null)
                 throw new Error("No Site found")
-            console.log(site)
         } catch (e) {
             console.log(e)
             id = (await Auth.currentAuthenticatedUser()).attributes.sub;
@@ -53,7 +36,6 @@ class siteManagement extends React.Component {
                 this.props.history.push('/siteManagement/'+sites[0].id)
                 this.setState({siteID:sites[0].id})
             }
-            console.log(sites)
         }
         if (id == "")
             id = (await Auth.currentAuthenticatedUser()).attributes.sub;

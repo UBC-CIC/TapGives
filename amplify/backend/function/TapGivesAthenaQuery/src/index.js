@@ -27,53 +27,102 @@ function delay(milliseconds){
 exports.handler = async (event) => {
     // TODO implement
     console.log(event)
-    let {siteID, year, month, day, hour} = event.arguments
-    // Making sure all inputs are 2 "digits" long
-    if (month < 10)
-        month = "0"+month
-    if (day < 10 && day >= 0)
-        day = "0"+day
-    if (hour < 10)
-        hour = "0"+hour
-    var params = {
-        QueryString: "select count(*), partition_4 from customertransactions where partition_0 = '"
-            + siteID + "' and partition_1 = '"
+    let {userPhoneNumber, siteName, year, month, day, hour} = event.arguments
+    if (userPhoneNumber == null) {
+        // Making sure all inputs are 2 "digits" long
+        if (month < 10)
+            month = "0"+month
+        if (day < 10 && day >= 0)
+            day = "0"+day
+        if (hour < 10)
+            hour = "0"+hour
+        console.log("select partition_4, count(*) from customertransactions where partition_0 = '"
+            + siteName + "' and partition_1 = '"
             + year + "' and partition_2 = '"
             + month + ((parseInt(day) >= 0 )?"' and partition_3 = '"+ day:"")+
-            "' group by partition_4",
-        QueryExecutionContext: {
-            Catalog: catalog,
-            Database: database,
-        },
-        ResultConfiguration: {
-            EncryptionConfiguration: {
-                EncryptionOption: "SSE_S3", /* required */
+            "' group by partition_4")
+        var params = {
+            QueryString: "select partition_4, count(*) from customertransactions where partition_0 = '"
+                + siteName + "' and partition_1 = '"
+                + year + "' and partition_2 = '"
+                + month + ((parseInt(day) >= 0 )?"' and partition_3 = '"+ day:"")+
+                "' group by partition_4",
+            QueryExecutionContext: {
+                Catalog: catalog,
+                Database: database,
             },
-            OutputLocation: output
-        },
-    };
-    const values = await athena.startQueryExecution(params).promise()
-    const queryDetails = await athena.getQueryExecution(values).promise()
-    const s3location = queryDetails.QueryExecution.ResultConfiguration.OutputLocation
-    const [bucketName, path] = getBucketPath(s3location)
-    params = {
-        Bucket: bucketName,
-        Key: path,
-    }
-    let vals = null;
-    // Even when awaiting for athena to finish, you must wait a bit longer due to S3 put not being instant
-    // Sometimes it takes longer than a second for s3 to upload the item, we'll give up to 5 retries then
-    for (let retries = 0; retries < 5; retries++) {
-        try {
-            await delay(3000)
-            vals = await s3.getObject(params).promise()
-            break
-        } catch (e) {
-            console.log("Error on s3 retrieval", e)
+            ResultConfiguration: {
+                EncryptionConfiguration: {
+                    EncryptionOption: "SSE_S3", /* required */
+                },
+                OutputLocation: output
+            },
+        };
+        const values = await athena.startQueryExecution(params).promise()
+        const queryDetails = await athena.getQueryExecution(values).promise()
+        const s3location = queryDetails.QueryExecution.ResultConfiguration.OutputLocation
+        const [bucketName, path] = getBucketPath(s3location)
+        params = {
+            Bucket: bucketName,
+            Key: path,
         }
-    }
-    if (vals == null)
-        throw new Error("Failed 5 times")
+        let vals = null;
+        // Even when awaiting for athena to finish, you must wait a bit longer due to S3 put not being instant
+        // Sometimes it takes longer than a second for s3 to upload the item, we'll give up to 5 retries then
+        for (let retries = 0; retries < 5; retries++) {
+            try {
+                await delay(3000)
+                vals = await s3.getObject(params).promise()
+                break
+            } catch (e) {
+                console.log("Error on s3 retrieval", e)
+            }
+        }
+        if (vals == null)
+            throw new Error("Failed 5 times")
 
-    return  vals.Body.toString('utf-8')
+        return  vals.Body.toString('utf-8')
+    } else {
+        console.log("select * from customertransactions where userphonenumber = '"
+            + userPhoneNumber + "'")
+        var params = {
+            QueryString: "select * from customertransactions where userphonenumber = '"
+                + userPhoneNumber + "'",
+            QueryExecutionContext: {
+                Catalog: catalog,
+                Database: database,
+            },
+            ResultConfiguration: {
+                EncryptionConfiguration: {
+                    EncryptionOption: "SSE_S3", /* required */
+                },
+                OutputLocation: output
+            },
+        };
+        const values = await athena.startQueryExecution(params).promise()
+        const queryDetails = await athena.getQueryExecution(values).promise()
+        const s3location = queryDetails.QueryExecution.ResultConfiguration.OutputLocation
+        const [bucketName, path] = getBucketPath(s3location)
+        params = {
+            Bucket: bucketName,
+            Key: path,
+        }
+        let vals = null;
+        // Even when awaiting for athena to finish, you must wait a bit longer due to S3 put not being instant
+        // Sometimes it takes longer than a second for s3 to upload the item, we'll give up to 5 retries then
+        for (let retries = 0; retries < 5; retries++) {
+            try {
+                await delay(3000)
+                vals = await s3.getObject(params).promise()
+                break
+            } catch (e) {
+                console.log("Error on s3 retrieval", e)
+            }
+        }
+        if (vals == null)
+            throw new Error("Failed 5 times")
+
+        return  vals.Body.toString('utf-8')
+    }
+
 };
