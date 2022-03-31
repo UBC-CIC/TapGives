@@ -14,7 +14,11 @@ const createVisit = gql`
 `;
 
 exports.handler = async (event) => {
-    let visitInfo = event.visitInfo;
+    let visitInfo = {
+        userID: event.userID,
+        siteID: event.siteID,
+        timeStamp: event.timeStamp
+    };
     console.log(visitInfo);
 
     try {
