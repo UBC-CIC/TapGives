@@ -26,7 +26,6 @@ function delay(milliseconds){
 
 exports.handler = async (event) => {
     // TODO implement
-    console.log(event)
     let {userPhoneNumber, siteName, year, month, day, hour} = event.arguments
     if (userPhoneNumber == null) {
         // Making sure all inputs are 2 "digits" long
@@ -36,13 +35,8 @@ exports.handler = async (event) => {
             day = "0"+day
         if (hour < 10)
             hour = "0"+hour
-        console.log("select partition_4, count(*) from customertransactions where partition_0 = '"
-            + siteName + "' and partition_1 = '"
-            + year + "' and partition_2 = '"
-            + month + ((parseInt(day) >= 0 )?"' and partition_3 = '"+ day:"")+
-            "' group by partition_4")
         var params = {
-            QueryString: "select partition_4, count(*) from customertransactions where partition_0 = '"
+            QueryString: "select partition_4, count(*) from customertransactions where action = 'visit' and partition_0 = '"
                 + siteName + "' and partition_1 = '"
                 + year + "' and partition_2 = '"
                 + month + ((parseInt(day) >= 0 )?"' and partition_3 = '"+ day:"")+
@@ -83,8 +77,6 @@ exports.handler = async (event) => {
 
         return  vals.Body.toString('utf-8')
     } else {
-        console.log("select * from customertransactions where userphonenumber = '"
-            + userPhoneNumber + "'")
         var params = {
             QueryString: "select * from customertransactions where userphonenumber = '"
                 + userPhoneNumber + "'",
