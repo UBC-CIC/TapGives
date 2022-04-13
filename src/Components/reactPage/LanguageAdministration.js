@@ -21,6 +21,7 @@ import {connect} from "react-redux";
 class LanguageAdministration extends React.Component {
     constructor(props) {
         super(props);
+        // Used to generate info and errors, makes them dynamic
         const languageRequirements = [
             {
                 id: "id",
@@ -31,50 +32,49 @@ class LanguageAdministration extends React.Component {
                 display: this.props.strings.languageName,
             },
         ]
-        const languagePhrases = LocalizationHelper.getLanguagePhrasesFast()
-        // Object.keys(languagePhrases)[0]
-        const phraseCodes = Object.entries(languagePhrases["en"])
+        // Dynamic generation of new language variables
         const newLanguageInfo = languageRequirements.reduce((prev, currReq)=> {
             return Object.assign(prev, {[currReq.id]: ""})
         }, {})
         const newLanguageErrors = languageRequirements.reduce((prev, currReq)=> {
             return Object.assign(prev, {[currReq.id]: false})
         }, {})
+        // Uses english phrases as the key for all of the phrases.  technically should just use first language
+        const languagePhrases = LocalizationHelper.getLanguagePhrasesFast()
+        const phraseCodes = Object.entries(languagePhrases["en"])
         this.state = {
             languageRequirements: languageRequirements,
-            currentLanguage: "English",
+            currentLanguage: "English", //Defaults english
             currentLanguageCode: "en",
-            languageCode: LocalizationHelper.getLanguageCodesFast(),
+            languageCode: LocalizationHelper.getLanguageCodesFast(), //Constructor must be synchronous so cannot use slow version
             languagePhrases: languagePhrases,
             phraseCodes: phraseCodes,
-            translatedPhrases: JSON.parse(JSON.stringify(languagePhrases["en"])),// deep copy
-            openNewLanguageMenu: false,
-            newLanguageErrors:newLanguageErrors,
-            newLanguageInfo:newLanguageInfo,
+            translatedPhrases: JSON.parse(JSON.stringify(languagePhrases["en"])), // deep copy so changing english wont change the "english version" as you go
+            newLanguageErrors: newLanguageErrors,
+            newLanguageInfo: newLanguageInfo,
             deleteLanguageMenu: false,
+            openNewLanguageMenu: false,
         }
     }
+    // Swapping current displayed language
     changeLanguage(input) {
+        // called by select so you have an input
         const languageName = input.target.value
-        console.log(languageName)
         const languageCode = this.state.languageCode.find((language)=>{
                 return language.language === languageName
             }).id
-        console.log(languageCode)
-        console.log(this.state.languagePhrases)
+
         this.setState({
             currentLanguage: input.target.value,
             currentLanguageCode: languageCode,
             translatedPhrases: JSON.parse(JSON.stringify(this.state.languagePhrases[languageCode])) // deep copy
         })
-        //this.state.languagePhrases[this.state.currentLanguageCode][phrase[0]]
-        console.log(this.state.languagePhrases[this.state.currentLanguageCode])
     }
     createNewLanguage() {
-        // console.log(this.state.newLanguageInfo)
-        // console.log(this.state.newLanguageErrors)
+        // Checking if all requirements are met (id/language name)
         let allPassed = true
         let errors = this.state.languageRequirements.reduce((prev, req)=> {
+            // Checks if its not empty, and doesnt match any existing requirements (id/language name)
             const out = !/.+/.test(this.state.newLanguageInfo[req.id]) || this.state.languageCode.some((language)=>language[req.id] === this.state.newLanguageInfo[req.id])
             if (out)
                 allPassed = false
@@ -86,7 +86,7 @@ class LanguageAdministration extends React.Component {
             newLanguageErrors: errors
         })
         if (allPassed) {
-            // Empty the values for the next language
+            // Empty the values for the new language
             const newLanguageInfo = this.state.languageRequirements.reduce((prev, currReq)=> {
                 return Object.assign(prev, {[currReq.id]: ""})
             }, {})
@@ -97,7 +97,7 @@ class LanguageAdministration extends React.Component {
             let phrases = {}
             for (const phrase in this.state.phraseCodes)
                 phrases = Object.assign(phrases, {[this.state.phraseCodes[phrase][0]]: ""})
-
+            // Adds phrase list to list
             this.state.languageCode.push({
                 id: this.state.newLanguageInfo.id,
                 language: this.state.newLanguageInfo.language,
@@ -109,18 +109,23 @@ class LanguageAdministration extends React.Component {
                 newLanguageErrors: newLanguageErrors,
             })
             this.changeLanguage({target:{value:this.state.newLanguageInfo.language}})
+            // NOTE: this doesnt not actually sync to cloud, you must do that after
         }
     }
+    // Triggered when calling the sync to backend.
     async updateLanguage() {
+        // Existing language/phrases
         let languages = await LocalizationHelper.queryLanguages()
         let phrases = await LocalizationHelper.queryPhrases()
+        // Since phrases are categorised by id, we can directly assign id to phrases, it'll auto replace any existing language with the same id
         phrases = Object.assign(phrases, {[this.state.currentLanguageCode]:this.state.translatedPhrases})
+        // If a language has identical id, replace it with this one, else just add it into language bank (id:language relationship)
         if (languages.some((language) => language.id === this.state.currentLanguageCode)) {
             languages.find((language) => language.id === this.state.currentLanguageCode).language = this.state.currentLanguage
         } else {
             languages.push({id: this.state.currentLanguageCode, language: this.state.currentLanguage})
         }
-
+        // Calls the S3 put operation, which requires Admin in Cognito
         await LocalizationHelper.updateLanguage(languages, phrases)
 
         sessionStorage.setItem("updated", "false")
@@ -165,6 +170,7 @@ class LanguageAdministration extends React.Component {
                 <Grid item>
                     <Button variant={"outlined"} onClick={()=>{this.setState({deleteLanguageMenu: true})}}>{this.props.strings.delete}</Button>
                 </Grid>
+                {/*Menu to add any new languages*/}
                 <Grid item>
                     <Dialog open={this.state.openNewLanguageMenu} onClose={()=>{this.setState({openNewLanguageMenu: false})}} maxWidth={"md"} >
                         <DialogActions>
@@ -172,6 +178,7 @@ class LanguageAdministration extends React.Component {
                                 <DialogContentText>
                                     {this.props.strings.addLanguageTemplate}
                                 </DialogContentText>
+                                {/*In the CIC version of this program, only two requirements, ID and language are used, stored in state*/}
                                 <Grid container direction = "row" spacing = {1}>
                                     {this.state.languageRequirements.map((requirement)=> (
                                         <Grid item>
@@ -181,6 +188,7 @@ class LanguageAdministration extends React.Component {
                                                 type="text"
                                                 fullWidth
                                                 variant="standard"
+                                                /*each property is dynamically set, along with their errors*/
                                                 label = {requirement.display}
                                                 error = {this.state.newLanguageErrors[requirement.id]}
                                                 defaultValue = {this.state.newLanguageInfo[requirement.id]}
@@ -204,6 +212,7 @@ class LanguageAdministration extends React.Component {
                         </DialogActions>
                     </Dialog>
                 </Grid>
+                {/*Site Deletion popup*/}
                 <Grid item>
                     <Dialog open={this.state.deleteLanguageMenu} onClose={()=>{this.setState({deleteLanguageMenu: false})}} maxWidth={"md"} >
                         <DialogActions>
@@ -223,6 +232,7 @@ class LanguageAdministration extends React.Component {
             </Grid>
             <Paper>
                 <Table>
+                    {/*Title for the page, localized*/}
                     <TableHead>
                         <TableRow>
                             <TableCell >Phrase Code</TableCell>
@@ -230,6 +240,7 @@ class LanguageAdministration extends React.Component {
                             <TableCell align="right">{this.props.strings.translation}</TableCell>
                         </TableRow>
                     </TableHead>
+                    {/*Each row contains a "phrase", mapping the whole */}
                     <TableBody>
                         {this.state.phraseCodes.map((phrase) =>
                             <TableRow key = {phrase[0]}>
@@ -238,7 +249,7 @@ class LanguageAdministration extends React.Component {
                                 <TableCell align="right">
                                     <TextField
                                         fullWidth
-                                        value={this.state.translatedPhrases[phrase[0]]}
+                                        value={JSON.stringify(this.state.translatedPhrases[phrase[0]])}
                                         onChange={(value) => {
                                             this.setState({
                                                 translatedPhrases: Object.assign(this.state.translatedPhrases, {

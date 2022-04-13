@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// This is the top bar of the website
 function Navbar(props) {
     const {updateLoginState, updateMenuState, loginState, menuEnabled, showSideMenuButton,
         language, updateLanguageState, code, strings, updateStringsState, languageCode, updateLanguageCodes,} = props;
@@ -178,15 +179,9 @@ function Navbar(props) {
                         :
                         null
                     }
-                    {/*<Typography className={classes.title} variant="h6" component={"h1"} noWrap>*/}
-                    {/*    <span><span>App</span><span style={{color: `${theme.palette.secondary.main}`}}>/</span><span>Name</span></span>*/}
-                    {/*</Typography>*/}
                     <Paper >
                         <Grid sx={{ maxWidth: 120, border: 1, backgroundColor: "white"}} id = {"language-box"} >
                             <FormControl fullWidth>
-                                {/*<InputLabel variant="standard" htmlFor="uncontrolled-native">*/}
-                                {/*    Language*/}
-                                {/*</InputLabel>*/}
                                 <NativeSelect
                                     value={language}
                                     inputProps={{

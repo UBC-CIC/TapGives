@@ -3,7 +3,8 @@ import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
 import {deleteCustomer} from "../../graphql/mutations";
 
-
+// Note: When any of the "list" functions will return over 100 entries, you must make sure to change it to a version with a nextToken
+// Since graphql only returns 100 values at once
 class AdministrationBackendHelper {
     static async getSite(siteIDInput) {
         return (await API.graphql({
@@ -114,6 +115,7 @@ class AdministrationBackendHelper {
     }
     // The slower, full versions of the above queries
     static async getCustomersBySite(siteIDInput) {
+
         let query = (await API.graphql({
             query: queries.customerBySite,
             variables: {
@@ -185,7 +187,7 @@ class AdministrationBackendHelper {
         })
 
     }
-
+    // This is a function that should not be called by the website in real usage scenarios.
     static async createCustomer(firstName, lastName, siteIDIn, pinIn, phoneNumberIn) {
         const customer = {
             siteID: siteIDIn,
@@ -248,9 +250,8 @@ class AdministrationBackendHelper {
             variables: {input: customerData}
         })
     }
-    //Delete Site and all associated sitemanagers and customers
+    // Delete Site and all associated sitemanagers and customers
     static async cascadeDeleteSite(siteIDInput) {
-        const site = await this.getSite(siteIDInput)
         const customers = await this.getCustomersBySite(siteIDInput)
         const siteManagers = await this.getSiteManagerBySite(siteIDInput)
         let cascadeDeleteSiteList = []
@@ -316,6 +317,8 @@ class AdministrationBackendHelper {
         }
         return fullListOfCustomers;
     }
+    // Can only be performed by Admin group
+    // Lists all Cognito users
     static async listCognito(limit, nextToken = null){
         let apiName = 'AdminQueries';
         let path = '/listUsers';
@@ -334,7 +337,7 @@ class AdministrationBackendHelper {
             }
         }
         const { NextToken, ...rest } =  await API.get(apiName, path, myInit);
-        nextToken = NextToken;
+        // Implement usage of nextToken when needed.
         const list = await rest.Users.map((user)=>{
             const userUnwrapped = user.Attributes.reduce((prev, attribute)=> {
                 return Object.assign(prev, {
@@ -346,6 +349,7 @@ class AdministrationBackendHelper {
         // console.log(rest)
         return list;
     }
+    // Can only be performed by Admin group
     static async addUserToGroup(username){
         let apiName = 'AdminQueries';
         let path = '/addUserToGroup';
@@ -361,6 +365,7 @@ class AdministrationBackendHelper {
         }
         return await API.post(apiName, path, myInit);
     }
+    // Can only be performed by Admin group
     static async removeUserFromGroup(username){
         let apiName = 'AdminQueries';
         let path = '/removeUserFromGroup';

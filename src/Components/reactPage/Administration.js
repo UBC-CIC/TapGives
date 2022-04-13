@@ -39,6 +39,7 @@ import {connect} from "react-redux";
 class Administration extends React.Component {
     async componentDidMount() {
         this.setState({
+            // Site Managers are stored
             siteManagerLinkers: await AdministrationBackendHelper.getSiteManagers(),
             siteManagers: await AdministrationBackendHelper.listCognito(),
             siteData: await AdministrationBackendHelper.getSites(),
@@ -50,7 +51,7 @@ class Administration extends React.Component {
 
     constructor(props) {
         super(props);
-        // Columns for site table
+        // Columns for site table (right side)
         const siteColumns = [
             {
                 field: 'name',
@@ -84,7 +85,7 @@ class Administration extends React.Component {
                 editable: true,
             },
         ]
-        // Columns for site manager table
+        // Columns for site manager table (left side)
         const adminColumn = [
             {
                 field: 'id',
@@ -113,6 +114,7 @@ class Administration extends React.Component {
             },
 
         ]
+        // Requirements for "add site"
         const siteRequirements = [
             {
                 id: "name",
@@ -181,6 +183,7 @@ class Administration extends React.Component {
                 regex: /\d+/,
             },
         ]
+        // Just for the
         const siteCreationData = siteRequirements.map((requirement) => {
             return({
                     [requirement.id]: ""
@@ -188,14 +191,6 @@ class Administration extends React.Component {
         }).reduce((prev, curr) => {
             return Object.assign(prev,curr)
         })
-        const siteCreationDataError = siteRequirements.map((requirement) => {
-            return({
-                [requirement.id+"Error"]: false
-            })
-        }).reduce((prev, curr) => {
-            return Object.assign(prev,curr)
-        })
-
         // To create a deep copy
         const siteCreationErrors = JSON.parse(JSON.stringify(siteCreationData))
         const siteEditData = JSON.parse(JSON.stringify(siteCreationData))
@@ -233,17 +228,7 @@ class Administration extends React.Component {
             )
         })
     }
-    // async createSubscription() {
-    //     try {
-    //         await AdministrationBackendHelper.createSubscription(this.state.subscriptionCreationData, this.state.selectedSites[0])
-    //     } catch (error) {
-    //         console.log("Error creating subscription: ", error)
-    //     }
-    //     this.setState({
-    //         siteSubscriptions: await AdministrationBackendHelper.getSiteSubscriptionsBySite(this.state.selectedSites[0]),
-    //         createSubscriptionMenu: false
-    //     })
-    // }
+
     // Called when syncing new sites to selected Site Manager/Sites
     async syncSites() {
         const selectedManager = this.state.selectedManager

@@ -106,7 +106,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "historyFunction": {
+    "alertCustomers": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "tapgiveschallenge",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "historyfunction": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
@@ -156,6 +171,10 @@
       "service": "customCloudformation",
       "providerPlugin": "awscloudformation",
       "dependsOn": []
+    },
+    "datalakeCDK1": {
+      "service": "customCDK",
+      "providerPlugin": "awscloudformation"
     }
   }
 }

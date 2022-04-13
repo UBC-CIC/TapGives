@@ -24,11 +24,15 @@
         },
         "TapGivesAthenaQuery": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-120914-deployment",
-          "s3Key": "amplify-builds/TapGivesAthenaQuery-786147586c4645666b65-build.zip"
+          "s3Key": "amplify-builds/TapGivesAthenaQuery-6c6a736d443551376853-build.zip"
         },
-        "historyFunction": {
+        "alertCustomers": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-120914-deployment",
-          "s3Key": "amplify-builds/historyFunction-45497679457564705965-build.zip"
+          "s3Key": "amplify-builds/alertCustomers-44624a2f624c574f6236-build.zip"
+        },
+        "historyfunction": {
+          "deploymentBucketName": "amplify-tapgiveschallenge-dev-120914-deployment",
+          "s3Key": "amplify-builds/historyfunction-467a4d49514e35347266-build.zip"
         }
       }
     }

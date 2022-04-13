@@ -4,7 +4,8 @@
 
 # Has Duplicates to allow for better queries (composite of id/site)
 type SiteManager @model @auth(rules:[{allow: groups, groups:["Admins"]}
-    {allow: groups, groups:["SiteManagers"]}]) {
+    {allow: groups, groups:["SiteManagers"]}
+    {allow: public, provider: iam }]) {
     id: ID! @primaryKey(sortKeyFields: ["siteID"]) @index(name: "bySiteManagerID", queryField: "siteManagerByID")
     siteID: ID! @index(name: "bySite", queryField: "siteManagerBySite") # Site ID, must be scalar to be a sort key
     site: Site @hasOne(fields:["siteID"])
@@ -13,7 +14,8 @@ type SiteManager @model @auth(rules:[{allow: groups, groups:["Admins"]}
 }
 
 type Customer @model @auth(rules:[{allow: groups, groups:["Admins"]}
-    {allow: groups, groups:["SiteManagers"]}]) {
+    {allow: groups, groups:["SiteManagers"]}
+    {allow: public, provider: iam }]) {
     id: ID!
     siteID: ID! @index(name: "bySite", queryField: "customerBySite")# Site ID, must be scalar to be a sort key
     site: Site @hasOne(fields:["siteID"])
@@ -29,7 +31,8 @@ type Customer @model @auth(rules:[{allow: groups, groups:["Admins"]}
 }
 # DynamoDB streams->Lambda to log status changes
 type Site @model @auth(rules:[{allow: groups, groups:["Admins"]}
-    {allow: groups, groups:["SiteManagers"]}]) {
+    {allow: groups, groups:["SiteManagers"]}
+    {allow: public, provider: iam }]) {
     id: ID!
     name: String!
     nickname: String! @index(name: "byNickname", queryField: "siteByNickname") # can be queried, Must be all upper case
@@ -48,7 +51,8 @@ type Site @model @auth(rules:[{allow: groups, groups:["Admins"]}
 
 # DynamoDB streams->Lambda to process data
 type CustomerTransactions @model @auth(rules:[{allow: groups, groups:["Admins"]}
-    {allow: groups, groups:["SiteManagers"]}]) {
+    {allow: groups, groups:["SiteManagers"]}
+    {allow: public, provider: iam }]) {
     id: ID!
     userPhoneNumber: String! @index(name: "byPhoneNumber", queryField: "customerTransactionByPhoneNumber")
     fullName: String! # firstName+" "+lastName
@@ -65,3 +69,4 @@ type CustomerTransactions @model @auth(rules:[{allow: groups, groups:["Admins"]}
 type Query {
     athenaCall(userPhoneNumber: String, siteName: String!, year: Int!, month: Int!, day: Int!, hour: Int!): String! @function(name: "TapGivesAthenaQuery-${env}")
 }
+

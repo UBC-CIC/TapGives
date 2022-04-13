@@ -20,7 +20,6 @@ class LocalizationHelper {
         try {
             if (!sessionStorage.hasOwnProperty("updated")) {
                 sessionStorage.setItem("updated",true)
-
                 store()
             }
         } catch (e) {
@@ -48,6 +47,7 @@ class LocalizationHelper {
             }
         }
      */
+    //
     static async getLanguageCodes() {
         try {
             const languages = await LocalizationHelper.queryLanguages()
@@ -97,22 +97,23 @@ class LocalizationHelper {
         localStorage.setItem("languages", JSON.stringify(languages))
         localStorage.setItem("phrases", JSON.stringify(phrases))
     }
-
+    // Deletes a language and all phrases associated
     static async deleteLanguageCascade(languageID) {
+        // English is used for some code as the "base" language
         if (languageID === "en") {
             console.log("Cannot delete english")
             return
         }
+        // Ensure we have the up to date version
         let languages = await LocalizationHelper.queryLanguages()
         let phrases = await LocalizationHelper.queryPhrases()
-        console.log(languages)
         languages = languages.splice(languages.findIndex((language)=>language.id ===languageID),1)
         delete phrases[languageID]
-        console.log(languages)
-        console.log(phrases)
         await Storage.put("baseLanguages.json", languages)
         await Storage.put("baseLanguages.json", phrases)
     }
+    // Get current language
+    // Deprecated by Redux
     static getLanguage() {
         if (localStorage.hasOwnProperty("code") && localStorage.hasOwnProperty("language")) {
             return ({
@@ -128,18 +129,21 @@ class LocalizationHelper {
             })
         }
     }
+    // Sets the languages for local caching
     static setLanguage(code, language) {
         localStorage.setItem("code", code)
         localStorage.setItem("language", language)
     }
-    // eg: en -> English
+
+    // Refer to src/Components/languageData.js for base form of data
+    // in form [{id: en, language: english},{id: fr, language: french}]
     static async queryLanguages() {
         return JSON.parse(await (await Storage.get(`baseLanguages.json`, { download: true })).Body.text())
     }
-    // eg: username: Enter Username here
+    // in form {en:{username: "enter username here"}}
     static async queryPhrases() {
-        console.log(JSON.parse(await (await Storage.get(`basePhrases.json`, { download: true })).Body.text()))
-         return JSON.parse(await (await Storage.get(`basePhrases.json`, { download: true })).Body.text())
+        // console.log(JSON.parse(await (await Storage.get(`basePhrases.json`, { download: true })).Body.text()))
+        return JSON.parse(await (await Storage.get(`basePhrases.json`, { download: true })).Body.text())
     }
 }
 

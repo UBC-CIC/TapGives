@@ -2,7 +2,9 @@
   "permissions": {
     "api": {
       "tapgiveschallenge": [
-        "Mutation"
+        "Query",
+        "Mutation",
+        "Subscription"
       ]
     },
     "storage": {
@@ -13,12 +15,6 @@
         "delete"
       ],
       "Site:@model(appsync)": [
-        "create",
-        "read",
-        "update",
-        "delete"
-      ],
-      "CustomerTransactions:@model(appsync)": [
         "create",
         "read",
         "update",
