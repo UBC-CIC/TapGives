@@ -58,29 +58,45 @@ class DataStoreTest extends React.Component {
             query: queries.listCustomers,
         })).data.listCustomers.items;
         console.log(customers)
-        for (const customer in customers) {
-            try {
-                const CustomerTransactions = {
-                    userPhoneNumber: customers[customer].phoneNumber,
-                    fullName: `${customers[customer].firstName} ${customers[customer].lastName}`,
-                    siteName: customers[customer].site.name,
-                    siteID: customers[customer].siteID,
-                    action: "visit",
-                    status: "success",
-                    collectedCount: 1,
-                    collectedItemType: "jerrycan",
-                    ttl: Math.round(date.getTime()/1000)
-                }
-                console.log(CustomerTransactions)
-                API.graphql({
-                    query: mutations.createCustomerTransactions,
-                    variables: {input: CustomerTransactions}
-                })
-            } catch (e) {
-                console.log(e)
-            }
-
+        const CustomerTransactions = {
+            userPhoneNumber: customers[0].phoneNumber,
+            fullName: `${customers[0].firstName} ${customers[0].lastName}`,
+            siteName: customers[0].site.name,
+            siteID: customers[0].siteID,
+            action: "visit",
+            status: "success",
+            collectedCount: 1,
+            collectedItemType: "jerrycan",
+            ttl: Math.round(date.getTime()/1000)
         }
+        console.log(CustomerTransactions)
+        API.graphql({
+            query: mutations.createCustomerTransactions,
+            variables: {input: CustomerTransactions}
+        })
+        // for (const customer in customers) {
+        //     try {
+        //         const CustomerTransactions = {
+        //             userPhoneNumber: customers[customer].phoneNumber,
+        //             fullName: `${customers[customer].firstName} ${customers[customer].lastName}`,
+        //             siteName: customers[customer].site.name,
+        //             siteID: customers[customer].siteID,
+        //             action: "visit",
+        //             status: "success",
+        //             collectedCount: 1,
+        //             collectedItemType: "jerrycan",
+        //             ttl: Math.round(date.getTime()/1000)
+        //         }
+        //         console.log(CustomerTransactions)
+        //         API.graphql({
+        //             query: mutations.createCustomerTransactions,
+        //             variables: {input: CustomerTransactions}
+        //         })
+        //     } catch (e) {
+        //         console.log(e)
+        //     }
+        //
+        // }
     }
     async createManager() {
         const date = new Date()

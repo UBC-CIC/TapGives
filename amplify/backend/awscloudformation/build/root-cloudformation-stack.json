@@ -338,29 +338,6 @@
         }
       }
     },
-    "functionalertCustomers": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-tapgiveschallenge-dev-120914-deployment/amplify-cfn-templates/function/alertCustomers-cloudformation-template.json",
-        "Parameters": {
-          "deploymentBucketName": "amplify-tapgiveschallenge-dev-120914-deployment",
-          "s3Key": "amplify-builds/alertCustomers-44624a2f624c574f6236-build.zip",
-          "apitapgiveschallengeGraphQLAPIIdOutput": {
-            "Fn::GetAtt": [
-              "apitapgiveschallenge",
-              "Outputs.GraphQLAPIIdOutput"
-            ]
-          },
-          "apitapgiveschallengeGraphQLAPIEndpointOutput": {
-            "Fn::GetAtt": [
-              "apitapgiveschallenge",
-              "Outputs.GraphQLAPIEndpointOutput"
-            ]
-          },
-          "env": "dev"
-        }
-      }
-    },
     "functionhistoryfunction": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -444,10 +421,10 @@
         }
       }
     },
-    "customdatalakeCDK1": {
+    "customdatalakecdk": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-tapgiveschallenge-dev-120914-deployment/amplify-cfn-templates/custom/datalakeCDK1-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-tapgiveschallenge-dev-120914-deployment/amplify-cfn-templates/custom/datalakecdk-cloudformation-template.json",
         "Parameters": {
           "env": "dev"
         }

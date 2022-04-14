@@ -1,6 +1,9 @@
 [
   {
-    "Action": [],
-    "Resource": []
+    "Action": [
+      "firehose:*"
+    ],
+    "Effect": "Allow",
+    "Resource": ["*"]
   }
 ]

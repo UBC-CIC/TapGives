@@ -20,11 +20,6 @@ export const athenaCall = /* GraphQL */ `
     )
   }
 `;
-export const test = /* GraphQL */ `
-  query Test($userPhoneNumber: String) {
-    test(userPhoneNumber: $userPhoneNumber)
-  }
-`;
 export const getSiteManager = /* GraphQL */ `
   query GetSiteManager($id: ID!, $siteID: ID!) {
     getSiteManager(id: $id, siteID: $siteID) {
