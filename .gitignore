@@ -44,3 +44,4 @@ amplifytools.xcconfig
 .secret-*
 #amplify-do-not-edit-end
 
+/amplify/backend/awscloudformation/
