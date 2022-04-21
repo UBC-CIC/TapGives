@@ -18,5 +18,5 @@
     }
   },
   "Outputs": {},
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.12\",\"stackType\":\"custom-customCloudformation\",\"metadata\":{}}"
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"8.0.1\",\"stackType\":\"custom-customCloudformation\",\"metadata\":{}}"
 }

@@ -20,6 +20,11 @@ export const athenaCall = /* GraphQL */ `
     )
   }
 `;
+export const broadcastMessage = /* GraphQL */ `
+  query BroadcastMessage($siteID: String!, $message: String!) {
+    broadcastMessage(siteID: $siteID, message: $message)
+  }
+`;
 export const getSiteManager = /* GraphQL */ `
   query GetSiteManager($id: ID!, $siteID: ID!) {
     getSiteManager(id: $id, siteID: $siteID) {

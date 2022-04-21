@@ -121,6 +121,8 @@ export const basePhrases  = {
         siteCustomers: "Site Customers",
         administration: "Administration",
         languageAdministration: "Language Administration",
+        broadcastMessage: "Broadcast Message",
+        broadcastMessageDescription: "This will cause a message broadcast to all users of all selected sites, potentially with a high cost.",
 
         ////////////////////// MENU LAMBDA /////////////////////
         startRegistration: "Welcome to TapGives!" +
@@ -319,6 +321,8 @@ export const basePhrases  = {
         siteCustomers: "Wateja wa Tovuti",
         administration: "Utawala",
         languageAdministration: "Utawala wa Lugha",
+        broadcastMessage: "Bangaza Ujumbe",
+        broadcastMessageDescription: "Hii itasababisha utangazaji wa ujumbe kwa watumiaji wote wa tovuti zote zilizochaguliwa, uwezekano wa gharama kubwa.",
 
         ////////////////////// MENU LAMBDA /////////////////////
         startRegistration: "Welcome to TapGives!" +

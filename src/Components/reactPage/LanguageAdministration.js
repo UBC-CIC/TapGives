@@ -249,7 +249,8 @@ class LanguageAdministration extends React.Component {
                                 <TableCell align="right">
                                     <TextField
                                         fullWidth
-                                        value={JSON.stringify(this.state.translatedPhrases[phrase[0]])}
+
+                                        value={JSON.stringify(this.state.translatedPhrases[phrase[0]]).substring(1, JSON.stringify(this.state.translatedPhrases[phrase[0]]).length-1)}
                                         onChange={(value) => {
                                             this.setState({
                                                 translatedPhrases: Object.assign(this.state.translatedPhrases, {

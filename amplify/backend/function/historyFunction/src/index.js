@@ -93,7 +93,7 @@ exports.handler = async event => {
         // }).promise();
         // promiseList.push(s3Promise)
         params = {
-          DeliveryStreamName: "tapgives-dynamic-"+type, /* required */
+          DeliveryStreamName: "tapgives-"+type, /* required */
           Record: { /* required */
             Data: JSON.stringify(model)/* Strings will be Base-64 encoded on your behalf */ /* required */
           }

@@ -332,8 +332,8 @@ class DataStoreTest extends React.Component {
                         Create Site Manager
                     </Button>
                 </Grid>
-                <Button variant="outlined" onClick={this.tests3.bind(this)}>
-                    Single
+                <Button variant="outlined" onClick={this.simulate.bind(this)}>
+                    Generate Sites and Customers
                 </Button>
                 <Button variant="outlined" onClick={()=>{LocalizationHelper.queryPhrases()}}>
                     Test button

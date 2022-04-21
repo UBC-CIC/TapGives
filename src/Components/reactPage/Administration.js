@@ -214,6 +214,8 @@ class Administration extends React.Component {
             siteColumns: siteColumns,
             adminColumn: adminColumn,
             siteRequirements: siteRequirements,
+            broadcastMessageData: "",
+            broadcastMessageMenu: false,
         }
     }
     async getManagerSelected(input) {
@@ -336,8 +338,13 @@ class Administration extends React.Component {
     not(a, b) {
         return a.filter((value) => b.indexOf(value) === -1);
     }
-    intersection(a, b) {
-        return a.filter((value) => b.indexOf(value) !== -1);
+    async broadcast() {
+        for (const site in this.state.selectedSites) {
+            console.log(this.state.selectedSites[site])
+        }
+        this.setState({
+            broadcastMessageMenu: false
+        })
     }
     render() {
         return (
@@ -403,9 +410,17 @@ class Administration extends React.Component {
                                 {this.props.strings.editSelectedSite}
                             </Button>
                         </Grid>
-                        <Button xs={4} variant="outlined" onClick={()=>{this.setState({deleteSiteMenu: true})}}>
-                            {this.props.strings.deleteSelectedSites}
-                        </Button>
+                        <Grid item>
+                            <Button xs={4} variant="outlined" onClick={()=>{this.setState({deleteSiteMenu: true})}}>
+                                {this.props.strings.deleteSelectedSites}
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button xs={4} variant="outlined" onClick={()=>{this.setState({broadcastMessageMenu: true})}}>
+                                {this.props.strings.broadcastMessage}
+                            </Button>
+                        </Grid>
+
                     </Grid>
                 </Grid>
                 {/*Dialogs : Create - Edit - Delete Sites*/}
@@ -487,6 +502,20 @@ class Administration extends React.Component {
                             <DialogActions>
                                 <Button  onClick={()=>{this.setState({deleteSiteMenu: false})}}>{this.props.strings.cancel}</Button>
                                 <Button  onClick={this.deleteSite.bind(this)}>{this.props.strings.delete}</Button>
+                            </DialogActions>
+                        </Grid>
+
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.broadcastMessageMenu} onClose={()=>{this.setState({broadcastMessageMenu: false})}} maxWidth={"md"} >
+                    <DialogActions>
+                        <Grid container direction={"column"} justifyContent={"center"}>
+                            <DialogContentText>
+                                {this.props.strings.broadcastMessageDescription}
+                            </DialogContentText>
+                            <DialogActions>
+                                <Button  onClick={()=>{this.setState({broadcastMessageMenu: false})}}>{this.props.strings.cancel}</Button>
+                                <Button  onClick={this.broadcast.bind(this)}>{this.props.strings.broadcastMessage}</Button>
                             </DialogActions>
                         </Grid>
 

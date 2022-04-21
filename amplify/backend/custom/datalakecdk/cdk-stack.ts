@@ -31,6 +31,20 @@ export class cdkStack extends cdk.Stack {
     const s3Bucket = new s3.CfnBucket(this, "tapgivesbucket", {
       bucketName: "tapgivesbucket"
     })
+
+    const s3AthenaBucket = new s3.CfnBucket(this, "tapgivesathenaoutput", {
+      bucketName: "tapgivesathenaoutput",
+      lifecycleConfiguration: {
+        rules: [
+          {
+            id: "Expiry rule",
+            status: "Enabled",
+            expirationInDays: 1
+          }
+        ]
+      }
+    })
+
     const twDatabase = new glue.CfnDatabase(this, 'tapgivescdkathenadatabase', {
       catalogId: this.account,
       databaseInput: {
@@ -86,33 +100,33 @@ export class cdkStack extends cdk.Stack {
         }
       }})
 
-    const twParquetTable = new glue.CfnTable(this, 'parquet_records', {
+    const twParquetTable = new glue.CfnTable(this, 'customertransactions', {
       catalogId: this.account,
       databaseName: twDatabase.ref,
       tableInput: {
-        name: 'parquet_records',
+        name: 'customertransactions',
         partitionKeys: [
-            {
-          name: 'partition_0',
-          comment: 'site nickname',
-          type: 'string',
-        },{
-          name: 'partition_1',
-          comment: 'year',
-          type: 'string',
-        },{
-          name: 'partition_2',
-          comment: 'month',
-          type: 'string',
-        },{
-          name: 'partition_3',
-          comment: 'day',
-          type: 'string',
-        },{
-          name: 'partition_4',
-          comment: 'hour',
-          type: 'string',
-        }],
+          {
+            name: 'partition_0',
+            comment: 'site nickname',
+            type: 'string',
+          },{
+            name: 'partition_1',
+            comment: 'year',
+            type: 'string',
+          },{
+            name: 'partition_2',
+            comment: 'month',
+            type: 'string',
+          },{
+            name: 'partition_3',
+            comment: 'day',
+            type: 'string',
+          },{
+            name: 'partition_4',
+            comment: 'hour',
+            type: 'string',
+          }],
         storageDescriptor: {
           columns: [
             {
@@ -205,7 +219,7 @@ export class cdkStack extends cdk.Stack {
     const crawlerRole = new iam.Role(this, 'GlueCrawlerRole', {
       assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
       managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSGlueServiceRole"),
-      iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess")]
+        iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess")]
     })
 
     const glueCrawler = new glue.CfnCrawler(this, 'tapgivesgluecrawler', {

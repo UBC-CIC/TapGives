@@ -317,6 +317,19 @@ class AdministrationBackendHelper {
         }
         return fullListOfCustomers;
     }
+
+    static async broadcastMessage(siteID, message) {
+        let data = (await API.graphql({
+            query: queries.broadcastMessage,
+            // Day and
+            variables: {
+                siteID: siteID,
+                message: message,
+            }
+        })).data.broadcastMessage
+        return data
+    }
+
     // Can only be performed by Admin group
     // Lists all Cognito users
     static async listCognito(limit, nextToken = null){

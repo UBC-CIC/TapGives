@@ -68,5 +68,6 @@ type CustomerTransactions @model @auth(rules:[{allow: groups, groups:["Admins"]}
 # If phone number is valid then you only need to submit userPhoneNumber and siteName
 type Query {
     athenaCall(userPhoneNumber: String, siteName: String!, year: Int!, month: Int!, day: Int!, hour: Int!): String! @function(name: "TapGivesAthenaQuery-${env}")
+    broadcastMessage(siteID: String!, message: String!): String @function(name: "BroadcastMessaging")
 }
 

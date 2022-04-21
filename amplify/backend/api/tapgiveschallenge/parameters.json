@@ -7,5 +7,11 @@
       "authtapgiveschallengec1d1ec61",
       "Outputs.UserPoolId"
     ]
+  },
+  "authRoleName": {
+    "Ref": "AuthRoleName"
+  },
+  "unauthRoleName": {
+    "Ref": "UnauthRoleName"
   }
 }
