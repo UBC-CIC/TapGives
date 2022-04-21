@@ -1,0 +1,44 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tapgiveschallenge-dev-145307-authRole",
+      "UnauthRoleArn": "arn:aws:iam::324707760390:role/amplify-tapgiveschallenge-dev-145307-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::324707760390:role/amplify-tapgiveschallenge-dev-145307-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
+      "UnauthRoleName": "amplify-tapgiveschallenge-dev-145307-unauthRole",
+      "StackName": "amplify-tapgiveschallenge-dev-145307",
+      "StackId": "arn:aws:cloudformation:us-east-1:324707760390:stack/amplify-tapgiveschallenge-dev-145307/46bcd490-bc3d-11ec-8f04-1265a3c1ccaf",
+      "AmplifyAppId": "dydnp3co653vp"
+    },
+    "categories": {
+      "auth": {
+        "tapgiveschallengec1d1ec61": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries9a200474": {
+          "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
+          "s3Key": "amplify-builds/AdminQueries9a200474-6f6f42496a46415a7770-build.zip"
+        },
+        "TapGivesAthenaQuery": {
+          "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
+          "s3Key": "amplify-builds/TapGivesAthenaQuery-39636a7838572f797764-build.zip",
+          "catalog": "AwsDataCatalog",
+          "database": "tapgivescdkathenadatabase",
+          "output": "s3://tapgivesathenaoutput/"
+        },
+        "historyfunction": {
+          "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
+          "s3Key": "amplify-builds/historyfunction-326c7858733844774f71-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "dydnp3co653vp",
+          "type": "cicd"
+        }
+      }
+    }
+  }
+}
