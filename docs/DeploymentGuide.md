@@ -1,15 +1,22 @@
-First, AWS CLI
+# Requirements
+
+Before you deploy, you must have the following in place:
+*  [AWS Account](https://aws.amazon.com/account/) 
+*  [GitHub Account](https://github.com/) 
+*  [AWS CLI](https://aws.amazon.com/cli/) 
+*  [AWS SAM](https://aws.amazon.com/serverless/sam/)  
 
 # Step 1: Clone The Repository
+
 First, you will need to clone the github repository onto your machine. To do this:
-1. Create a folder on your desktop, name it 'TapGives' (folder location and name are suggestions).
-2. Open terminal (or command prompt if on windows) and `cd` into the above folder.
+1. Create a folder on your desktop, name it *TapGives* (folder location and name are suggestions).
+2. Open terminal (or command prompt if on windows) and **cd** into the above folder.
 3. Clone the github repository by entering the following:
 ```bash
 git clone https://github.com/UBC-CIC/TapGives-Challenge.git
 ```
 
-A folder named 'TapGives-Challenge' should now be present in the above folder.
+A folder named *TapGives-Challenge* should now be present in the *TapGives* folder.  
 
 # Step 2: Frontend Deployment
 
@@ -21,20 +28,20 @@ Log into the AWS Console and retreive the following:
 - AppSync API URL
 - AppSync API ID
 - S3 Bucket Name
-- Languages File Path
+- Languages File Path  
 
 Log into your Daraja Account and retreive the following application details:
 - Business Short Code
 - Client Key
 - Client Secret
-- Pass Key
+- Pass Key  
 
 To build and deploy your application for the first time, run the following in your shell:
 
 ```bash
 sam build
 sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
-```
+```  
 
 When the configurations prompts appear, do the following:
 - Name the stack. Below, the stack is named 'ussd-app.'
@@ -46,9 +53,9 @@ When the configurations prompts appear, do the following:
 - Provide the path to 'basePhrases.json' from above.
 - Provide M-Pesa details from above.
 - Enter 'y' for the USSDMeny authorization question.
-- Accept default values for all else.
+- Accept default values for all else.  
 
-The output should be similar to:
+The output should be similar to:  
 ```bash
 Setting default arguments for 'sam deploy'
 =========================================
