@@ -24,17 +24,28 @@ A folder named *TapGives-Challenge* should now be present in the *TapGives* fold
 
 # Step 3: USSD Deployment
 
-Log into the AWS Console and retreive the following:
-- AppSync API URL
-- AppSync API ID
-- S3 Bucket Name
-- Languages File Path  
+### Collect Prerequisite Information
+
+Log into the AWS Console and retreive the following: 
+>> ![alt text](images/console_home.png)  
+1. AppSync API URL and AppSync API ID
+>> ![alt text](images/appsync1.png)
+>> ![alt text](images/appsync2.png)
+>> ![alt text](images/appsync3.png)
+>> ![alt text](images/appsync4.png)
+2. S3 Bucket Name and Languages File Path (default path is *public/basePhrases.json*)
+>> ![alt text](images/s31.png)
+>> ![alt text](images/s32.png)
+>> ![alt text](images/s33.png)
+>> ![alt text](images/s34.png)  
 
 Log into your Daraja Account and retreive the following application details:
 - Business Short Code
 - Client Key
 - Client Secret
 - Pass Key  
+
+### Deployment 
 
 To build and deploy your application for the first time, run the following in your shell:
 
@@ -93,5 +104,5 @@ SAM configuration environment [default]:
 ```
 
 Important:
-You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the 'callbackUrl.' The output should look like so:
+You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *callbackUrl*. The output should look like so:
 ![alt text](images/sam_output.png)
