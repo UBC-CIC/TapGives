@@ -32,7 +32,7 @@ Firstly, ensure you have created a Daraja account, a USSD application, and have 
 - Business Short Code
 - Client Key
 - Client Secret
-- Pass Key  
+- Pass Key
 If not, follow [these instructions]() first.  
 
 Next, log into the AWS Console using your account details: 
@@ -48,7 +48,7 @@ Next, log into the AWS Console using your account details:
 ![alt text](images/s33.png)
 ![alt text](images/s34.png)  
 
-### Deployment 
+### AWS Deployment 
 
 With this information, we can now deploy on AWS. To build and deploy the application, run the following in your shell in the application directory:
 
@@ -97,3 +97,8 @@ SAM configuration environment [default]:
 You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *callbackUrl*. The output should look like so:  
 
 ![alt text](images/sam_output.png)
+
+
+### Final Steps
+
+Lastly, follow [these steps]() to launch a USSD application via Africa's Talking. Keep the API Gateway URL from above on hand.
