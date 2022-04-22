@@ -21,3 +21,9 @@ From here, follow these steps:
 ![alt text](./images/at10.png)
 ![alt text](./images/at11.png)
 ![alt text](./images/at12.png)
+![alt text](./images/at13.png)
+![alt text](./images/at14.png)
+![alt text](./images/at15.png)
+![alt text](./images/at16.png)  
+
+And that's it! Any request to the USSD short code provided will be routed to your AWS application.
