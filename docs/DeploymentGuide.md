@@ -38,15 +38,15 @@ If not, follow [these instructions]() first.
 Next, log into the AWS Console using your account details: 
 ![alt text](images/console_home.png)  
 1. Collect the AppSync API URL and AppSync API ID  
-![alt text](images/appsync1.png)
-![alt text](images/appsync2.png)
-![alt text](images/appsync3.png)
-![alt text](images/appsync4.png)
+![alt text](./images/appsync1.png)
+![alt text](./images/appsync2.png)
+![alt text](./images/appsync3.png)
+![alt text](./images/appsync4.png)
 2. Collect the S3 Bucket Name and Languages File Path (default path is *public/basePhrases.json*)  
-![alt text](images/s31.png)
-![alt text](images/s32.png)
-![alt text](images/s33.png)
-![alt text](images/s34.png)  
+![alt text](./images/s31.png)
+![alt text](./images/s32.png)
+![alt text](./images/s33.png)
+![alt text](./images/s34.png)  
 
 ### AWS Deployment 
 
@@ -101,4 +101,4 @@ You can find your API Gateway Endpoint URL in the output values displayed after 
 
 ### Final Steps
 
-Lastly, follow [these steps]() to launch a USSD application via Africa's Talking. Keep the API Gateway URL from above on hand.
+Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD application via Africa's Talking. Keep the API Gateway URL from above on hand.
