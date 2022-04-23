@@ -101,4 +101,4 @@ You can find your API Gateway Endpoint URL in the output values displayed after 
 
 ### Final Steps
 
-Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD application via Africa's Talking. Keep the API Gateway URL from above on hand.
+Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD service code via Africa's Talking. Keep the API Gateway URL from above on hand.
