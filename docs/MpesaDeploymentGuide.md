@@ -24,4 +24,4 @@ Once you're logged in, follow these steps:
 ![alt text](./images/mpesa9.png)
 ![alt text](./images/mpesa10.png)  
 
-Now you can take the application live!
+Now you're good to go!
