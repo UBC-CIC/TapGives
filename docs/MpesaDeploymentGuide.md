@@ -1,5 +1,5 @@
 # Step 1: Aquire an M-Pesa Till
-The M-Pesa till ​​enables business owners to collect payments on the till and use the money collected to make other transactions directly from their till, to a bank account for example. See their [official website](https://m-pesaforbusiness.co.ke/) for instructions on opening a till.  
+The M-Pesa till ​​enables business owners to collect payments on the till and use the money collected to make other transactions directly from their till, to a bank account for example. See their [official website](https://m-pesaforbusiness.co.ke/) for instructions on how to open a till.  
 
 To proceed, you will need a Business Shortcode (Store number/Head office/Paybill/B2C).
 
@@ -22,4 +22,6 @@ Once you're logged in, follow these steps:
 # Step 3: Take the Application Live
 
 ![alt text](./images/mpesa9.png)
-![alt text](./images/mpesa10.png)
+![alt text](./images/mpesa10.png)  
+
+Now you can take the application live!
