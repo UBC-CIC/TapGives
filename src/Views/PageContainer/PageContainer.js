@@ -102,10 +102,11 @@ function PageContainer(props) {
                                 <ListItemIcon><DashboardIcon /></ListItemIcon>
                                 <ListItemText primary={strings.languageAdministration} />
                             </ListItem>
-                            <ListItem button key={"dataStoreTest"} onClick={() => history.push("/dataStoreTest")}>
-                                <ListItemIcon><DashboardIcon /></ListItemIcon>
-                                <ListItemText primary={"DataStore Test"} />
-                            </ListItem>
+                            {/*This is supposed to be for dev only, if you see it, you probably have no access to any of the tools*/}
+                            {/*<ListItem button key={"dataStoreTest"} onClick={() => history.push("/dataStoreTest")}>*/}
+                            {/*    <ListItemIcon><DashboardIcon /></ListItemIcon>*/}
+                            {/*    <ListItemText primary={"DataStore Test"} />*/}
+                            {/*</ListItem>*/}
                         </div>:
                         null
                 }

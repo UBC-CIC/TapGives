@@ -16,6 +16,8 @@ import Grid from "@material-ui/core/Grid";
 import {center} from "@turf/turf";
 import {GridCell} from "@mui/x-data-grid";
 import {connect} from "react-redux";
+import {Storage} from "aws-amplify";
+import {baseLanguages, basePhrases} from "../languageData";
 
 
 class LanguageAdministration extends React.Component {
@@ -54,6 +56,7 @@ class LanguageAdministration extends React.Component {
             newLanguageInfo: newLanguageInfo,
             deleteLanguageMenu: false,
             openNewLanguageMenu: false,
+            defaultLanguageMenu: false,
         }
     }
     // Swapping current displayed language
@@ -142,6 +145,12 @@ class LanguageAdministration extends React.Component {
     async deleteLanguage() {
         LocalizationHelper.deleteLanguageCascade(this.state.currentLanguageCode)
     }
+    async defaultLanguage() {
+        // await LocalizationHelper.addMultipleLanguagePhrases(baseLanguages)
+        await Storage.put("basePhrases.json", basePhrases)
+        await Storage.put("baseLanguages.json", baseLanguages)
+        this.setState({defaultLanguageMenu: false})
+    }
     render() {
         return <div>
             <Grid container direction={"row"} alignItems={"center"} spacing = {2}>
@@ -169,6 +178,9 @@ class LanguageAdministration extends React.Component {
                 </Grid>
                 <Grid item>
                     <Button variant={"outlined"} onClick={()=>{this.setState({deleteLanguageMenu: true})}}>{this.props.strings.delete}</Button>
+                </Grid>
+                <Grid item>
+                    <Button variant={"outlined"} onClick={()=>{this.setState({defaultLanguageMenu: true})}}>{this.props.strings.changeDefault}</Button>
                 </Grid>
                 {/*Menu to add any new languages*/}
                 <Grid item>
@@ -223,6 +235,23 @@ class LanguageAdministration extends React.Component {
                                 <DialogActions>
                                     <Button onClick={()=>{this.setState({deleteLanguageMenu: false})}}>{this.props.strings.cancel}</Button>
                                     <Button onClick={this.deleteLanguage.bind(this)}>{this.props.strings.delete}</Button>
+                                </DialogActions>
+                            </Grid>
+
+                        </DialogActions>
+                    </Dialog>
+                </Grid>
+                {/*Default localization popup*/}
+                <Grid item>
+                    <Dialog open={this.state.defaultLanguageMenu} onClose={()=>{this.setState({defaultLanguageMenu: false})}} maxWidth={"md"} >
+                        <DialogActions>
+                            <Grid container direction={"column"} justifyContent={"center"}>
+                                <DialogContentText>
+                                    {this.props.strings.changeDefaultMenu}
+                                </DialogContentText>
+                                <DialogActions>
+                                    <Button onClick={()=>{this.setState({defaultLanguageMenu: false})}}>{this.props.strings.cancel}</Button>
+                                    <Button onClick={this.defaultLanguage.bind(this)}>{this.props.strings.confirm}</Button>
                                 </DialogActions>
                             </Grid>
 

@@ -123,6 +123,9 @@ export const basePhrases  = {
         languageAdministration: "Language Administration",
         broadcastMessage: "Broadcast Message",
         broadcastMessageDescription: "This will cause a message broadcast to all users of all selected sites, potentially with a high cost.",
+        changeDefault: "Set Default Localization",
+        changeDefaultMenu: "Are you sure you want to set default localization? (Will override any existing localization, so be careful with this)",
+        confirm: "Confirm",
 
         ////////////////////// MENU LAMBDA /////////////////////
         startRegistration: "Welcome to TapGives!" +
@@ -323,6 +326,9 @@ export const basePhrases  = {
         languageAdministration: "Utawala wa Lugha",
         broadcastMessage: "Bangaza Ujumbe",
         broadcastMessageDescription: "Hii itasababisha utangazaji wa ujumbe kwa watumiaji wote wa tovuti zote zilizochaguliwa, uwezekano wa gharama kubwa.",
+        changeDefault: "Weka Ujanibishaji Chaguomsingi",
+        changeDefaultMenu: "Je, una uhakika unataka kuweka ujanibishaji chaguomsingi? (Itabatilisha ujanibishaji wowote uliopo, kwa hivyo kuwa mwangalifu na hii)",
+        confirm: "Thibitisha",
 
         ////////////////////// MENU LAMBDA /////////////////////
         startRegistration: "Welcome to TapGives!" +
