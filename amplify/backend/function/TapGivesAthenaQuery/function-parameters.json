@@ -13,5 +13,15 @@
       "cloudFormationParameterName": "output",
       "environmentVariableName": "OUTPUT"
     }
-  ]
+  ],
+  "permissions": {
+    "storage": {
+      "history": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
 }

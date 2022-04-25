@@ -14,6 +14,23 @@ export class cdkStack extends cdk.Stack {
       type: 'String',
       description: 'Current Amplify CLI env name',
     });
+    // const parentStackName = new cdk.CfnParameter(this, "ParentStackName", {
+    //   type: "String",
+    //   description:
+    //       "The name of the amplify stack that this stack is a child of",
+    // });
+    const dependencies: AmplifyDependentResourcesAttributes = AmplifyHelpers.addResourceDependency(this,
+        amplifyResourceProps.category,
+        amplifyResourceProps.resourceName,
+        [{
+          category: "storage", // api, auth, storage, function, etc.
+          resourceName: "history" // find the resource at "amplify/backend/<category>/<resourceName>"
+        } /* add more dependencies as needed */]
+    );
+    const projectName = cdk.Fn.ref(dependencies.storage.history.BucketName)
+    const tapgivesBucket = "tapgivesbucket-"+projectName
+    const s3AthenaBucketName = "tapgivesathenaoutput-"+projectName
+
     const firehoseRole = new iam.Role(this, 'DeliveryStreamRole', {
       assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
     });
@@ -29,11 +46,11 @@ export class cdkStack extends cdk.Stack {
     }));
 
     const s3Bucket = new s3.CfnBucket(this, "tapgivesbucket", {
-      bucketName: "tapgivesbucket"
+      bucketName: tapgivesBucket
     })
 
     const s3AthenaBucket = new s3.CfnBucket(this, "tapgivesathenaoutput", {
-      bucketName: "tapgivesathenaoutput",
+      bucketName: s3AthenaBucketName,
       lifecycleConfiguration: {
         rules: [
           {
@@ -90,7 +107,7 @@ export class cdkStack extends cdk.Stack {
             }
           ],
           compressed: false,
-          location: "s3://" + s3Bucket.bucketName + "/data/json-records/",
+          location: "s3://" + tapgivesBucket + "/data/json-records/",
           inputFormat: "org.apache.hadoop.mapred.TextInputFormat",
           outputFormat: "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
           numberOfBuckets: 0,
@@ -160,7 +177,7 @@ export class cdkStack extends cdk.Stack {
           ],
 
           compressed: false,
-          location: "s3://" + s3Bucket.bucketName + '/customertransactions/',
+          location: "s3://" + tapgivesBucket + '/customertransactions/',
           inputFormat: "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat",
           outputFormat: "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat",
           numberOfBuckets: 0,
@@ -228,7 +245,7 @@ export class cdkStack extends cdk.Stack {
       role: crawlerRole.roleArn,
       targets: {
         s3Targets: [{
-          path: "s3://" + s3Bucket.bucketName + "/customertransactions/"
+          path: "s3://" + tapgivesBucket + "/customertransactions/"
         }]
       },
       schedule: {

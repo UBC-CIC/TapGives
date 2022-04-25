@@ -19,18 +19,18 @@
       "function": {
         "AdminQueries9a200474": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
-          "s3Key": "amplify-builds/AdminQueries9a200474-6f6f42496a46415a7770-build.zip"
+          "s3Key": "amplify-builds/AdminQueries9a200474-707332373738454d576b-build.zip"
         },
         "TapGivesAthenaQuery": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
-          "s3Key": "amplify-builds/TapGivesAthenaQuery-39636a7838572f797764-build.zip",
+          "s3Key": "amplify-builds/TapGivesAthenaQuery-5350476c554c4f597339-build.zip",
           "catalog": "AwsDataCatalog",
           "database": "tapgivescdkathenadatabase",
           "output": "s3://tapgivesathenaoutput/"
         },
         "historyfunction": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
-          "s3Key": "amplify-builds/historyfunction-326c7858733844774f71-build.zip"
+          "s3Key": "amplify-builds/historyfunction-30536d356265664d3157-build.zip"
         }
       },
       "hosting": {
