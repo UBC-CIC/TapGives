@@ -18,7 +18,24 @@ class AdministrationBackendHelper {
         return (await API.graphql({query: queries.listSites})).data.listSites.items;
     }
     static async getSiteManagers() {
-       return (await API.graphql({query: queries.listSiteManagers})).data.listSiteManagers.items;
+        let query = (await API.graphql({
+            query: queries.listSiteManagers,
+        }));
+        let siteManagerFull = query.data.listSiteManagers.items;
+        let nextToken = query.data.listSiteManagers.nextToken;
+        while (nextToken != null) {
+            query = (await API.graphql({
+                query: queries.listSiteManagers,
+                variables: {
+                    nextToken: nextToken,
+                }
+            }));
+            siteManagerFull.push(...query.data.listSiteManagers.items)
+            nextToken = query.data.listSiteManagers.nextToken
+        }
+        return siteManagerFull;
+        // (await API.graphql({query: queries.listSiteManagers})).data.listSiteManagers.items
+        // return (await API.graphql({query: queries.listSiteManagers})).data.listSiteManagers.items;
     }
     // static async getSiteSubscriptions() {
     //     return (await API.graphql({query: queries.listSiteSubscriptions})).data.listSiteSubscriptions.items;
