@@ -71,7 +71,7 @@ async function runSiteManagerMenu(args, context, siteManagerAndSites, languageSe
             menu.con(languagePhrases.customerCodePrompt);
         },
         next: {
-            "*": "verify-code"
+            "*^[A-Za-z0-9]{5}$": "verify-code"
         }
     });
     

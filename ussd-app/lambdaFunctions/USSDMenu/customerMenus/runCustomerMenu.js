@@ -16,7 +16,7 @@ async function runCustomerMenu(args, context, customer, languageSet) {
                 languagePhrases.pinPrompt);
             },
             next: {
-                "*": "validate-pin"
+                "*^[0-9]{4}$": "validate-pin"
             }
         };
     };

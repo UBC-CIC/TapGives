@@ -47,12 +47,12 @@ Congratulations, your web app is now deployed!
 
 ### Collect Prerequisite Information
 
-Firstly, ensure you have created a Daraja account, a USSD application, and have the following information on hand:
+Firstly, ensure you have created a Daraja account, a Daraja application, and have the following information on hand:
 - Business Short Code
 - Client Key
 - Client Secret
 - Pass Key
-If not, follow [these instructions]() first.  
+If not, follow [these instructions](./MpesaDeploymentGuide.md) first.  
 
 Next, log into the AWS Console using your account details: 
 ![alt text](images/console_home.png)  
