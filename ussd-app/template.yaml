@@ -12,15 +12,6 @@ Parameters:
     Type: String
     Default: dev
     Description: A name to identify environment (e.g. dev, prod)
-  AppSyncApiUrl:
-    Type: String
-    Description: URL to GraphQL API
-  GraphQLApiId:
-    Type: String
-    Description: GraphQL API ID
-  S3BucketName:
-    Type: String
-    Description: Name of bucket containing languages JSON
   MpesaAccessTokenUrl:
     Type: String
     Description: URL to acquire MPESA access token from
@@ -58,8 +49,8 @@ Globals:
     Environment:
         Variables:
           REGION: !Sub ${AWS::Region}
-          API_URL: !Ref AppSyncApiUrl
-          S3_BUCKET_NAME: !Ref S3BucketName
+          API_URL:  '{{resolve:ssm:GraphQLAPIEndpointOutput}}'
+          S3_BUCKET_NAME:  '{{resolve:ssm:BucketName}}'
           LANGUAGES_FILE_PATH: 'public/basePhrases.json'
           # action types
           VISIT: "visit"
@@ -248,7 +239,7 @@ Resources:
           Description: 'Rule to invoke the RemindAndUnsubscribe lambda function daily'
           Properties:
             Schedule: rate(1 day)
-            Enabled: FALSE
+            Enabled: FALSE  # ENABLE
       Environment:
         Variables:
           DAYS_AHEAD_TO_REMIND: '2'
