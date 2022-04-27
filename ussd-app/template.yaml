@@ -21,9 +21,6 @@ Parameters:
   S3BucketName:
     Type: String
     Description: Name of bucket containing languages JSON
-  LanguagesFilePath:
-    Type: String
-    Description: Path to the languages JSON
   MpesaAccessTokenUrl:
     Type: String
     Description: URL to acquire MPESA access token from
@@ -63,7 +60,7 @@ Globals:
           REGION: !Sub ${AWS::Region}
           API_URL: !Ref AppSyncApiUrl
           S3_BUCKET_NAME: !Ref S3BucketName
-          LANGUAGES_FILE_PATH: !Ref LanguagesFilePath
+          LANGUAGES_FILE_PATH: 'public/basePhrases.json'
           # action types
           VISIT: "visit"
           SUBSCRIPTION: "subscription"
