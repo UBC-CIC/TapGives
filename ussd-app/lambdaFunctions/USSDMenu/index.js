@@ -13,10 +13,6 @@ const s3BucketName = process.env.S3_BUCKET_NAME;
 const languagesFilePath = process.env.LANGUAGES_FILE_PATH;
 const s3Params = {Bucket: s3BucketName, Key: languagesFilePath};
 
-////////////// TODO's ///////////////
-// 2. MAKE REGEX STRICTER
-/////////////////////////////////////
-
 exports.handler = async (event, context) => {
     const menu = new UssdMenu();
     

@@ -272,7 +272,7 @@ Resources:
       Properties:
           LayerName: unirest-layer
           Description: Dependency for mpesa api calls [unirest]
-          ContentUri: layers/unirest
+          ContentUri: ./layers/unirest
   
   InitiateMpesaPayment:
     Type: AWS::Serverless::Function
@@ -390,7 +390,7 @@ Resources:
       Properties:
           LayerName: ussd-menu-builder-layer
           Description: Dependency for ussd-menu [ussd-menu-builder]
-          ContentUri: layers/ussd-menu-builder
+          ContentUri: ./layers/ussd-menu-builder
 
   USSDMenuRole:
     Type: AWS::IAM::Role
@@ -439,6 +439,6 @@ Resources:
 
 
 Outputs:
-  AfricasTalkingApiURL:
+  ApiGatewayEndpointUrl:
     Description: "API Gateway endpoint URL for the USSD Menu function"
     Value: !Sub "https://${AfricasTalkingApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}"

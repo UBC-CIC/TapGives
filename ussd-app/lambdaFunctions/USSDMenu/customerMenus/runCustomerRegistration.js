@@ -27,8 +27,7 @@ async function runCustomerRegistration(args, context, languageSet) {
                 menu.con(languageSet[defaultLanguage].startRegistration);
             },
             next: {
-                "1": "action-selection",
-                "2": "action-selection",
+                "*[1-2]": "action-selection",
                 "0": "exit"
             }
         };
@@ -60,27 +59,31 @@ async function runCustomerRegistration(args, context, languageSet) {
             menu.con(languagePhrases.firstNamePrompt);
         },
         next: {
-            "*": "last-name"
+            "*^[A-Z]?[a-z]{1,29}$": "last-name"
         }
     }); 
     
     menu.state("last-name", {
         run: () => {
-            firstName = menu.val;
+            let inputFirst = menu.val;
+            firstName = inputFirst.charAt(0).toUpperCase() + inputFirst.slice(1).toLowerCase();
+
             menu.con(languagePhrases.lastNamePrompt);
         },
         next: {
-            "*": "pin"
+            "*^[A-Z]?[a-z]{1,29}$": "pin"
         }
     });
     
     menu.state("pin", {
         run: () => {
-            lastName = menu.val;
+            let inputLast = menu.val;
+            lastName = inputLast.charAt(0).toUpperCase() + inputLast.slice(1).toLowerCase();
+            
             menu.con(languagePhrases.registrationPinPrompt);
         },
         next: {
-            "*": "site-nickname"
+            "*^[0-9]{4}$": "site-nickname"
         }
     });
     
@@ -90,7 +93,7 @@ async function runCustomerRegistration(args, context, languageSet) {
             menu.con(languagePhrases.siteNicknamePrompt);
         },
         next: {
-            "*": "complete-registration"
+            "*^[A-Z]?[a-z]{1,29}$": "complete-registration"
         }
     });
 
@@ -150,8 +153,7 @@ async function runCustomerRegistration(args, context, languageSet) {
             menu.con(languagePhrases.oldPhoneNumberPrompt);
         }, 
         next: {
-            // regex for the phone number!
-            "*": "old-pin"
+            "*^(\\+\\d{1,3})\\d{8,10}$": "old-pin"
         }
     });
     
@@ -162,7 +164,7 @@ async function runCustomerRegistration(args, context, languageSet) {
             menu.con(languagePhrases.oldPinPrompt);
         }, 
         next: {
-            "*": "check-user"
+            "*^[0-9]{4}$": "check-user"
         }
     });
     

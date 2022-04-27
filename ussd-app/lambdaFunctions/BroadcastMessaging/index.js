@@ -13,69 +13,71 @@ const messageType = process.env.MESSAGE_TYPE;
 // - all site managers
 // - site managers by site id
 
-let canadaNumber = "+17789172723";
+// let canadaNumber = "+17789172723";
+let canadaNumber = "+17783885382";
 
 exports.handler = async (event) => {
-    
-    let message = event.message;
-    let receivers;  // people receiving the message
+  console.log(event)
+  let {siteID, message} = event.arguments
+  // let message = event.message;
+  let receivers;  // people receiving the message
 
-    if (event.allCustomers) {
-        let getCustomerInput = {
-            all: true
-        };
-        receivers = await invokeGetCustomers(getCustomerInput);
+  if (event.arguments.allCustomers) {
+      let getCustomerInput = {
+          all: true
+      };
+      receivers = await invokeGetCustomers(getCustomerInput);
 
-    } else if (event.customersBySite) {
-        let getCustomerInput = {
-            bySite: true,
-            siteID: event.siteID
-        };
-        receivers = await invokeGetCustomers(getCustomerInput);
+  } else if (event.arguments.customersBySite) {
+      let getCustomerInput = {
+          bySite: true,
+          siteID: siteID
+      };
+      receivers = await invokeGetCustomers(getCustomerInput);
 
-    } else if (event.allSiteManagers) {
-        let getSiteManagerInput = {
-            all: true
-        };
-        receivers = await invokeGetSiteManagers(getSiteManagerInput);
+  } else if (event.arguments.allSiteManagers) {
+      let getSiteManagerInput = {
+          all: true
+      };
+      receivers = await invokeGetSiteManagers(getSiteManagerInput);
 
-    } else if (event.siteManagersBySite) {
-        let getSiteManagerInput = {
-            bySiteID: true,
-            siteID: event.siteID
-        };
-        receivers = await invokeGetSiteManagers(getSiteManagerInput);
+  } else if (event.arguments.siteManagersBySite) {
+      let getSiteManagerInput = {
+          bySiteID: true,
+          siteID: siteID
+      };
+      receivers = await invokeGetSiteManagers(getSiteManagerInput);
 
-    }
+  }
 
-    console.log("MESSAGE TO SEND: ");
-    console.log(message);
+  console.log("MESSAGE TO SEND: ");
+  console.log(message);
 
-    console.log("RECEIVER PHONE NUMBERS: ");
-    console.log(receivers);
-    
+  console.log("RECEIVER PHONE NUMBERS: ");
+  console.log(receivers);
+  
 
-    let messagePromises = [];
+  let messagePromises = [];
 
-    // send message to each receiver
-    receivers.forEach((receiver) => {
-        // messagePromises.push(sendMessage(receiver.phoneNumber, message))
-        messagePromises.push(sendMessage(canadaNumber, message));
-    });
+  // send message to each receiver
+  receivers.forEach((receiver) => {
+      // messagePromises.push(sendMessage(receiver.phoneNumber, message))
+      messagePromises.push(sendMessage(canadaNumber, message));
+  });
 
-    await Promise.all(messagePromises);
+  await Promise.all(messagePromises);
 
-    // communicate whether all messages were successfully sent
+  // communicate whether all messages were successfully sent
 
-    messagePromises.forEach((messageSuccess) => {
-        if (!messageSuccess) {
-            event['isMessagingSuccessful'] = false;
-            return event;
-        }
-    });
+  messagePromises.forEach((messageSuccess) => {
+      if (!messageSuccess) {
+          event['isMessagingSuccessful'] = false;
+          return event;
+      }
+  });
 
-    event['isMessagingSuccessful'] = true;
-    return event;
+  event['isMessagingSuccessful'] = true;
+  return event;
 };
 
 async function sendMessage(destinationNum, msg) {
