@@ -179,6 +179,34 @@
           ]
         }
       ]
+    },
+    "parameterstoreS3": {
+      "service": "customCDK",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "history",
+          "attributes": [
+            "BucketName",
+            "Region"
+          ]
+        }
+      ]
+    },
+    "parameterstoreGraphQL": {
+      "service": "customCDK",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "tapgiveschallenge",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
     }
   },
   "hosting": {
