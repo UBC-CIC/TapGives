@@ -16,14 +16,9 @@
     "s3Key": {
       "Type": "String"
     },
-    "catalog": {
-      "Type": "String"
-    },
-    "database": {
-      "Type": "String"
-    },
-    "output": {
-      "Type": "String"
+    "storagehistoryBucketName": {
+      "Type": "String",
+      "Default": "storagehistoryBucketName"
     }
   },
   "Conditions": {
@@ -79,14 +74,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "CATALOG": {
-              "Ref": "catalog"
-            },
-            "DATABASE": {
-              "Ref": "database"
-            },
-            "OUTPUT": {
-              "Ref": "output"
+            "STORAGE_HISTORY_BUCKETNAME": {
+              "Ref": "storagehistoryBucketName"
             }
           }
         },
@@ -226,6 +215,64 @@
         ]
       },
       "DependsOn": "LambdaExecutionRole"
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagehistoryBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagehistoryBucketName"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
     }
   },
   "Outputs": {

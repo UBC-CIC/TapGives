@@ -200,7 +200,7 @@ class SiteInformation extends React.Component {
     async componentDidMount() {
         this.setState({
             siteData: await AdministrationBackendHelper.getSite(this.state.siteID),
-            rows: await AdministrationBackendHelper.getTransactionsBySite(this.state.siteID),
+            // rows: await AdministrationBackendHelper.getTransactionsBySite(this.state.siteID),
         })
         this.callAthenaUpdate()
     }
@@ -332,22 +332,22 @@ class SiteInformation extends React.Component {
 
                     </Paper>
                 </Grid>
-                <Grid item container xs = {12} direction={"column"}>
-                    <Grid item container >
+                {/*<Grid item container xs = {12} direction={"column"}>*/}
+                {/*    <Grid item container >*/}
 
-                    </Grid>
-                    <Grid item>
-                        <Paper>
-                            <div style={{ height: "800px", width: '100%'}}>
-                                <DataGrid
-                                    columns = {this.state.columns}
-                                    rows = {this.state.rows}
-                                    autoPageSize
-                                />
-                            </div>
-                        </Paper>
-                    </Grid>
-                </Grid>
+                {/*    </Grid>*/}
+                {/*    <Grid item>*/}
+                {/*        <Paper>*/}
+                {/*            <div style={{ height: "800px", width: '100%'}}>*/}
+                {/*                <DataGrid*/}
+                {/*                    columns = {this.state.columns}*/}
+                {/*                    rows = {this.state.rows}*/}
+                {/*                    autoPageSize*/}
+                {/*                />*/}
+                {/*            </div>*/}
+                {/*        </Paper>*/}
+                {/*    </Grid>*/}
+                {/*</Grid>*/}
             </Grid>
 
 

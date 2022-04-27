@@ -1,17 +1,14 @@
 {
   "lambdaLayers": [],
-  "environmentVariableList": [
-    {
-      "cloudFormationParameterName": "catalog",
-      "environmentVariableName": "CATALOG"
-    },
-    {
-      "cloudFormationParameterName": "database",
-      "environmentVariableName": "DATABASE"
-    },
-    {
-      "cloudFormationParameterName": "output",
-      "environmentVariableName": "OUTPUT"
+  "environmentVariableList": [],
+  "permissions": {
+    "storage": {
+      "history": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
     }
-  ]
+  }
 }

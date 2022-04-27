@@ -1,9 +1,17 @@
-const AWS = require('aws-sdk');
+/* Amplify Params - DO NOT EDIT
+	ENV
+	REGION
+	STORAGE_HISTORY_BUCKETNAME
+Amplify Params - DO NOT EDIT */const AWS = require('aws-sdk');
 
 const region = process.env.REGION
-const catalog = process.env.CATALOG
-const database = process.env.DATABASE
-const output = process.env.OUTPUT
+const env = process.env.ENV
+const catalog = "AwsDataCatalog"// process.env.CATALOG Amplify doesnt export env variables for some reason still
+const database = "tapgivescdkathenadatabase" //process.env.DATABASE same as above
+const S3BucketName = process.env.STORAGE_HISTORY_BUCKETNAME
+
+// const output = process.env.OUTPUT
+const output = "s3://tapgivesathenaoutput-"+S3BucketName
 // Set the region
 AWS.config.update({region: region});
 const athena = new AWS.Athena();
