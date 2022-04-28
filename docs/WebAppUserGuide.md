@@ -7,15 +7,15 @@ Before you deploy, you must have the following in place:
 # Part 1: Register TapGives Admin Account
 
 By some technical restrictions of the development, TapGives Admins must be set on the AWS console.  Here, you'll learn how to register for an account on the web app, then how to set any accounts to TapGives Admin.
-1. Enter Web App, press create an account
-2. Fill in account details
-3. Check email, enter verification code
-4. Head to AWS online console, search for **Cognito**, and enter
-5. Select user pool corresponding to the project name (Default tapgiveschallenge)
-6. Click on user which you want to set to Admin
-7. Scroll down, and select **Add user to group**
-8. Select **Admins** and press **Add** 
-9. Return to TapGives web app, and login.  Your user is now a TapGives Admin!  (If you are having issues, try relogging on the TapGives web app)
+1. Enter Web App, press create an account ![alt text](images/webapp0.png)
+2. Fill in account details![alt text](images/webapp1.png)
+3. Check email, enter verification code ![alt text](images/webapp2.png)
+4. Head to AWS online console, search for **Cognito**, and enter ![alt text](images/webapp3.png) 
+5. Select user pool corresponding to the project name (Default tapgiveschallenge) ![alt text](images/webapp4.png)
+6. Click on user which you want to set to Admin ![alt text](images/webapp5.png)
+7. Scroll down, and select **Add user to group** ![alt text](images/webapp6.png)
+8. Select **Admins** and press **Add**  ![alt text](images/webapp7.png)
+9. Return to TapGives web app, and login.  Your user is now a TapGives Admin!  (If you are having issues, try relogging on the TapGives web app) ![alt text](images/webapp8.png)
 
 # Part 2: Create Water Filtration Sites
 

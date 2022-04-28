@@ -1,4 +1,4 @@
-# TapGives Project
+## TapGives Project
 
 ## Deployment Guide
 This guide assumes you already have npm and aws CLI installed, so if you don't have that installed, do that now.  It also assumes NodeJS version 14.x
