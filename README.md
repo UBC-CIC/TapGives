@@ -4,10 +4,10 @@ We Make Impact is an organization that creates and manages potable water sites i
 | Index                             | Description                             |
 |:----------------------------------|:----------------------------------------|
 | [Demo](#demo)                     | Demonstration of the website            | 
-| [Stack Overview](#Stack Overview) | The technologies behind the project     |
-| [Diagram](#Architecture Diagram)  | How the technologies interact           |
-| [Deployment](#Deployment Guide)   | How to deploy the project               |
-| [User Guide](#User Guide)         | See the motivation behind this project. |
+| [Stack Overview](#Stack-Overview) | The technologies behind the project     |
+| [Diagram](#Architecture-Diagram)  | How the technologies interact           |
+| [Deployment](#Deployment-Guide)   | How to deploy the project               |
+| [User Guide](#User-Guide)         | See the motivation behind this project. |
 | [Changelog](#Changelog)           | For any changes post publish            |
 | [License](#License)               | License details.                        |
 
