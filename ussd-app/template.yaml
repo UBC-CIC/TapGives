@@ -421,5 +421,5 @@ Resources:
 
 Outputs:
   ApiGatewayEndpointUrl:
-    Description: "API Gateway endpoint URL for the USSD Menu function"
+    Description: "API Gateway endpoint URL for the USSD Menu function. To be passed as the Callback URL to Africa's Talking."
     Value: !Sub "https://${AfricasTalkingApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}"
