@@ -14,10 +14,13 @@ First, you will need to clone the github repository onto your machine. To do thi
 2. Open terminal (or command prompt if on windows) and **cd** into the above folder.
 3. Clone the github repository by entering the following:
 ```bash
-git clone https://github.com/UBC-CIC/TapGives-Challenge.git
+git clone https://github.com/UBC-CIC/TapGives.git
 ```
 
-The code should now be present in the above folder.  
+The code should now be present in the above folder. Now navigate into the TapGives folder by running the following command:
+```bash
+cd TapGives
+```
 
 
 # Step 2: Frontend Deployment
@@ -63,8 +66,7 @@ Before you move on to the next step, ensure you have the following information:
 
 ### AWS Deployment 
 
-With this information, we can now deploy on AWS. To build and deploy the application, run the following commands consecutively:
-
+With the above information, we can now deploy the AWS infrastructure. To do so, run the following commands in sequence:
 ```bash
 cd ussd-app
 sam build
@@ -101,11 +103,10 @@ Configuring SAM deploy
 ```  
 
 **Important:**  
-You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *callbackUrl*. The output should look like so:  
-
+You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *CallbackUrl*. The output should look like so:
 ![alt text](images/sam_output.png)
 
 
-### Final Steps
+### Africa's Talking Setup
 
 Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD service code via Africa's Talking. Keep the API Gateway URL from above on hand.
