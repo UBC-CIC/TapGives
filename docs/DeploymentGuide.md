@@ -14,7 +14,7 @@ First, you will need to clone the github repository onto your machine. To do thi
 2. Open terminal (or command prompt if on windows) and **cd** into the above folder.
 3. Clone the github repository by entering the following:
 ```bash
-git clone https://github.com/UBC-CIC/TapGives-Challenge.git
+git clone https://github.com/UBC-CIC/TapGives.git
 ```
 
 The code should now be present in the above folder.  
@@ -38,7 +38,7 @@ It creates the role name **amplifyconsole-tapgives-backend-role** that will be u
 
 The **Deploy to Amplify Console** button will take you to your AWS console to deploy the front-end solution.
 
-<a href="https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/UBC-CIC/TapGives-Challenge">
+<a href="https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/UBC-CIC/TapGives">
     <img src="https://oneclick.amplifyapp.com/button.svg" alt="Deploy to Amplify Console">
 </a>
 
