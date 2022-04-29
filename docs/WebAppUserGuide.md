@@ -1,6 +1,6 @@
 ## Requirements
 
-Before you deploy, you must have the following in place:
+Before you follow the guide, you must have the following in place:
 * [Web App Deployment](https://github.com/UBC-CIC/TapGives-Challenge/blob/master/docs/DeploymentGuide.md) 
 
 | Index                                                           | Description                                   |
@@ -8,15 +8,16 @@ Before you deploy, you must have the following in place:
 | [Part 1 - Account Registrations](#Part-1-Account-Registrations) | Designating Site Managers and TapGives Admins | 
 | [Part 2 - Water Site](#Part-2-Water-Site-Operations)            | Water Site Create/Read/Update                 | 
 | [Part 3 - Customer Search](#Part-3-Customer-Search)             | Customer Search and Info                      |
+| [Part 4 - Localization](#Part-4-Localization)                   | Localized web and USSD content                |
 
 ## Part 1 Account Registrations
-| Index                                                  | Description                             |
-|:-------------------------------------------------------|:----------------------------------------|
-| [Admin Registration](#Register-TapGives-Admin-Account) | Demonstration of the website            | 
-| [Site Manager Designation](#Designate-Site-Managers)   | The technologies behind the project     |
+| Index                                                  | Description                       |
+|:-------------------------------------------------------|:----------------------------------|
+| [Admin Registration](#Register-TapGives-Admin-Account) | Setting up TapGives Admin account | 
+| [Site Manager Designation](#Designate-Site-Managers)   | Setting users as Site Managers    |
 
 # Register TapGives Admin Account
-By some technical restrictions of the development, TapGives Admins must be set on the AWS console.  Here, you'll learn how to register for an account on the web app, then how to set any accounts to TapGives Admin.
+By some security restrictions, TapGives Admins must be set on the AWS console.  Here, you'll learn how to register for an account on the web app, then how to set any accounts to TapGives Admin.
 1. Enter Web App, press create an account ![alt text](images/webapp0.png)
 2. Fill in account details![alt text](images/webapp1.png)
 3. Check email, enter verification code ![alt text](images/webapp2.png)
@@ -34,7 +35,8 @@ We will assume that Site Managers have already created a web app account.  If th
 2. Select the user you want to designate as a Site Manager ![alt text](images/webapp9.png)
 3. Select the sites you want them to manage ![alt text](images/webapp11.png)
 4. Click **Update Site Managed** ![alt text](images/webapp12.png)
-   The user is now a Site Manager, and their phone number should work for the USSD code, and their account should be able to access their designated water sites on the web app.
+
+The user is now a Site Manager, and their phone number should work for the USSD code, and their account should be able to access their designated water sites on the web app.
 
 ## Part 2 Water Site Operations
 | Index                                         | Description                    |
@@ -42,6 +44,7 @@ We will assume that Site Managers have already created a web app account.  If th
 | [Create Site](#Create-Water-Filtration-Sites) | Create a water filtration site | 
 | [Update Site](#Update-Water-Filtration-Sites) | Update water filtration site   |
 | [Delete Site](#Delete-Water-Filtration-Sites) | Delete water filtration site   |
+
 Open the web app as a TapGives Admin account, and click the dropdown on the top left, click on Administration ![alt text](images/webapp10.png)
 # Create Water Filtration Sites
 1. Click **Create New Site** ![alt text](images/webapp13.png)
@@ -73,10 +76,11 @@ Open the web app as a TapGives Admin account, and click the dropdown on the top 
 | [Add New Language](#Add-new-Language)             | Add new language to localization  |
 | [Delete Language](#Delete-Language)               | Delete language from localization |
 | [Modify Localization](#Modify-Localization)       | Change localization phrases       |
+
 Click the dropdown at the top left, and click on Site Customers ![alt text](images/webapp24.png)
 
 # Set Default Localization
-1. Click **Set Default Localization** on the right-hand side, and follow the menu.  This will overwrite any existing localization files and reset it to default if you have any.  ![alt text](images/webapp25.png)
+1. Click **Set Default Localization** on the right-hand side, and follow the menu.  This will overwrite any existing localization files and reset localization to defaults.  ![alt text](images/webapp25.png)
 
 # Add new Language
 1. Click **Add New Language** on the top left-hand side, then follow the menu.  The "Language code" should be an unique 2 letter short code for your language (eg. "en").  "Language Name" should be the language name (eg. "English").  ![alt text](images/webapp26.png)
