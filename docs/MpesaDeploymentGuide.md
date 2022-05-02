@@ -24,4 +24,4 @@ Once you're logged in, follow these steps:
 ![alt text](./images/mpesa9.png)
 ![alt text](./images/mpesa10.png)  
 
-Now you're good to go!
+Follow the 'Go Live!' instructions and you're good to go!

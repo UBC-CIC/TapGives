@@ -1,15 +1,16 @@
 # Requirements
 
-Before you launch, you must have the following in place:
+Before you launch, you must have the following piece of information:
 - API Gateway Endpoint to the deployed ussd-app project.
 
 # Africa's Talking
 
-Firstly, create an Africa's Talking account:  
+Firstly, create an Africa's Talking account, [here](https://africastalking.com/).  
 
-Begin by opening the Africa's Talking website, click [here](https://africastalking.com/).  
+Once you have created an account, follow these steps to:
+1. Create a service code (USSD Shortcode) and 
+2. Connect the service code to the deployed AWS application.  
 
-From here, follow these steps:
 ![alt text](./images/at1.png)
 ![alt text](./images/at2.png)
 ![alt text](./images/at3.png)
