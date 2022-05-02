@@ -1,7 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  SAM Template for ussd-app
+  SAM Deployment for the USSD application
+
 
 Parameters:
   ProjectName:
@@ -12,9 +13,6 @@ Parameters:
     Type: String
     Default: dev
     Description: A name to identify environment (e.g. dev, prod)
-  MpesaAccessTokenUrl:
-    Type: String
-    Description: URL to acquire MPESA access token from
   MpesaAccountReference:
     Type: String
     Description: MPESA Account Reference
@@ -33,12 +31,6 @@ Parameters:
   MpesaPassKey:
     Type: String
     Description: MPESA Pass Key
-  MpesaInitiatePaymentUrl:
-    Type: String
-    Description: URL to initiate MPESA payment
-  MpesaQueryUrl:
-    Type: String
-    Description: URL to query MPESA payment success
 
 
 Globals:
@@ -272,13 +264,13 @@ Resources:
       Description: 'Initiate mpesa payment'
       Environment:
         Variables:
-          ACCESS_TOKEN_URL: !Ref MpesaAccessTokenUrl
+          ACCESS_TOKEN_URL: 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
           ACCOUNT_REFERENCE: !Ref MpesaAccountReference
           BUSINESS_SHORTCODE: !Ref MpesaBusinessShortcode
           CALLBACK_URL: !Ref MpesaCallbackURL
           CLIENT_KEY: !Ref MpesaClientKey
           CLIENT_SECRET: !Ref MpesaClientSecret
-          INITIATE_URL: !Ref MpesaInitiatePaymentUrl
+          INITIATE_URL: 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
           PASS_KEY: !Ref MpesaPassKey
     
   ConfirmMpesaPayment:
@@ -291,7 +283,7 @@ Resources:
       Description: 'Confirm mpesa payment success'
       Environment:
         Variables:
-          QUERY_URL: !Ref MpesaQueryUrl
+          QUERY_URL: 'https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query'
 
   StateMachineRole:
     Type: AWS::IAM::Role
@@ -334,11 +326,12 @@ Resources:
       Role: !GetAtt StateMachineRole.Arn
       Type: EXPRESS
   
-  # enable cloudwatch logging (add api logging settings)
   AfricasTalkingApi:
     Type: AWS::Serverless::Api
     Properties:
-      # Cors: www.example.tld   # figure out
+      # Cors:
+      #   AllowOrigin: "https://africastalking.com"
+      #   AllowMethods: "'POST'"
       StageName: !Sub '${EnvironmentName}'
       DefinitionBody:
         openapi: '3.0.1'
@@ -349,7 +342,7 @@ Resources:
         paths:
           /:
             post:
-              responses:    # comment out to see
+              responses:
                 "200":
                   description: "Default 200 response"
               x-amazon-apigateway-integration:
@@ -428,5 +421,5 @@ Resources:
 
 Outputs:
   ApiGatewayEndpointUrl:
-    Description: "API Gateway endpoint URL for the USSD Menu function"
+    Description: "API Gateway endpoint URL for the USSD Menu function. To be passed as the Callback URL to Africa's Talking."
     Value: !Sub "https://${AfricasTalkingApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}"

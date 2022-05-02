@@ -17,7 +17,10 @@ First, you will need to clone the github repository onto your machine. To do thi
 git clone https://github.com/UBC-CIC/TapGives.git
 ```
 
-The code should now be present in the above folder.  
+The code should now be present in the above folder. Now navigate into the TapGives folder by running the following command:
+```bash
+cd TapGives
+```
 
 
 # Step 2: Frontend Deployment
@@ -55,33 +58,27 @@ Congratulations, your web app is now deployed!
 
 # Step 3: USSD Deployment
 
-### Collect Prerequisite Information
+### M-Pesa Setup
 
-Firstly, ensure you have created a Daraja account, a Daraja application, and have the following information on hand:
+In this section, you will do the following:
+1. Create an M-Pesa Till that funds will be collected into (analogous to a mobile bank account).
+2. Create an account with Daraja, Safaricom's API system.
+3. Create an application on Daraja.
+4. Take the application live.  
+
+Please follow [these instructions](./MpesaDeploymentGuide.md) to do so.  
+
+Before you move on to the next step, ensure you have the following information:
 - Business Short Code
 - Client Key
 - Client Secret
-- Pass Key
-If not, follow [these instructions](./MpesaDeploymentGuide.md) first.  
-
-Next, log into the AWS Console using your account details: 
-![alt text](images/console_home.png)  
-1. Collect the AppSync API URL and AppSync API ID  
-![alt text](./images/appsync1.png)
-![alt text](./images/appsync2.png)
-![alt text](./images/appsync3.png)
-![alt text](./images/appsync4.png)
-2. Collect the S3 Bucket Name and Languages File Path (default path is *public/basePhrases.json*)  
-![alt text](./images/s31.png)
-![alt text](./images/s32.png)
-![alt text](./images/s33.png)
-![alt text](./images/s34.png)  
+- Pass Key    
 
 ### AWS Deployment 
 
-With this information, we can now deploy on AWS. To build and deploy the application, run the following in your shell in the application directory:
-
+With the above information, we can now deploy the AWS infrastructure. To do so, run the following commands in sequence:
 ```bash
+cd ussd-app
 sam build
 sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
 ```  
@@ -89,45 +86,37 @@ sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
 When the configurations prompts appear, enter information similar to the below. Default values appear within the default brackets.
 
 ```bash
-Setting default arguments /for sam deploy
-=========================================
-Stack Name [sam-app]: ussd-app
-AWS Region [us-east-1]:  #see AWS Regions for more information
-Parameter ProjectName [ussd-app]: 
-Parameter EnvironmentName [dev]:  #typically dev or prod
-Parameter AppSyncApiUrl []: <YOUR APPSYNC API URL>
-Parameter GraphQLApiId []: <YOUR APPSYNC API ID>
-Parameter S3BucketName []: <YOUR BUCKET NAME>
-Parameter LanguagesFilePath []: <PATH TO FILE>
-Parameter MpesaAccessTokenUrl []: <MPESA URL FOR ACCESS TOKENS> # provide
-#The below will be the name that appears in the M-Pesa prompt
-Parameter MpesaAccountReference []: <YOUR ACCOUNT REFERENCE NAME>
-Parameter MpesaBusinessShortcode []: <YOUR BUSINESS SHORTCODE>
-#You can include a callback URL if you like - it is not necessary.
-#Below is the M-Pesa simulation default.
-Parameter MpesaCallbackURL []: https://mydomain.com/path
-Parameter MpesaClientKey []: <YOUR MPESA CLIENT KEY>
-Parameter MpesaClientSecret []: <YOUR MPESA CLIENT SECRET>
-Parameter MpesaPassKey []: <YOUR MPESA PASS KEY>
-Parameter MpesaInitiatePaymentUrl []: <MPESA URL FOR LIPA NA MPESA INITIATION> # provide
-Parameter MpesaQueryUrl []: <MPESA URL FOR LIPA NA MPESA QUERY> # provide
-#Shows you resources changes to be deployed and requires a 'Y' to initiate deploy
-Confirm changes before deploy [y/N]:
-Allow SAM CLI IAM role creation [Y/n]:  
-Disable rollback [y/N]: 
-#This enables the USSD Menu lambda function to be invoked by API Gateway
-USSDMenu may not have authorization defined, Is this okay? [y/N]: y
-Save arguments to configuration file [Y/n]: 
-SAM configuration file [samconfig.toml]: 
-SAM configuration environment [default]:
+Configuring SAM deploy
+======================
+
+    Looking for config file [samconfig.toml] :  Not found
+
+    Setting default arguments for 'sam deploy'
+    =========================================
+    Stack Name [sam-app]: ussd-app
+    AWS Region [us-east-1]: <YOUR REGION>
+    Parameter ProjectName [ussd-app]: 
+    Parameter EnvironmentName [dev]: 
+    Parameter MpesaAccountReference []: <YOUR MPESA ACCOUNT REFERENCE>
+    Parameter MpesaBusinessShortcode []: <YOUR MPESA BUSINESS SHORTCODE>
+    Parameter MpesaCallbackURL []: <YOUR CALLBACK URL>
+    Parameter MpesaClientKey []: <YOUR MPESA CLIENT KEY>
+    Parameter MpesaClientSecret []: <YOUR MPESA CLIENT SECRET>
+    Parameter MpesaPassKey []: <YOUR MPESA PASSKEY>
+    Confirm changes before deploy [y/N]:
+    Allow SAM CLI IAM role creation [Y/n]: 
+    Disable rollback [y/N]: 
+    USSDMenu may not have authorization defined, Is this okay? [y/N]: y
+    Save arguments to configuration file [Y/n]: 
+    SAM configuration file [samconfig.toml]: 
+    SAM configuration environment [default]: 
 ```  
 
 **Important:**  
-You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *callbackUrl*. The output should look like so:  
-
+You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *CallbackUrl*. The output should look like so:
 ![alt text](images/sam_output.png)
 
 
-### Final Steps
+### Africa's Talking Setup
 
 Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD service code via Africa's Talking. Keep the API Gateway URL from above on hand.
