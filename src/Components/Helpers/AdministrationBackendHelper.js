@@ -232,12 +232,12 @@ class AdministrationBackendHelper {
                 authMode: 'AMAZON_COGNITO_USER_POOLS',
             })
         } catch (error) {
-            console.log("Error creating site: ", error)
+            //console.log("Error creating site: ", error)
         }
     }
     static async deleteSiteManager(siteManagerID, siteID) {
         if (siteID !== "") {
-            console.log("deleting site manager"+ siteManagerID+siteID)
+            //console.log("deleting site manager"+ siteManagerID+siteID)
             const siteManager = {
                 id: siteManagerID,
                 siteID: siteID,
@@ -275,7 +275,7 @@ class AdministrationBackendHelper {
         for (const customer in customers) {
             cascadeDeleteSiteList.push(AdministrationBackendHelper.deleteCustomer(customers[customer].id))
         }
-        console.log(siteManagers)
+        //console.log(siteManagers)
         for (const siteManager in siteManagers) {
             cascadeDeleteSiteList.push(
                 this.deleteSiteManager(siteManagers[siteManager].id, siteIDInput)

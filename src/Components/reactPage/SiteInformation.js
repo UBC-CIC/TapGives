@@ -208,8 +208,8 @@ class SiteInformation extends React.Component {
         this.setState({
             athenaLoaded:false
         })
-        console.log(this.state.date.getMonth())
-        console.log(this.state.date)
+        //console.log(this.state.date.getMonth())
+        //console.log(this.state.date)
         let data = (await API.graphql({
             query: queries.athenaCall,
             // Day and
@@ -232,7 +232,7 @@ class SiteInformation extends React.Component {
             split[row] = split[row].split(",").map((num)=>(parseInt(num))) // Converts entries to numbers, instead of strings
         }
         split.sort((item0, item1)=>(item0[0]-item1[0])) // Ensures the hours are in order, for better processing later
-        console.log(split)
+        //console.log(split)
         if (split.length !== 0) {
             let index = 0
             let graphData = []
@@ -253,9 +253,9 @@ class SiteInformation extends React.Component {
                     }
                 ],
             })
-            console.log(this.state.graphData)
+            //console.log(this.state.graphData)
         } else {
-            console.log("No athena data")
+            //console.log("No athena data")
             this.setState({
                 series: [
                     {
@@ -318,7 +318,7 @@ class SiteInformation extends React.Component {
                                     maxDate={new Date(Date.UTC(this.state.date.getFullYear()+4, 0, 0, 0, 0, 0))}
                                     value={this.state.date}
                                     onChange={(newValue) => {
-                                        console.log(newValue)
+                                        //console.log(newValue)
                                         this.setState(
                                             {date: newValue},
                                                 this.callAthenaUpdate

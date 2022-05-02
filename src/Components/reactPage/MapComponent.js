@@ -35,7 +35,7 @@ async function constructMap(container, center){
         // Ghana -1.6555773994213594, 9.91574634807085
         map = await locationHelper.constructMapWithCenter(container,center, 7)
     } catch (error) {
-        console.log("Error print map: " + error)
+        //console.log("Error print map: " + error)
         return
     }
 

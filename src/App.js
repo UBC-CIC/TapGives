@@ -56,7 +56,7 @@ function App(props) {
                             * [disableSignUp: true, false]
                             * */
                             <Login logo={"custom"} type={"image"} themeColor={"standard"} animateTitle={true}
-                                   title={"UBC Tapgive Challenge"} darkMode={true}
+                                   title={"UBC TapGives Challenge"} darkMode={true}
                                    disableSignUp={false}
                             />
                         )

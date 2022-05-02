@@ -139,7 +139,7 @@ function SiteCustomers(props) {
         const currSites = await AdministrationBackendHelper.getSitesBySiteManager(id)
         setSites(currSites)
         if (currSites.length === 0) {
-            console.log("No sites managed")
+            //console.log("No sites managed")
         }
         else {
             if (siteID.length === 0) {

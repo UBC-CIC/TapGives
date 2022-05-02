@@ -26,7 +26,7 @@ class siteManagement extends React.Component {
             if (site == null)
                 throw new Error("No Site found")
         } catch (e) {
-            console.log(e)
+            //console.log(e)
             id = (await Auth.currentAuthenticatedUser()).attributes.sub;
             const sites = await AdministrationBackendHelper.getSitesBySiteManager(id)
             if (sites.length === 0) {
