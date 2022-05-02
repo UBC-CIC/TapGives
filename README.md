@@ -14,17 +14,22 @@ We Make Impact is an organization that creates and manages potable water sites i
 # Demo
 ![alt text](docs/images/app-demo0.png)
 ![alt text](docs/images/app-demo1.png)
+
 # Stack Overview
+- **Frontend** Web content is 
 
 # Architecture Diagram
 ![alt text](docs/images/architecture-diagram.png)
 Refer to handover document for details
+
 # Deployment Guide
 To deploy this solution, please follow our [Deployment Guide](docs/DeploymentGuide.md)
+
 # User Guide
 For instructions on how to use the web app interface, refer to [Web App User Guide](docs/WebAppUserGuide.md).
 
 On how to use the USSD interface, refer to [USDD Guide](docs).
+
 # Changelog
 N/A
 
