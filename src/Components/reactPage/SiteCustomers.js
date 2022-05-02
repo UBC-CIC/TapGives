@@ -204,6 +204,7 @@ function SiteCustomers(props) {
                                             setQueryable(siteCell.id)
                                             setSite(sites[index])
                                             setLoading(true)
+                                            findSite()
                                         }}>
                                             <div><b>{siteCell.name}</b>{" ("+siteCell.nickname+')'}</div>
                                         </TableCell>

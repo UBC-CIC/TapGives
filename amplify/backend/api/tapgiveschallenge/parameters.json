@@ -1,6 +1,6 @@
 {
   "AppSyncApiName": "tapgiveschallenge",
-  "DynamoDBBillingMode": "PROVISIONED",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
@@ -8,8 +8,6 @@
       "Outputs.UserPoolId"
     ]
   },
-  "DynamoDBModelTableReadIOPS": 6,
-  "DynamoDBModelTableWriteIOPS": 6,
   "authRoleName": {
     "Ref": "AuthRoleName"
   },

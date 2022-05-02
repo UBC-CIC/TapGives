@@ -25,24 +25,34 @@ cd TapGives
 
 # Step 2: Frontend Deployment
 
-Before installing Amplify we need to create the IAM Role that associate the policies need to implement this solution. From the cloned directory, execute the follow CloudFormation template:
+Before installing Amplify we need to create the IAM Role that associate the policies need to implement this solution. 
+Navigate to the cloned directory, execute the follow CloudFormation template:
 
 ```bash
 aws cloudformation deploy --template-file cfn-amplifyRole.yaml --stack-name amplifyconsole-tapgives-backend-role --capabilities CAPABILITY_NAMED_IAM
+```
+
+If you have multiple AWS Profiles, specify one withs sufficient admin permissions by appending this to the command, replacing the profile name 
+
+```bash
+--profile [PROFILE NAME]
 ```
 It creates the role name **amplifyconsole-tapgives-backend-role** that will be used on the next step.
 
 The **Deploy to Amplify Console** button will take you to your AWS console to deploy the front-end solution.
 
-<a href="https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/UBC-CIC/TapGives-Challenge">
+<a href="https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/UBC-CIC/TapGives">
     <img src="https://oneclick.amplifyapp.com/button.svg" alt="Deploy to Amplify Console">
 </a>
 
-1. ![alt text](images/amplify-console-01.png)
+1. Select your region on the top right, then connect to github![alt text](images/amplify-console-01.png)
 2. Select the **amplifyconsole-tapgives-backend-role** for deployment![alt text](images/amplify-console-02.png)
 3. Continue, and wait until the project is finished deployment (wait until the verify is green and checked) ![alt text](images/amplify-console-03.png)
 4. Open left taskbar, Rewrites and redirects, and open edit ![alt text](images/amplify-console-04.png)
-5. Change first rule's source address (or add a rule if there is none) to ```</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>```, target address to ```/index.html```, and type to ```200 (Rewrite)```, then save![alt text](images/amplify-console-05.png)
+5. Change first rule's source address (or add a rule if there is none) to ```</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>```, target address to ```/index.html```, and type to ```200 (Rewrite)```, then save.  
+Refer to [this](https://docs.aws.amazon.com/amplify/latest/userguide/redirects.html#redirects-for-single-page-web-apps-spa) for further information
+![alt text](images/amplify-console-05.png)
+
 
 Congratulations, your web app is now deployed!
 

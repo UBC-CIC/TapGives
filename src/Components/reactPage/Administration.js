@@ -341,6 +341,14 @@ class Administration extends React.Component {
     async broadcast() {
         for (const site in this.state.selectedSites) {
             console.log(this.state.selectedSites[site])
+            let data = (await API.graphql({
+                query: queries.broadcastMessage,
+                variables: {
+                    siteID: this.state.selectedSites[site],
+                    message: this.state.broadcastMessage,
+                    customersBySite: true,
+                }
+            })).data.broadcastMessage
         }
         this.setState({
             broadcastMessageMenu: false
@@ -360,7 +368,7 @@ class Administration extends React.Component {
                     </Typography>
                 </Grid>
                 <Grid container direction={"row"}>
-                    <Grid container xs={6} style = {{ height: "50vh"}} id = "managerGrid" direction={"column"}>
+                    <Grid container xs={6} style = {{ height: "700px"}} id = "managerGrid" direction={"column"}>
                         <DataGrid
                             rows={this.state.siteManagers}
                             columns={this.state.adminColumn}
@@ -368,9 +376,8 @@ class Administration extends React.Component {
                             rowsPerPageOptions={[10]}
                             onSelectionModelChange={this.getManagerSelected.bind(this)}
                         />
-
                     </Grid>
-                    <Grid container xs={6} style = {{ height: "50vh"}} id = "siteGrid" >
+                    <Grid container xs={6} style = {{ height: "700px"}} id = "siteGrid" >
                         <DataGrid
                             rows={this.state.siteData}
                             columns={this.state.siteColumns}
@@ -513,9 +520,22 @@ class Administration extends React.Component {
                             <DialogContentText>
                                 {this.props.strings.broadcastMessageDescription}
                             </DialogContentText>
+                            <DialogContent>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id = {"Message"}
+                                    label = {this.props.strings.broadcastContent}
+                                    type="text"
+                                    fullWidth
+                                    variant="standard"
+                                    error = {!this.state.broadcastMessage}
+                                    onChange={(event)=>{this.setState({broadcastMessage: event.target.value})}}
+                                />
+                            </DialogContent>
                             <DialogActions>
-                                <Button  onClick={()=>{this.setState({broadcastMessageMenu: false})}}>{this.props.strings.cancel}</Button>
-                                <Button  onClick={this.broadcast.bind(this)}>{this.props.strings.broadcastMessage}</Button>
+                                <Button onClick={()=>{this.setState({broadcastMessageMenu: false})}}>{this.props.strings.cancel}</Button>
+                                <Button onClick={this.broadcast.bind(this)}>{this.props.strings.broadcastMessage}</Button>
                             </DialogActions>
                         </Grid>
 

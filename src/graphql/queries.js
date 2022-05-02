@@ -21,8 +21,22 @@ export const athenaCall = /* GraphQL */ `
   }
 `;
 export const broadcastMessage = /* GraphQL */ `
-  query BroadcastMessage($siteID: String!, $message: String!) {
-    broadcastMessage(siteID: $siteID, message: $message)
+  query BroadcastMessage(
+    $siteID: String!
+    $message: String!
+    $allCustomers: String
+    $customersBySite: String
+    $allSiteManagers: String
+    $siteManagersBySite: String
+  ) {
+    broadcastMessage(
+      siteID: $siteID
+      message: $message
+      allCustomers: $allCustomers
+      customersBySite: $customersBySite
+      allSiteManagers: $allSiteManagers
+      siteManagersBySite: $siteManagersBySite
+    )
   }
 `;
 export const getSiteManager = /* GraphQL */ `
