@@ -23,7 +23,11 @@ Assumptions:
 ![alt text](./images/ussd_reg9.png)  
 
 # Part 2: Customer Subscription Purchase
-
+![alt text](./images/ussd_sub1.png)
+![alt text](./images/ussd_sub2.png)
+![alt text](./images/ussd_sub3.png)
+![alt text](./images/ussd_sub4.png)
+![alt text](./images/ussd_sub5.png)
 
 # Part 3: Customer Subscription Details
 
