@@ -24,7 +24,7 @@ Here, you'll learn how to register for an account on the web app, then how to se
 ![alt text](images/webapp1.png)
 3. User retrieves verification code from email\
  ![alt text](images/webapp2.png)
-4. At AWS online console (enter URL?), enter **Cognito** in search bar \
+4. At the [AWS online console](https://console.aws.amazon.com/console/home), enter **Cognito** in the search bar \
 ![alt text](images/webapp3.png) 
 5. Select the user pool corresponding to the project name (Default tapgiveschallenge) \
 ![alt text](images/webapp4.png)
