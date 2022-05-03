@@ -79,9 +79,11 @@ Here, you'll learn how to register for an account on the web app, then how to se
 ## Set Default Localization
 This will set the localization used for both the web app and the USSD menu
 1. Click the dropdown at the top left, and select Site Customers \
-![alt text](images/webapp24.png)
+   ![alt text](images/webapp24.png)
 2. Click **Set Default Localization** on the right-hand side, and follow the menu.  This will overwrite any existing localization files and reset localization to defaults.  \
    ![alt text](images/webapp25.png)
+
+
 # Step 3: USSD Deployment
 
 ### M-Pesa Setup
@@ -102,9 +104,28 @@ Before you move on to the next step, ensure you have the following information:
 
 ### AWS Deployment 
 
+As this solution involves sending SMS messages to customers using the Amazon Pinpoint service, you will first need to request a short code. A short code is a three to seven digit number that you can use for high-volume SMS message sending. They are often used for application-to-person (A2P) messaging, two-factor authentication (2FA), and marketing. To request a short code from AWS, complete **only Step 1** of the official [AWS short code request guide](https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-awssupport-short-code.html). *Please note: this solution utilizes the `TRANSACTION` message type - this will be one of the questions asked in the request form.*
+
+Once you have the Amazon Pinpoint short code, you can proceed. By this point, you should the following information:
+- Business Short Code
+- Client Key
+- Client Secret
+- Pass Key
+- Pinpoint short code
+
+As this solution involves sending SMS messages to customers using the Amazon Pinpoint service, you will first need to request a short code. A short code is a three to seven digit number that you can use for high-volume SMS message sending. They are often used for application-to-person (A2P) messaging, two-factor authentication (2FA), and marketing. To request a short code from AWS, complete **only Step 1** of the official [AWS short code request guide](https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-awssupport-short-code.html). *Please note: this solution utilizes the `TRANSACTION` message type - this will be one of the questions asked in the request form.*  
+
+Once you have the Amazon Pinpoint short code, you can proceed. By this point, you should the following information:
+- Business Short Code
+- Client Key
+- Client Secret
+- Pass Key
+- Pinpoint short code  
+
 With the above information, we can now deploy the AWS infrastructure. To do so, run the following commands in sequence:
 ```bash
 cd ussd-app
+./layers_install.sh
 sam build
 sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
 ```  
@@ -120,9 +141,9 @@ Configuring SAM deploy
     Setting default arguments for 'sam deploy'
     =========================================
     Stack Name [sam-app]: ussd-app
-    AWS Region [us-east-1]: <YOUR REGION>
-    Parameter ProjectName [ussd-app]: 
-    Parameter EnvironmentName [dev]: 
+    Parameter ProjectName [ussd-app]:
+    Parameter EnvironmentName [dev]:
+    Parameter PinpointShortcode []: <YOUR PINPOINT SHORTCODE> 
     Parameter MpesaAccountReference []: <YOUR MPESA ACCOUNT REFERENCE>
     Parameter MpesaBusinessShortcode []: <YOUR MPESA BUSINESS SHORTCODE>
     Parameter MpesaCallbackURL []: <YOUR CALLBACK URL>
@@ -139,10 +160,25 @@ Configuring SAM deploy
 ```  
 
 **Important:**  
-You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *CallbackUrl*. The output should look like so:
+You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *Callback URL*. The output should look like so:  
 ![alt text](images/sam_output.png)
-
 
 ### Africa's Talking Setup
 
-Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD service code via Africa's Talking. Keep the API Gateway URL from above on hand.
+Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD service code via Africa's Talking. Keep the API Gateway URL from above on hand.  
+
+# Troubleshooting  
+
+### Error #1
+If you encounter the following error:
+```bash
+The config profile could not be found
+```  
+chances are that the AWS CLI has not been correctly configured. Ensure you have correctly done so by following the [AWS CLI setup guide]((https://aws.amazon.com/cli/) ), as indicated in the requirements section.  
+
+### Error #2
+If you encounter the following error: 
+```bash
+An error occurred: <lambda /function name> - Uploaded file must be a non-empty zip ... Status Code: 400; Error Code: InvalidParameterValueException
+```  
+the problem is most likely due to the Node version being used, as indicated in [this thread](https://github.com/serverless/serverless/issues/8794). The solution is to **downgrade to a stable version of Node**.

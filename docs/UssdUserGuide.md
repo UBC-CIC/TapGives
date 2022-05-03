@@ -28,9 +28,27 @@ Assumptions:
 ![alt text](./images/ussd_sub3.png)
 ![alt text](./images/ussd_sub4.png)
 ![alt text](./images/ussd_sub5.png)
+![alt text](./images/ussd_sub6.png)
+![alt text](./images/ussd_sub7.png)
+![alt text](./images/ussd_sub8.png)
+![alt text](./images/ussd_sub9.png)
+![alt text](./images/ussd_sub10.png)
+![alt text](./images/ussd_sub11.png)
+![alt text](./images/ussd_sub12.png)
 
 # Part 3: Customer Subscription Details
-
+![alt text](./images/ussd_details1.png)
+![alt text](./images/ussd_details2.png)
+![alt text](./images/ussd_details3.png)
+![alt text](./images/ussd_details4.png)
+![alt text](./images/ussd_details5.png)
+![alt text](./images/ussd_details6.png)
 
 # Part 4: Site Manager Collection Authorization
+![alt text](./images/ussd_sitemanager1.png)
+![alt text](./images/ussd_sitemanager2.png)
+![alt text](./images/ussd_sitemanager3.png)
+![alt text](./images/ussd_sitemanager4.png)
+![alt text](./images/ussd_sitemanager5.png)  
 
+There you have it! The working USSD interaction for both site managers and users. 
