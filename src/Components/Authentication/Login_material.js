@@ -271,7 +271,7 @@ function Login(props) {
     async function resendConfirmationCode() {
         try {
             const {email} = formState;
-            console.log(email)
+            //console.log(email)
             setVerificationError(false);
             await Auth.resendSignUp(email);
             setNewVerification(true);

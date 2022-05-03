@@ -23,14 +23,14 @@ class LocalizationHelper {
                 store()
             }
         } catch (e) {
-            console.log("Failed querying phrases",e)
+            //console.log("Failed querying phrases",e)
         }
         try {
             if (!localStorage.hasOwnProperty("languages"))
                 throw new Error("No languages")
             return JSON.parse(localStorage.getItem("languages"))
         } catch (e) {
-            console.log("Saved languages bad, try deleting cache")
+            //console.log("Saved languages bad, try deleting cache")
             return baseLanguages
         }
     }
@@ -54,7 +54,7 @@ class LocalizationHelper {
             localStorage.setItem("languages", JSON.stringify(languages))
             return languages
         } catch (e) {
-            console.log("Failed querying languages",e)
+            //console.log("Failed querying languages",e)
             return baseLanguages
         }
     }
@@ -66,24 +66,24 @@ class LocalizationHelper {
                 store()
             }
         } catch (e) {
-            console.log("Failed querying phrases",e)
+            //console.log("Failed querying phrases",e)
         }
         try {
             if (!localStorage.hasOwnProperty("phrases"))
                 throw new Error("No phrases")
             return JSON.parse(localStorage.getItem("phrases"))
         } catch (e) {
-            console.log("Saved phrases bad, try deleting cache")
+            //console.log("Saved phrases bad, try deleting cache")
             return basePhrases
         }
     }
     static async getLanguagePhrases() {
         try {
             await store()
-            console.log(JSON.parse(localStorage.getItem("phrases")))
+            //console.log(JSON.parse(localStorage.getItem("phrases")))
             return JSON.parse(localStorage.getItem("phrases"))
         } catch (e) {
-            console.log("Failed querying phrases",e)
+            //console.log("Failed querying phrases",e)
             return basePhrases
         }
     }
@@ -101,7 +101,7 @@ class LocalizationHelper {
     static async deleteLanguageCascade(languageID) {
         // English is used for some code as the "base" language
         if (languageID === "en") {
-            console.log("Cannot delete english")
+            //console.log("Cannot delete english")
             return
         }
         // Ensure we have the up to date version

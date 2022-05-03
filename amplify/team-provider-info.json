@@ -19,15 +19,15 @@
       "function": {
         "AdminQueries9a200474": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
-          "s3Key": "amplify-builds/AdminQueries9a200474-707332373738454d576b-build.zip"
+          "s3Key": "amplify-builds/AdminQueries9a200474-2f695652716b73713657-build.zip"
         },
         "TapGivesAthenaQuery": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
-          "s3Key": "amplify-builds/TapGivesAthenaQuery-5350476c554c4f597339-build.zip"
+          "s3Key": "amplify-builds/TapGivesAthenaQuery-39433248654d51646a67-build.zip"
         },
         "historyfunction": {
           "deploymentBucketName": "amplify-tapgiveschallenge-dev-145307-deployment",
-          "s3Key": "amplify-builds/historyfunction-30536d356265664d3157-build.zip"
+          "s3Key": "amplify-builds/historyfunction-326c7858733844774f71-build.zip"
         }
       },
       "hosting": {

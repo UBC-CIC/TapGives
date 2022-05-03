@@ -75,10 +75,10 @@ function Customer(props) {
     const [customer, setCustomer] = useState(null)
     const [rows, setRows] = useState([])
     useEffect(async ()=> {
-        console.log(customerID)
+        //console.log(customerID)
         const customer = await AdministrationBackendHelper.getCustomer(customerID)
         setCustomer(customer)
-        console.log(customer)
+        //console.log(customer)
         await athenaQuery(customer)
         // Get customer info and query by their phone number
     },[])
@@ -96,7 +96,7 @@ function Customer(props) {
                 hour: -1,
             }
         })).data.athenaCall
-        console.log(data)
+        //console.log(data)
         // // Athena call returns a string seperated by \n for rows, and , for columns.  All values are in strings
         let split = (data.split('\n'))
         split.pop() // last row is just an empty row
@@ -115,7 +115,7 @@ function Customer(props) {
             Object.assign(out, {id:index})
             return out
         })
-        console.log(split)
+        //console.log(split)
         setRows(split)
         setLoading(false)
     }

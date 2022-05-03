@@ -57,7 +57,7 @@ class DataStoreTest extends React.Component {
         let customers = (await API.graphql({
             query: queries.listCustomers,
         })).data.listCustomers.items;
-        console.log(customers)
+        //console.log(customers)
         const CustomerTransactions = {
             userPhoneNumber: customers[0].phoneNumber,
             fullName: `${customers[0].firstName} ${customers[0].lastName}`,
@@ -69,7 +69,7 @@ class DataStoreTest extends React.Component {
             collectedItemType: "jerrycan",
             ttl: Math.round(date.getTime()/1000)
         }
-        console.log(CustomerTransactions)
+        //console.log(CustomerTransactions)
         API.graphql({
             query: mutations.createCustomerTransactions,
             variables: {input: CustomerTransactions}
@@ -114,13 +114,13 @@ class DataStoreTest extends React.Component {
                 collectedItemType: "jerrycan",
                 ttl: Math.round(date.getTime()/1000)
             }
-            console.log(CustomerTransactions)
+            //console.log(CustomerTransactions)
             API.graphql({
                 query: mutations.createCustomerTransactions,
                 variables: {input: CustomerTransactions}
             })
         } catch (e) {
-            console.log(e)
+            //console.log(e)
         }
 
     }
@@ -142,7 +142,7 @@ class DataStoreTest extends React.Component {
             collectedItemType: "jerrycan",
             ttl: Math.round(date.getTime()/1000)
         }
-        console.log(CustomerTransactions)
+        //console.log(CustomerTransactions)
         API.graphql({
             query: mutations.createCustomerTransactions,
             variables: {input: CustomerTransactions}
@@ -167,7 +167,7 @@ class DataStoreTest extends React.Component {
                     AdministrationBackendHelper.createCustomer(names[Math.floor(Math.random()*names.length)], surnames[Math.floor(Math.random()*surnames.length)], sites[site].id, Math.floor(Math.random()*10000), "+254"+Math.floor(Math.random()*10000000))
                 }
             } catch (e) {
-                console.log("Error creating customers for site: "+sites[site].id, e)
+                //console.log("Error creating customers for site: "+sites[site].id, e)
             }
 
         }
@@ -194,16 +194,16 @@ class DataStoreTest extends React.Component {
         //     siteID: "test"
         // }
         //(siteID: String!, year: Int!, month: Int!, day: Int!, hour: Int!
-        console.log(await API.graphql({
-            query: queries.athenaCall,
-            variables: {
-                siteID: "157dd0c2-4a22-42d8-becb-d206fcdc6092",
-                year: 2022,
-                month: 3,
-                day: 10,
-                hour: -1,
-            }
-        }))
+        //console.log(await API.graphql({
+        //     query: queries.athenaCall,
+        //     variables: {
+        //         siteID: "157dd0c2-4a22-42d8-becb-d206fcdc6092",
+        //         year: 2022,
+        //         month: 3,
+        //         day: 10,
+        //         hour: -1,
+        //     }
+        // }))
         // Auth.currentCredentials()
         //     .then(credentials => {
         //         const lambda = new Lambda({
@@ -265,7 +265,7 @@ class DataStoreTest extends React.Component {
                     }}/>
                     <TextField variant="outlined"  label={"Name"} onChange={(val) => {
                         customerData : Object.assign(this.state.customerTransaction, {fullName: val.target.value})
-                        console.log(val)
+                        //console.log(val)
                     }}/>
                     <FormControl style = {{ width: "150px"}}>
                         <InputLabel id="site-label">Sites</InputLabel>
@@ -278,7 +278,7 @@ class DataStoreTest extends React.Component {
                                     target: {value},
                                 } = event;
                                 // const subs = (await DataStore.query(Site, value)).subs
-                                console.log(value)
+                                //console.log(value)
                                 this.setState({
                                     customerData: Object.assign(this.state.customerTransaction, {site: value}),
                                 });

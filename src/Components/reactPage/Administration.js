@@ -44,9 +44,9 @@ class Administration extends React.Component {
             siteManagers: await AdministrationBackendHelper.listCognito(),
             siteData: await AdministrationBackendHelper.getSites(),
         })
-        console.log(this.state.siteManagers)
-        console.log(this.state)
-        console.log(this.props)
+        //console.log(this.state.siteManagers)
+        //console.log(this.state)
+        //console.log(this.props)
     }
 
     constructor(props) {
@@ -220,7 +220,7 @@ class Administration extends React.Component {
     }
     async getManagerSelected(input) {
         const selected = input[0]
-        console.log(this.state.siteManagerLinkers)
+        //console.log(this.state.siteManagerLinkers)
         this.setState({selectedManager: selected})
         this.setState({
             selectedSites: this.state.siteManagerLinkers.filter(
@@ -249,8 +249,8 @@ class Administration extends React.Component {
             if (!currentSites.some((siteManager) => siteManager.siteID === siteID))
                 sitesToAdd.push(siteID)
         })
-        console.log(sitesToAdd)
-        console.log(sitesToRemove)
+        //console.log(sitesToAdd)
+        //console.log(sitesToRemove)
         for (const siteID in sitesToAdd) {
             const number = this.state.siteManagers.find((manager) => manager.id === selectedManager)
             if (number === null)
@@ -287,7 +287,7 @@ class Administration extends React.Component {
         if (!anyError) {
             this.createSite()
         }
-        console.log(this.state.siteCreationData)
+        //console.log(this.state.siteCreationData)
     }
     //Calls Datastore to create a new site
     async createSite() {
@@ -301,7 +301,7 @@ class Administration extends React.Component {
     // Checks if user input is valid, and calls Datastore to update the first selected site if it is
     async updateSite() {
         let anyError = false
-        console.log(this.state.siteEditData)
+        //console.log(this.state.siteEditData)
         let currentData = this.state.siteEditErrors
         this.state.siteRequirements.map((requirement)=> {
             if (!requirement.regex.test(this.state.siteEditData[requirement.id]))
@@ -315,7 +315,7 @@ class Administration extends React.Component {
             try {
                 await AdministrationBackendHelper.updateSite(this.state.selectedSites[0],this.state.siteEditData)
             } catch (error) {
-                console.log("Error saving site", error);
+                //console.log("Error saving site", error);
             }
             this.setState({
                 editSiteMenu: false,
@@ -340,7 +340,7 @@ class Administration extends React.Component {
     }
     async broadcast() {
         for (const site in this.state.selectedSites) {
-            console.log(this.state.selectedSites[site])
+            //console.log(this.state.selectedSites[site])
             let data = (await API.graphql({
                 query: queries.broadcastMessage,
                 variables: {

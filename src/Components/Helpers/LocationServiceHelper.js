@@ -23,7 +23,7 @@ function transformRequest(url, resourceType) {
         };
     }
     // Don't sign
-    console.log("ERROR: Url not valid")
+    //console.log("ERROR: Url not valid")
     return { url: url || "" };
 }
 
@@ -41,7 +41,7 @@ class LocationServiceHelper {
             })
 
         }else{
-            console.log("Reloaded, failed map construction")
+            //console.log("Reloaded, failed map construction")
             window.location.reload()
         }
     }
