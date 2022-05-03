@@ -4,7 +4,7 @@ Before you deploy, you must have the following in place:
 *  [AWS Account](https://aws.amazon.com/account/) 
 *  [GitHub Account](https://github.com/) 
 *  [AWS CLI](https://aws.amazon.com/cli/) 
-*  [AWS SAM](https://aws.amazon.com/serverless/sam/)  
+*  [AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)  
 
 
 # Step 1: Clone The Repository
@@ -138,7 +138,7 @@ If you encounter the following error:
 ```bash
 The config profile could not be found
 ```  
-chances are that the AWS CLI has not been correctly configured. Ensure you have correctly done so by following the [AWS CLI setup guide]((https://aws.amazon.com/cli/) ), as indicated in the requirements section.  
+chances are that the AWS CLI has not been correctly configured. Ensure you have correctly done so by following the [AWS CLI setup guide](https://aws.amazon.com/cli/), as indicated in the requirements section.  
 
 ### Error #2
 If you encounter the following error: 
