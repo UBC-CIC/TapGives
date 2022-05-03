@@ -2,7 +2,7 @@
 
 ![alt text](../docs/images/webAppArchitecture.png)  
 
-The web admin app provides water filtration site specifications, site manager and customer information, as well as insight into customer visit habits. TapGives administrators can create and update water filtration sites in the system, grant permissions to site managers and update the language localization for both the website and mobile interfaces. The following details the solution's components utilized and their functions:  
+The web application provides water filtration site specifications, site manager and customer information, as well as insight into customer visit habits. TapGives administrators can create and update water filtration sites in the system, grant permissions to site managers and update the language localization for both the website and mobile interfaces. The following details the solution's components utilized and their functions:  
 1. The user (Site Manager or TapGives Admin) chooses a device to use, any device will work provided it is capable of displaying a webpage in a modern browser (desktop, laptop, smartphone).
 2. The user connects to the webpage, where access to AWS resources is done through authentication using AWS Cognito, and then requests are routed through AWS Appsync.  
 3. When the user logs in, the application loads the selected language from an Amazon S3 bucket. The phrase list is downloaded when connecting to a website and is automatically updated by checking the Amazon S3 bucket for any updates for each reconnection.  Administrators can change the phrases on the Amazon S3 bucket to change the user’s localization.
