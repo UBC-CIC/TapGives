@@ -124,9 +124,25 @@ Configuring SAM deploy
 ```  
 
 **Important:**  
-You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *CallbackUrl*. The output should look like so:  
+You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *Callback URL*. The output should look like so:  
 ![alt text](images/sam_output.png)
 
 ### Africa's Talking Setup
 
-Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD service code via Africa's Talking. Keep the API Gateway URL from above on hand.
+Lastly, follow [these instructions](./AfricasTalkingDeployment.md) to launch a USSD service code via Africa's Talking. Keep the API Gateway URL from above on hand.  
+
+# Troubleshooting  
+
+### Error #1
+If you encounter the following error:
+```bash
+The config profile could not be found
+```  
+chances are that the AWS CLI has not been correctly configured. Ensure you have correctly done so by following the [AWS CLI setup guide]((https://aws.amazon.com/cli/) ), as indicated in the requirements section.  
+
+### Error #2
+If you encounter the following error: 
+```bash
+An error occurred: <lambda /function name> - Uploaded file must be a non-empty zip ... Status Code: 400; Error Code: InvalidParameterValueException
+```  
+the problem is most likely due to the Node version being used, as indicated in [this thread](https://github.com/serverless/serverless/issues/8794). The solution is to **downgrade to a stable version of Node**.
