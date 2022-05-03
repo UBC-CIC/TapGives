@@ -27,6 +27,7 @@ Resources:
             Statement: # allow read only access to all S3 buckets
               - Effect: Allow
                 Action:
+                  - glue:*
                   - ssm:*
                   - ssm:AddTagsToResource
                   - iam:ListPolicies
