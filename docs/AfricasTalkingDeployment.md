@@ -27,4 +27,4 @@ Once you have created an account, follow these steps to:
 ![alt text](./images/at15.png)
 ![alt text](./images/at16.png)  
 
-And that's it! Any request to the USSD short code provided will be routed to your AWS application.
+And that's it! Any request to the USSD short code provided will be routed to your AWS application. Congratulations, you have completed the entire deployment!
