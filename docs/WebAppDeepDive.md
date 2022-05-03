@@ -1,5 +1,6 @@
-# Administrator and Site Manager Web Application Architecture 
+# Administrator and Site Manager Web Application Deep Dive 
 
+### Architecture
 ![alt text](../docs/images/webAppArchitecture.png)  
 
 The web application provides water filtration site specifications, site manager and customer information, as well as insight into customer visit habits. TapGives administrators can create and update water filtration sites in the system, grant permissions to site managers and update the language localization for both the website and mobile interfaces. The following details the solution's components utilized and their functions:  

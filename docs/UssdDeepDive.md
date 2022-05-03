@@ -1,5 +1,6 @@
-# Customer and Site Manager USSD Architecture
+# Customer and Site Manager USSD Deep Dive
 
+### Architecture
 ![alt text](../docs/images/ussdArchitecture.png)  
 
 The diagram above depicts the components utilized when a villager or site manager interacts with the system using USSD. Through this interaction, a customer will be able to register with the TapGives project, purchase a subscription to a water site, and view important information such as their monthly subscription code and monthly jerrycan balance. In addition, the USSD interaction allows site managers to verify the subscription of a customer and to process customer collections. The following details the components utilized and their functions:
@@ -24,8 +25,9 @@ The diagram above depicts the components utilized when a villager or site manage
     2. In the event of a broadcast message, this request is created by the Broadcast Messaging lambda function.
 10. Amazon Pinpoint sends the provided message to the provided destination phone number. This phone number can belong to a customer, who would receive subscription or broadcast messages, or a site manager, who would only receive broadcast messages.  
 
-### M-Pesa Step Function (State Machine)
+## M-Pesa Step Function (State Machine)
 
+### Architecture
 ![alt text](../docs/images/mpesaStepFunction.png)  
 
 The above AWS step function workflow is responsible for processing monthly customer payments to a water filtration site; this interaction will be required every month, using an M-PESA Till, a business account dedicated to collecting funds (See Appendix C for more information). The transaction of funds from a customer to TapGives is made possible by Safaricom’s M-PESA payment API (more details are available in the [Safaricom API documentation](https://developer.safaricom.co.ke/APIs)). In addition to processing this transaction, the AWS step function workflow updates the customer’s subscription status, withdraws funds from the customer’s account, records the transaction, and sends a message to the customer indicating the success of the transaction and the change in their subscription status. Following is a typical flow for the payment step function:
