@@ -37,7 +37,7 @@ export class cdkStack extends cdk.Stack {
 
     firehoseRole.addToPolicy(new iam.PolicyStatement({
       resources: ['*'],
-      actions: ['glue:Start*', 'glue:Stop*', 'glue:Create*', 'glue:Get*', 'glue:List*', 'glue:Search*']
+      actions: ['glue:*']
     }));
 
     firehoseRole.addToPolicy(new iam.PolicyStatement({
