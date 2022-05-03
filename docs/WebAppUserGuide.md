@@ -3,42 +3,17 @@
 Before you follow the guide, you must have the following in place:
 * [Web App Deployment](https://github.com/UBC-CIC/TapGives-Challenge/blob/master/docs/DeploymentGuide.md) 
 
-| Index                                                           | Description                                   |
-|:----------------------------------------------------------------|:----------------------------------------------|
-| [Part 1 - Account Registrations](#Part-1-Account-Registrations) | Designating Site Managers and TapGives Admins | 
-| [Part 2 - Water Site](#Part-2-Water-Site-Operations)            | Water Site Create/Read/Update                 | 
-| [Part 3 - Customer Search](#Part-3-Customer-Search)             | Customer Search and Info                      |
-| [Part 4 - Localization](#Part-4-Localization)                   | Localized web and USSD content                |
+| Index                                                           | Description                    |
+|:----------------------------------------------------------------|:-------------------------------|
+| [Part 1 - Account Registrations](#Part-1-Account-Registrations) | Designating Site Managers      | 
+| [Part 2 - Water Site](#Part-2-Water-Site-Operations)            | Water Site Create/Read/Update  | 
+| [Part 3 - Customer Search](#Part-3-Customer-Search)             | Customer Search and Info       |
+| [Part 4 - Localization](#Part-4-Localization)                   | Localized web and USSD content |
 
 # Part 1 Account Registrations
-| Index                                                  | Description                       |
-|:-------------------------------------------------------|:----------------------------------|
-| [Admin Registration](#Register-TapGives-Admin-Account) | Setting up TapGives Admin account | 
-| [Site Manager Designation](#Designate-Site-Managers)   | Setting users as Site Managers    |
-
-## Register TapGives Admin Account
-Here, you'll learn how to register for an account on the web app, then how to set any accounts to TapGives Admin.
-1. At the login page for the TapGives website, click create an account \
-![alt text](images/webapp0.png)
-2. Enter Account Details and click Sign-up.  **Verification code is sent to email.** \
-![alt text](images/webapp1.png)
-3. User retrieves verification code from email and enters it to Verify Account\
- ![alt text](images/webapp2.png)
-4. At the [AWS online console](https://console.aws.amazon.com/console/home), enter **Cognito** in the search bar \
-![alt text](images/webapp3.png) 
-5. Select the user pool corresponding to the project name (Default tapgiveschallenge) \
-![alt text](images/webapp4.png)
-6. Select the user which you want to set to Admin \
-![alt text](images/webapp5.png)
-7. Scroll down, and click **Add user to group** \
-![alt text](images/webapp6.png)
-8. Select **Admins** and click **Add**  \
-![alt text](images/webapp7.png)
-9. You have set up login credentials.  Return to TapGives web app, and login. Your user is now a TapGives Admin! (If you are having issues, try relogging on the TapGives web app)\
-![alt text](images/webapp8.png)
 
 ## Designate Site Managers
-The instructions below assume that Site Managers already have web app accounts.  If this is not the case, refer to steps 1-3 in the [earlier steps](#Register-TapGives-Admin-Account)
+The instructions below assume that Site Managers already have web app accounts.  If this is not the case, refer to steps 1-3 in the [Deployment Guide](DeploymentGuide.md/#Register-TapGives-Admin-Account)
 
 1. Open the web app as a TapGives Admin account, and click the dropdown on the top left, select Administration \
 ![alt text](images/webapp10.png)
@@ -101,7 +76,6 @@ Here you learn to use the search and filter through customers registered to Wate
 # Part 4 Localization
 | Index                                             | Description                       |
 |:--------------------------------------------------|:----------------------------------|
-| [Default Localization](#Set-Default-Localization) | Set default languages             | 
 | [Add New Language](#Add-new-Language)             | Add new language to localization  |
 | [Delete Language](#Delete-Language)               | Delete language from localization |
 | [Modify Localization](#Modify-Localization)       | Change localization phrases       |
@@ -109,10 +83,6 @@ Here you learn to use the search and filter through customers registered to Wate
 Click the dropdown at the top left, and select Site Customers \
 ![alt text](images/webapp24.png)
 
-## Set Default Localization
-This will set the localization used for both the web app and the USSD menu
-1. Click **Set Default Localization** on the right-hand side, and follow the menu.  This will overwrite any existing localization files and reset localization to defaults.  \
-![alt text](images/webapp25.png)
 
 ## Add new Language
 This can add languages into the localization used for both the web app and the USSD menu

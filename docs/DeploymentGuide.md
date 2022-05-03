@@ -53,8 +53,35 @@ The **Deploy to Amplify Console** button will take you to your AWS console to de
 Refer to [this](https://docs.aws.amazon.com/amplify/latest/userguide/redirects.html#redirects-for-single-page-web-apps-spa) for further information
 ![alt text](images/amplify-console-05.png)
 
-
 Congratulations, your web app is now deployed!
+
+## Register TapGives Admin Account
+Here, you'll learn how to register for an account on the web app, then how to set any accounts to TapGives Admin.
+1. At the login page for the TapGives website, click create an account \
+   ![alt text](images/webapp0.png)
+2. Enter Account Details and click Sign-up.  **Verification code is sent to email.** \
+   ![alt text](images/webapp1.png)
+3. User retrieves verification code from email and enters it to Verify Account\
+   ![alt text](images/webapp2.png)
+4. At the [AWS online console](https://console.aws.amazon.com/console/home), enter **Cognito** in the search bar \
+   ![alt text](images/webapp3.png)
+5. Select the user pool corresponding to the project name (Default tapgiveschallenge) \
+   ![alt text](images/webapp4.png)
+6. Select the user which you want to set to Admin \
+   ![alt text](images/webapp5.png)
+7. Scroll down, and click **Add user to group** \
+   ![alt text](images/webapp6.png)
+8. Select **Admins** and click **Add**  \
+   ![alt text](images/webapp7.png)
+9. You have set up login credentials.  Return to TapGives web app, and login. Your user is now a TapGives Admin! (If you are having issues, try relogging on the TapGives web app)\
+   ![alt text](images/webapp8.png)
+
+## Set Default Localization
+This will set the localization used for both the web app and the USSD menu
+1. Click the dropdown at the top left, and select Site Customers \
+   ![alt text](images/webapp24.png)
+2. Click **Set Default Localization** on the right-hand side, and follow the menu.  This will overwrite any existing localization files and reset localization to defaults.  \
+   ![alt text](images/webapp25.png)
 
 
 # Step 3: USSD Deployment
@@ -76,6 +103,15 @@ Before you move on to the next step, ensure you have the following information:
 - Pass Key    
 
 ### AWS Deployment 
+
+As this solution involves sending SMS messages to customers using the Amazon Pinpoint service, you will first need to request a short code. A short code is a three to seven digit number that you can use for high-volume SMS message sending. They are often used for application-to-person (A2P) messaging, two-factor authentication (2FA), and marketing. To request a short code from AWS, complete **only Step 1** of the official [AWS short code request guide](https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-awssupport-short-code.html). *Please note: this solution utilizes the `TRANSACTION` message type - this will be one of the questions asked in the request form.*
+
+Once you have the Amazon Pinpoint short code, you can proceed. By this point, you should the following information:
+- Business Short Code
+- Client Key
+- Client Secret
+- Pass Key
+- Pinpoint short code
 
 As this solution involves sending SMS messages to customers using the Amazon Pinpoint service, you will first need to request a short code. A short code is a three to seven digit number that you can use for high-volume SMS message sending. They are often used for application-to-person (A2P) messaging, two-factor authentication (2FA), and marketing. To request a short code from AWS, complete **only Step 1** of the official [AWS short code request guide](https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-awssupport-short-code.html). *Please note: this solution utilizes the `TRANSACTION` message type - this will be one of the questions asked in the request form.*  
 
