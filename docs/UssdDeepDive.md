@@ -3,6 +3,7 @@
 ### Architecture
 ![alt text](../docs/images/ussdArchitecture.png)  
 
+### Description
 The diagram above depicts the components utilized when a villager or site manager interacts with the system using USSD. Through this interaction, a customer will be able to register with the TapGives project, purchase a subscription to a water site, and view important information such as their monthly subscription code and monthly jerrycan balance. In addition, the USSD interaction allows site managers to verify the subscription of a customer and to process customer collections. The following details the components utilized and their functions:
 1. A villager or site manager can use any cellular device.
 2. The user dials the TapGives USSD shortcode for this solution (e.x. *123#), making a request to open a bridge of communication with the system. The Mobile Network Operator (MNO), for example, Safaricom, facilitates this request by forwarding it to the USSD Gateway aggregation service, Africa’s talking. 
@@ -30,6 +31,7 @@ The diagram above depicts the components utilized when a villager or site manage
 ### Architecture
 ![alt text](../docs/images/mpesaStepFunction.png)  
 
+### Description
 The above AWS step function workflow is responsible for processing monthly customer payments to a water filtration site; this interaction will be required every month, using an M-PESA Till, a business account dedicated to collecting funds (See Appendix C for more information). The transaction of funds from a customer to TapGives is made possible by Safaricom’s M-PESA payment API (more details are available in the [Safaricom API documentation](https://developer.safaricom.co.ke/APIs)). In addition to processing this transaction, the AWS step function workflow updates the customer’s subscription status, withdraws funds from the customer’s account, records the transaction, and sends a message to the customer indicating the success of the transaction and the change in their subscription status. Following is a typical flow for the payment step function:
 1. The InitiateMpesaPayment Lambda function obtains a time-bound access token from M-PESA (Authorization API) and initiates an online payment (Lipa Na M-PESA Online / M-PESA Express Simulate API). If successful, a pop-up message prompts the customer to enter their M-PESA PIN to proceed with the transaction. If unsuccessful, a message is sent to the customer asking them to retry. 
 2. After a thirty-second wait time, the ConfirmMpesaPayment Lambda function is invoked to query whether or not the transaction was successful (Lipa Na M-PESA Online Query / M-PESA Express Query API). This API call is made at most four times if the status of the transaction is ‘not successful’ each time a query is made to M-PESA. After the fourth ‘not successful,’ a message is sent to the customer asking them to retry.

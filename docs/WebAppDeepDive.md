@@ -3,6 +3,7 @@
 ### Architecture
 ![alt text](../docs/images/webAppArchitecture.png)  
 
+### Description
 The web application provides water filtration site specifications, site manager and customer information, as well as insight into customer visit habits. TapGives administrators can create and update water filtration sites in the system, grant permissions to site managers and update the language localization for both the website and mobile interfaces. The following details the solution's components utilized and their functions:  
 1. The user (Site Manager or TapGives Admin) chooses a device to use, any device will work provided it is capable of displaying a webpage in a modern browser (desktop, laptop, smartphone).
 2. The user connects to the webpage, where access to AWS resources is done through authentication using AWS Cognito, and then requests are routed through AWS Appsync.  
