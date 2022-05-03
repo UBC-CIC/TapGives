@@ -56,6 +56,7 @@ Refer to [this](https://docs.aws.amazon.com/amplify/latest/userguide/redirects.h
 
 Congratulations, your web app is now deployed!
 
+
 # Step 3: USSD Deployment
 
 ### M-Pesa Setup
@@ -76,9 +77,19 @@ Before you move on to the next step, ensure you have the following information:
 
 ### AWS Deployment 
 
+As this solution involves sending SMS messages to customers using the Amazon Pinpoint service, you will first need to request a short code. A short code is a three to seven digit number that you can use for high-volume SMS message sending. They are often used for application-to-person (A2P) messaging, two-factor authentication (2FA), and marketing. To request a short code from AWS, complete **only Step 1** of the official [AWS short code request guide](https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-awssupport-short-code.html). *Please note: this solution utilizes the `TRANSACTION` message type - this will be one of the questions asked in the request form.*  
+
+Once you have the Amazon Pinpoint short code, you can proceed. By this point, you should the following information:
+- Business Short Code
+- Client Key
+- Client Secret
+- Pass Key
+- Pinpoint short code  
+
 With the above information, we can now deploy the AWS infrastructure. To do so, run the following commands in sequence:
 ```bash
 cd ussd-app
+./layers_install.sh
 sam build
 sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
 ```  
@@ -94,9 +105,9 @@ Configuring SAM deploy
     Setting default arguments for 'sam deploy'
     =========================================
     Stack Name [sam-app]: ussd-app
-    AWS Region [us-east-1]: <YOUR REGION>
-    Parameter ProjectName [ussd-app]: 
-    Parameter EnvironmentName [dev]: 
+    Parameter ProjectName [ussd-app]:
+    Parameter EnvironmentName [dev]:
+    Parameter PinpointShortcode []: <YOUR PINPOINT SHORTCODE> 
     Parameter MpesaAccountReference []: <YOUR MPESA ACCOUNT REFERENCE>
     Parameter MpesaBusinessShortcode []: <YOUR MPESA BUSINESS SHORTCODE>
     Parameter MpesaCallbackURL []: <YOUR CALLBACK URL>
@@ -113,9 +124,8 @@ Configuring SAM deploy
 ```  
 
 **Important:**  
-You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *CallbackUrl*. The output should look like so:
+You can find your API Gateway Endpoint URL in the output values displayed after deployment. This URL will be provided to Africa's Talking as the *CallbackUrl*. The output should look like so:  
 ![alt text](images/sam_output.png)
-
 
 ### Africa's Talking Setup
 
