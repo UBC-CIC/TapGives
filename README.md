@@ -14,8 +14,8 @@ We Make Impact is an organization that creates and manages potable water sites i
 # Stack Overview
 The entire solution is divided into two main sections, the [Web Application](./docs/WebAppDeepDive.md) and the [USSD Application](./docs/UssdDeepDive.md). The web application provides filtration site specifications, site manager and customer information, as well as insight into customer visit habits. TapGives administrators can create and update water filtration sites in the system, grant permissions to site managers and update the language localization for both the website and mobile interfaces. The USSD application enables customers to register with the TapGives project, purchase a subscription to a water site, and view important information such as their monthly subscription code and monthly jerrycan balance. In addition, the USSD interaction allows site managers to verify the subscription of a customer and to process customer water collections.  
 
-For more information on the web application, including details on the architecture, see the [Web Application Architecture explanation](./docs/WebAppDeepDive.md).  
-For more information on the USSD application, including details on the architecture, see the [USSD Application Architecture explanation](./docs/UssdDeepDive.md).  
+For more information on the web application, including details on the architecture, see the [Web Application Deep Dive](./docs/WebAppDeepDive.md).  
+For more information on the USSD application, including details on the architecture, see the [USSD Application Deep Dive](./docs/UssdDeepDive.md).  
 
 # High Level Architecture
 ![alt text](docs/images/architecture-diagram.png)
