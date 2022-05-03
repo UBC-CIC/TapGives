@@ -13,6 +13,9 @@ Parameters:
     Type: String
     Default: dev
     Description: A name to identify environment (e.g. dev, prod)
+  # PinpointShortcode:
+  #   Type: String
+  #   Description: Short code that sends SMS messages
   MpesaAccountReference:
     Type: String
     Description: MPESA Account Reference
@@ -139,7 +142,7 @@ Resources:
       ApplicationId: !Ref CustomerComms
       Enabled: TRUE
       SenderId: TapGives
-      # ShortCode: String   # request shortcode and add here; sends through provided number for now
+      # ShortCode: !Ref PinpointShortcode
 
   SubscriptionMessaging:
     Type: AWS::Serverless::Function
@@ -190,6 +193,7 @@ Resources:
   RecordCustomerTransactionRole:
     Type: AWS::IAM::Role
     Properties:
+      RoleName: RecordCustomerTransactionRole
       Description: Role used by RecordCustomerTransation to call appsync and invoke lambdas
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -198,8 +202,16 @@ Resources:
             Principal:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub '${ProjectName}-${EnvironmentName}-RecordCustomerTransactionGraphQLPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - appsync:GraphQL
+                Resource: '*'
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AWSAppSyncAdministrator
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
@@ -231,7 +243,7 @@ Resources:
           Description: 'Rule to invoke the RemindAndUnsubscribe lambda function daily'
           Properties:
             Schedule: rate(1 day)
-            Enabled: FALSE  # ENABLE
+            Enabled: TRUE
       Environment:
         Variables:
           DAYS_AHEAD_TO_REMIND: '2'
@@ -300,10 +312,10 @@ Resources:
         - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
   
-  StateMachineLogGroup:
+  MpesaStateMachineLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub '${ProjectName}-${EnvironmentName}-StateMachineLogGroup'
+      LogGroupName: !Sub '${ProjectName}-${EnvironmentName}-MpesaStateMachineLogGroup'
       RetentionInDays: 30
 
   MpesaStateMachine:
@@ -322,7 +334,7 @@ Resources:
         IncludeExecutionData: true
         Destinations:
           - CloudWatchLogsLogGroup:
-              LogGroupArn: !GetAtt StateMachineLogGroup.Arn
+              LogGroupArn: !GetAtt MpesaStateMachineLogGroup.Arn
       Role: !GetAtt StateMachineRole.Arn
       Type: EXPRESS
   
