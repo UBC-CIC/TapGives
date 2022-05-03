@@ -5,7 +5,7 @@ We Make Impact is an organization that creates and manages potable water sites i
 |:------------------------------------------------------|:----------------------------------------------------------| 
 | [Stack Overview](#Stack-Overview)                     | The technologies powering the project                     |
 | [High Level Architecture](#High-Level-Architecture)   | High level overview illustrating component interactions   |
-| [Deployment](#Deployment-Guides)                      | How to deploy the project                                 |
+| [Deployment](#Deployment-Guide)                       | How to deploy the project                                 |
 | [User Guides](#User-Guides)                           | The working solution                                      |
 | [Changelog](#Changelog)                               | Any changes post publish                                  |
 | [License](#License)                                   | License details                                           |
@@ -20,7 +20,7 @@ For more information on the USSD application, including details on the architect
 # High Level Architecture
 ![alt text](docs/images/architecture-diagram.png)
 
-# Deployment Guides
+# Deployment Guide
 To deploy this solution, please follow our [Deployment Guide](docs/DeploymentGuide.md)
 
 # User Guides
