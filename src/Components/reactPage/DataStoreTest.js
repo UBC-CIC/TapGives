@@ -195,15 +195,15 @@ class DataStoreTest extends React.Component {
         // }
         //(siteID: String!, year: Int!, month: Int!, day: Int!, hour: Int!
         //console.log(await API.graphql({
-            query: queries.athenaCall,
-            variables: {
-                siteID: "157dd0c2-4a22-42d8-becb-d206fcdc6092",
-                year: 2022,
-                month: 3,
-                day: 10,
-                hour: -1,
-            }
-        }))
+        //     query: queries.athenaCall,
+        //     variables: {
+        //         siteID: "157dd0c2-4a22-42d8-becb-d206fcdc6092",
+        //         year: 2022,
+        //         month: 3,
+        //         day: 10,
+        //         hour: -1,
+        //     }
+        // }))
         // Auth.currentCredentials()
         //     .then(credentials => {
         //         const lambda = new Lambda({
