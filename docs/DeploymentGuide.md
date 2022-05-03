@@ -53,9 +53,35 @@ The **Deploy to Amplify Console** button will take you to your AWS console to de
 Refer to [this](https://docs.aws.amazon.com/amplify/latest/userguide/redirects.html#redirects-for-single-page-web-apps-spa) for further information
 ![alt text](images/amplify-console-05.png)
 
-
 Congratulations, your web app is now deployed!
 
+## Register TapGives Admin Account
+Here, you'll learn how to register for an account on the web app, then how to set any accounts to TapGives Admin.
+1. At the login page for the TapGives website, click create an account \
+   ![alt text](images/webapp0.png)
+2. Enter Account Details and click Sign-up.  **Verification code is sent to email.** \
+   ![alt text](images/webapp1.png)
+3. User retrieves verification code from email and enters it to Verify Account\
+   ![alt text](images/webapp2.png)
+4. At the [AWS online console](https://console.aws.amazon.com/console/home), enter **Cognito** in the search bar \
+   ![alt text](images/webapp3.png)
+5. Select the user pool corresponding to the project name (Default tapgiveschallenge) \
+   ![alt text](images/webapp4.png)
+6. Select the user which you want to set to Admin \
+   ![alt text](images/webapp5.png)
+7. Scroll down, and click **Add user to group** \
+   ![alt text](images/webapp6.png)
+8. Select **Admins** and click **Add**  \
+   ![alt text](images/webapp7.png)
+9. You have set up login credentials.  Return to TapGives web app, and login. Your user is now a TapGives Admin! (If you are having issues, try relogging on the TapGives web app)\
+   ![alt text](images/webapp8.png)
+
+## Set Default Localization
+This will set the localization used for both the web app and the USSD menu
+1. Click the dropdown at the top left, and select Site Customers \
+![alt text](images/webapp24.png)
+2. Click **Set Default Localization** on the right-hand side, and follow the menu.  This will overwrite any existing localization files and reset localization to defaults.  \
+   ![alt text](images/webapp25.png)
 # Step 3: USSD Deployment
 
 ### M-Pesa Setup
