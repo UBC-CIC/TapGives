@@ -9,7 +9,7 @@ Before you deploy, you must have the following in place:
 
 # Step 1: Clone The Repository
 
-First, you will need to clone the github repository onto your machine. To do this:
+First, clone the github repository onto your machine. To do this:
 1. Create a folder on your desktop to contain the code.
 2. Open terminal (or command prompt if on windows) and **cd** into the above folder.
 3. Clone the github repository by entering the following:
@@ -17,7 +17,7 @@ First, you will need to clone the github repository onto your machine. To do thi
 git clone https://github.com/UBC-CIC/TapGives.git
 ```
 
-The code should now be present in the above folder. Now navigate into the TapGives folder by running the following command:
+The code should now be in the above folder. Now navigate into the TapGives folder by running the following command:
 ```bash
 cd TapGives
 ```
@@ -32,12 +32,12 @@ Navigate to the cloned directory, execute the follow CloudFormation template:
 aws cloudformation deploy --template-file cfn-amplifyRole.yaml --stack-name amplifyconsole-tapgives-backend-role --capabilities CAPABILITY_NAMED_IAM
 ```
 
-If you have multiple AWS Profiles, specify one withs sufficient admin permissions by appending this to the command, replacing the profile name 
+If you have multiple AWS Profiles, specify one with sufficient admin permissions by appending this to the command, replacing the profile name 
 
 ```bash
 --profile [PROFILE NAME]
 ```
-It creates the role name **amplifyconsole-tapgives-backend-role** that will be used on the next step.
+The previous command creates the role name **amplifyconsole-tapgives-backend-role** that will be used on the next step.
 
 The **Deploy to Amplify Console** button will take you to your AWS console to deploy the front-end solution.
 
@@ -45,12 +45,12 @@ The **Deploy to Amplify Console** button will take you to your AWS console to de
     <img src="https://oneclick.amplifyapp.com/button.svg" alt="Deploy to Amplify Console">
 </a>
 
-1. Select your region on the top right, then connect to github![alt text](images/amplify-console-01.png)
+1. On the AWS console. select your region on the top right, then connect to github![alt text](images/amplify-console-01.png)
 2. Select the **amplifyconsole-tapgives-backend-role** for deployment![alt text](images/amplify-console-02.png)
-3. Continue, and wait until the project is finished deployment (wait until the verify is green and checked) ![alt text](images/amplify-console-03.png)
-4. Open left taskbar, Rewrites and redirects, and open edit ![alt text](images/amplify-console-04.png)
-5. Change first rule's source address (or add a rule if there is none) to ```</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>```, target address to ```/index.html```, and type to ```200 (Rewrite)```, then save.  
-Refer to [this](https://docs.aws.amazon.com/amplify/latest/userguide/redirects.html#redirects-for-single-page-web-apps-spa) for further information
+3. The deployment will take a few minutes.  Wait until the status shows **Verify** in green![alt text](images/amplify-console-03.png)
+4. Click on left taskbar to open menu, click on Rewrites and redirects, and click on edit ![alt text](images/amplify-console-04.png)
+5. Click and replace the first rule's source address (or add a rule if there is none) to ```</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json)$)([^.]+$)/>```, click and replace target address to ```/index.html```, and select and replace **type** with ```200 (Rewrite)```, then save.  
+Refer to [AWS's Page on Single Page Apps](https://docs.aws.amazon.com/amplify/latest/userguide/redirects.html#redirects-for-single-page-web-apps-spa) for further information on why we did that
 ![alt text](images/amplify-console-05.png)
 
 Congratulations, your web app is now deployed!

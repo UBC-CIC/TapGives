@@ -12,6 +12,8 @@ Assumptions:
 1. For the purposes of this demonstration, we assume the service code provided by Africa's Talking is _*384*91102#_.
 
 # Part 1: Customer Registration
+Here is a walk-through of how to register as a customer on the USSD menu.
+
 ![alt text](./images/ussd_reg1.png)
 ![alt text](./images/ussd_reg2.png)
 ![alt text](./images/ussd_reg3.png)
@@ -23,6 +25,8 @@ Assumptions:
 ![alt text](./images/ussd_reg9.png)  
 
 # Part 2: Customer Subscription Purchase
+Here is the subscription walk-through given a customer is already registered.
+
 ![alt text](./images/ussd_sub1.png)
 ![alt text](./images/ussd_sub2.png)
 ![alt text](./images/ussd_sub3.png)
@@ -37,6 +41,8 @@ Assumptions:
 ![alt text](./images/ussd_sub12.png)
 
 # Part 3: Customer Subscription Details
+Here a customer can check their monthly subscription code and also their remaining jerrycans for the month
+
 ![alt text](./images/ussd_details1.png)
 ![alt text](./images/ussd_details2.png)
 ![alt text](./images/ussd_details3.png)
@@ -45,6 +51,8 @@ Assumptions:
 ![alt text](./images/ussd_details6.png)
 
 # Part 4: Site Manager Collection Authorization
+Here a Site Manager can authorize the collection of jerrycans
+
 ![alt text](./images/ussd_sitemanager1.png)
 ![alt text](./images/ussd_sitemanager2.png)
 ![alt text](./images/ussd_sitemanager3.png)
