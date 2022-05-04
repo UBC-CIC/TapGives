@@ -38,7 +38,7 @@ Below is the flow a customer follows to purchase a subscription.
 <img src="./images/ussd_sub9.png" alt="alt text" height="500" width="250"/>
 <img src="./images/ussd_sub10.png" alt="alt text" height="500" width="250"/>
 <img src="./images/ussd_sub11.png" alt="alt text" height="500" width="250"/>
-<img src="./images/ussd_sub12.png" alt="alt text" height="200" width="800"/>  
+<img src="./images/ussd_sub12.png" alt="alt text" height="200" width="700"/>  
 
 # Part 3: Customer Subscription Details
 Below is the flow a customer follows to view subscription details, such as their monthly subscription code or jerrycan balance.
