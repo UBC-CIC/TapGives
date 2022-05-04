@@ -14,7 +14,7 @@ Assumptions:
 # Part 1: Customer Registration
 Here is a walk-through of how to register as a customer on the USSD menu.
 
-![alt text](./images/ussd_reg1.png)
+<img src="./images/ussd_reg1.png" alt="alt text" height="200" width="100"/>
 ![alt text](./images/ussd_reg2.png)
 ![alt text](./images/ussd_reg3.png)
 ![alt text](./images/ussd_reg4.png)
