@@ -86,6 +86,8 @@ This will set the localization used for both the web app and the USSD menu
 
 # Step 3: USSD Deployment
 
+In this section you will configure three services that work in conjunction with one another to support the USSD capabilities of this solution. Firstly, you will create an M-Pesa application and take it live. Secondly, you will deploy the AWS infrastructure and, finally, you will configure the Africa's Talking service to interact with the AWS components.  
+
 ### M-Pesa Setup
 
 In this section, you will do the following:
