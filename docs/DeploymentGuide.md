@@ -126,8 +126,8 @@ Once you have the Amazon Pinpoint short code, you can proceed. By this point, yo
 
 With the above information, we can now deploy the AWS infrastructure. To do so, run the following commands in sequence:
 ```bash
-cd ussd-app
 ./layers_install.sh
+cd ussd-app
 sam build
 sam deploy --guided --capabilities CAPABILITY_NAMED_IAM
 ```  
