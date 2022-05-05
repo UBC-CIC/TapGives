@@ -453,7 +453,7 @@ function Login(props) {
             maxLength: { error: false, description: strings.maxLength }
         })
     }
-    let logoType = (darkMode)? "/Assets/Images/logo_inverse.png" : "/Assets/Images/logo.png";
+    // let logoType = (darkMode)? "/Assets/Images/logo_inverse.png" : "/Assets/Images/logo.png";
 
     return (
         <>
@@ -499,11 +499,11 @@ function Login(props) {
                                 {title}
                             </p>
                         </Grid>
-                        <Grid container item xs={12} justify={"center"}>
-                            <Grid item xs={10}>
-                                {(logo !== "none")? <img src={process.env.PUBLIC_URL + logoType} style={{width: "100%", height: "100%"}}/> : null}
-                            </Grid>
-                        </Grid>
+                        {/*<Grid container item xs={12} justify={"center"}>*/}
+                        {/*    <Grid item xs={10}>*/}
+                        {/*        {(logo !== "none")? <img src={process.env.PUBLIC_URL + logoType} style={{width: "100%", height: "100%"}}/> : null}*/}
+                        {/*    </Grid>*/}
+                        {/*</Grid>*/}
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} sm={7} md={5} className={`login-container ${classes.centerBox}`}>
