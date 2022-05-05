@@ -29,8 +29,7 @@ For more information on the web application, including details on the architectu
 To deploy this solution, please follow our [Deployment Guide](docs/DeploymentGuide.md)
 
 # User Guides
-For instructions on how to use the web app interface, refer to [Web App User Guide](docs/WebAppUserGuide.md).  
-On how to use the USSD interface, refer to the [USSD User Guide](docs/UssdUserGuide.md).
+For instructions on how to use the web app interface, refer to [Web App User Guide](docs/WebAppUserGuide.md). Similarly, for instructions on how to use the USSD interface, refer to the [USSD User Guide](docs/UssdUserGuide.md).
 
 # Changelog
 N/A
