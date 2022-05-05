@@ -23,6 +23,8 @@ Web Application             |  USSD Application
 For more information on the web application, including details on the architecture, see the [Web Application Deep Dive](./docs/WebAppDeepDive.md). Similarly, for more information on the USSD application, including details on the architecture, see the [USSD Application Deep Dive](./docs/UssdDeepDive.md).  
 
 # High Level Architecture
+The following architecture diagram illustrates the various AWS components and 3rd party services (Africa's Talking and M-Pesa) utliized to deliver the solution. For an in-depth explanation of the Web Application, see the [Web Application Deep Dive](./docs/WebAppDeepDive.md); for an in-depth explanation of the USSD Application, see the [USSD Application Deep Dive](./docs/UssdDeepDive.md).  
+
 ![alt text](docs/images/architecture-diagram.png)
 
 # Deployment Guide
