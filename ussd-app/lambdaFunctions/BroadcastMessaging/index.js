@@ -13,14 +13,12 @@ const messageType = process.env.MESSAGE_TYPE;
 // - all site managers
 // - site managers by site id
 
-// let canadaNumber = "+17789172723";
-let canadaNumber = "+17783885382";
 
 exports.handler = async (event) => {
   console.log(event)
-  let {siteID, message} = event.arguments
-  // let message = event.message;
+
   let receivers;  // people receiving the message
+  let {siteID, message} = event.arguments
 
   if (event.arguments.allCustomers) {
       let getCustomerInput = {
@@ -61,8 +59,7 @@ exports.handler = async (event) => {
 
   // send message to each receiver
   receivers.forEach((receiver) => {
-      // messagePromises.push(sendMessage(receiver.phoneNumber, message))
-      messagePromises.push(sendMessage(canadaNumber, message));
+      messagePromises.push(sendMessage(receiver.phoneNumber, message))
   });
 
   await Promise.all(messagePromises);
@@ -92,7 +89,8 @@ async function sendMessage(destinationNum, msg) {
         MessageConfiguration: {
           SMSMessage: {
             Body: msg,
-            MessageType: messageType        }
+            MessageType: messageType
+          }
         }
       }
     };
