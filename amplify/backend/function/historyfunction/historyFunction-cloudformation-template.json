@@ -465,12 +465,30 @@
           "Statement": [
             {
               "Action": [
+                "s3:*"
+              ],
+              "Resource": [
+                "*"
+              ],
+              "Effect": "Allow"
+            },
+            {
+              "Action": [
                 "firehose:*"
               ],
               "Effect": "Allow",
               "Resource": [
                 "*"
               ]
+            },
+            {
+              "Action": [
+                "glue:*"
+              ],
+              "Resource": [
+                "*"
+              ],
+              "Effect": "Allow"
             }
           ]
         },

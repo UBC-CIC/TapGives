@@ -104,6 +104,13 @@ export class cdkStack extends cdk.Stack {
             {
               name: "governmentid",
               type: "string"
+            },
+            {
+              name: 'day',
+              type: 'string',
+            },{
+              name: 'hour',
+              type: 'string',
             }
           ],
           compressed: false,
@@ -135,14 +142,6 @@ export class cdkStack extends cdk.Stack {
             name: 'partition_2',
             comment: 'month',
             type: 'string',
-          },{
-            name: 'partition_3',
-            comment: 'day',
-            type: 'string',
-          },{
-            name: 'partition_4',
-            comment: 'hour',
-            type: 'string',
           }],
         storageDescriptor: {
           columns: [
@@ -173,6 +172,13 @@ export class cdkStack extends cdk.Stack {
             {
               name: "governmentid",
               type: "string"
+            },
+            {
+              name: 'day',
+              type: 'string',
+            },{
+              name: 'hour',
+              type: 'string',
             }
           ],
 
@@ -191,7 +197,7 @@ export class cdkStack extends cdk.Stack {
       deliveryStreamName: "tapgives-customertransactions",
       extendedS3DestinationConfiguration: {
         bucketArn: s3Bucket.attrArn,
-        prefix: 'customertransactions/!{partitionKeyFromQuery:siteName}/!{timestamp:yyyy/MM/dd/HH}/',
+        prefix: 'customertransactions/!{partitionKeyFromQuery:siteName}/!{timestamp:yyyy/MM}/',
         errorOutputPrefix: 'FirehoseFailures/!{firehose:error-output-type}/!{firehose:random-string}/',
         roleArn: firehoseRole.roleArn,
         dynamicPartitioningConfiguration: {
@@ -249,9 +255,9 @@ export class cdkStack extends cdk.Stack {
         }]
       },
       schedule: {
-        scheduleExpression: "cron(0 0 * * ? *)",
+        scheduleExpression: "cron(0 5 * * ? *)",
       },
-      description: "Rescans athena table"
+      description: "Rescans athena table monthly"
     })
     kinesis.node.addDependency(firehoseRole);
 

@@ -13,6 +13,7 @@ AWS.config.update({region: region});
 let s3 = new AWS.S3({apiVersion: '2006-03-01'});
 let firehose = new AWS.Firehose();
 let dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+let glue = new AWS.Glue({apiVersion: '2017-03-31'});
 // Choose what data to store
 const modelParams = {
   CustomerTransactions: ["userPhoneNumber", "fullName", "siteName", "action", "collectedCount", "collectedItemType", "status"],
@@ -22,6 +23,30 @@ function delay(milliseconds){
   return new Promise(resolve => {
     setTimeout(resolve, milliseconds);
   });
+}
+async function checkIfRunGlue(type, model, year, month) {
+  // month is 0 indexed from javascript, 1 indexed in database
+  // Database index months with length 2 regardless of if its 1 or 2 digit
+  if (String(month).length === 1) {
+    month = "0"+String(month+1)
+  } else {
+    month = String(month+1)
+  }
+  const s3params = {
+    Bucket: "tapgivesbucket-"+bucket,
+    Prefix: type+"/"+model.siteName + "/" + year + "/" +  month + "/",
+    MaxKeys: 1
+  }
+  const hasFolder = await s3.listObjects(s3params).promise()
+  if (hasFolder.Contents.length > 0) {
+    const glueParams = {
+      Name: "tapgivesgluecrawler"
+    }
+    console.log("starting crawler")
+    const val = await glue.startCrawler(glueParams)
+    console.log(val)
+    console.log(val.response)
+  }
 }
 exports.handler = async event => {
   let promiseList = []
@@ -66,45 +91,32 @@ exports.handler = async event => {
           }
           const dynamodbPromise = dynamodb.updateItem(params).promise()
           promiseList.push(dynamodbPromise)
-        }
-        const type = newImage.__typename.S.toLowerCase() // get model type
-        // Clean the model of unneeded values
-        const model = modelParams[newImage.__typename.S].reduce((prev, currParam)=> (
-            Object.assign(prev, {[currParam]: newImage[currParam][Object.keys(newImage[currParam])[0]]})
-        ), {})
-        var buf = Buffer.from(JSON.stringify(model));
-        let key  ='data/json-records/'+type+'/'+event.Records[record].eventID+'.json'
-        // console.log(bucket+key+buf)
-        let params = {
-          Bucket: bucket,
-          Key: key,
-          Body: buf,
-          ContentEncoding: 'base64',
-          ContentType: 'application/json',
-        };
-        // console.log(params)
-        // let s3Promise = s3.putObject(params, function (err, data) {
-        //   if (err) {
-        //     console.log(err);
-        //     console.log('Error uploading data: ', data);
-        //   } else {
-        //     console.log('succesfully uploaded');
-        //   }
-        // }).promise();
-        // promiseList.push(s3Promise)
-        params = {
-          DeliveryStreamName: "tapgives-"+type, /* required */
-          Record: { /* required */
-            Data: JSON.stringify(model)/* Strings will be Base-64 encoded on your behalf */ /* required */
+        } else if (newImage.action.S === "visit") {
+          const type = newImage.__typename.S.toLowerCase() // get model type
+          // Clean the model of unneeded values
+
+          const model = modelParams[newImage.__typename.S].reduce((prev, currParam)=> (
+              Object.assign(prev, {[currParam]: newImage[currParam][Object.keys(newImage[currParam])[0]]})
+          ), {})
+          const d = new Date();
+          Object.assign(model, {
+            day: String(d.getUTCDate()),
+            hour : String(d.getUTCHours()),
+          })
+          console.log(model)
+          var params = {
+            DeliveryStreamName: "tapgives-"+type, /* required */
+            Record: { /* required */
+              Data: JSON.stringify(model)/* Strings will be Base-64 encoded on your behalf */ /* required */
+            }
           }
+          const firehosePromise = firehose.putRecord(params).promise().then(function(err, data) {
+            if (err) console.log(err, err.stack); // an error occurred
+            else     console.log(data);           // successful response
+          })
+          promiseList.push(firehosePromise)
+          // promiseList.push( checkIfRunGlue(type, model, d.getUTCFullYear(), d.getUTCMonth()))
         }
-        const firehosePromise = firehose.putRecord(params).promise().then(function(err, data) {
-          if (err) console.log(err, err.stack); // an error occurred
-          else     console.log(data);           // successful response
-        })
-        promiseList.push(firehosePromise)
-
-
         // return s3Promise
       } else {
         // return Promise.resolve('Type Error: ' + newImage.__typename.S + " not supported");
@@ -113,8 +125,6 @@ exports.handler = async event => {
     } else {
       console.log('Type Error: ' + event.Records[record].eventName + " not supported")
     }
-
-    // return Promise.resolve("Sucessfully processed " + event.Records.length + " events")
   }
   // return Promise.all(promiseList)
   await Promise.all(promiseList)
