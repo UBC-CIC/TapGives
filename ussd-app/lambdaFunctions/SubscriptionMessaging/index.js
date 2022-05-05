@@ -14,7 +14,6 @@ const REMINDER_MESSAGE = process.env.REMINDER_MESSAGE;
 const SUBSCRIPTION_MESSAGE = process.env.SUBSCRIPTION_MESSAGE;
 const UNSUBSCRIPTION_MESSAGE = process.env.UNSUBSCRIPTION_MESSAGE;
 
-let canadaNumber = "+17789172723";
 
 exports.handler = async (event) => {
     console.log('Received event:', event);
@@ -50,8 +49,7 @@ exports.handler = async (event) => {
     console.log(customerPhoneNum);
     console.log(msg);
     
-    let isMsgSuccessful = await sendMessage(canadaNumber, msg);
-    // await sendMessage(customerPhoneNum, msg);
+    let isMsgSuccessful = await sendMessage(customerPhoneNum, msg);
     
     event['isMessageSuccessful'] = isMsgSuccessful;
     return event;
@@ -69,7 +67,8 @@ async function sendMessage(givenDestNum, givenMessage) {
       MessageConfiguration: {
         SMSMessage: {
           Body: givenMessage,
-          MessageType: messageType        }
+          MessageType: messageType
+        }
       }
     }
   };

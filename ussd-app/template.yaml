@@ -13,9 +13,9 @@ Parameters:
     Type: String
     Default: dev
     Description: A name to identify environment (e.g. dev, prod)
-  # PinpointShortcode:
-  #   Type: String
-  #   Description: Short code that sends SMS messages
+  PinpointShortcode:
+    Type: String
+    Description: Short code that sends SMS messages
   MpesaAccountReference:
     Type: String
     Description: MPESA Account Reference
@@ -142,7 +142,7 @@ Resources:
       ApplicationId: !Ref CustomerComms
       Enabled: TRUE
       SenderId: TapGives
-      # ShortCode: !Ref PinpointShortcode
+      ShortCode: !Ref PinpointShortcode
 
   SubscriptionMessaging:
     Type: AWS::Serverless::Function
