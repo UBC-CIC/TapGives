@@ -44,7 +44,7 @@ async function checkIfRunGlue(type, model, year, month) {
     }
     console.log("starting crawler")
     const val = await glue.startCrawler(glueParams)
-    console.log(val)
+    // console.log(val)
     console.log(val.response)
   }
 }

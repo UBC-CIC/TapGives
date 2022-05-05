@@ -119,8 +119,9 @@ exports.handler = async (event) => {
                 console.log("Error on s3 retrieval", e)
             }
         }
-        if (vals == null)
+        if (vals == null) {
             throw new Error("Failed 5 times")
+        }
 
         return  vals.Body.toString('utf-8')
     }

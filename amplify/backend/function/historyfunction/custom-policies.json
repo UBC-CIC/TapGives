@@ -1,9 +1,5 @@
 [
   {
-    "Action": ["s3:*"],
-    "Resource": ["*"]
-  },
-  {
     "Action": [
       "firehose:*"
     ],
@@ -11,7 +7,7 @@
     "Resource": ["*"]
   },
   {
-    "Action": ["glue:*"],
+    "Action": ["glue:*","s3:*"],
     "Resource": ["*"]
   }
 ]
