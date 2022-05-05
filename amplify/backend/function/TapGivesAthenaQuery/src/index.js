@@ -44,7 +44,7 @@ exports.handler = async (event) => {
         if (hour < 10)
             hour = "0"+hour
         var params = {
-            QueryString: "select partition_4, count(*) from customertransactions where action = 'visit' and partition_0 = '"
+            QueryString: "select hour, count(*) from customertransactions where action = 'visit' and partition_0 = '"
                 + siteName + "' and partition_1 = '"
                 + year + "' and partition_2 = '"
                 + month + ((parseInt(day) >= 0 )?"' and day = '"+ day:"")+
