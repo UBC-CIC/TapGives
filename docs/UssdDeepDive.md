@@ -29,7 +29,7 @@ The diagram above depicts the components utilized when a villager or site manage
 ## M-Pesa Step Function (State Machine)
 
 ### Architecture
-![alt text](../docs/images/mpesaStepFunction.png)  
+<img src="./images/mpesaStepFunction.png" alt="alt text" height="600" width="500"/>   
 
 ### Description
 The above AWS step function workflow is responsible for processing monthly customer payments to a water filtration site; this interaction will be required every month, using an M-PESA Till, a business account dedicated to collecting funds (See Appendix C for more information). The transaction of funds from a customer to TapGives is made possible by Safaricom’s M-PESA payment API (more details are available in the [Safaricom API documentation](https://developer.safaricom.co.ke/APIs)). In addition to processing this transaction, the AWS step function workflow updates the customer’s subscription status, withdraws funds from the customer’s account, records the transaction, and sends a message to the customer indicating the success of the transaction and the change in their subscription status. Following is a typical flow for the payment step function:
