@@ -59,7 +59,7 @@ exports.handler = async (event) => {
 
   // send message to each receiver
   receivers.forEach((receiver) => {
-      messagePromises.push(sendMessage(receiver.phoneNumber, message))
+      messagePromises.push(sendMessage(receiver.phoneNumber, message));
   });
 
   await Promise.all(messagePromises);
