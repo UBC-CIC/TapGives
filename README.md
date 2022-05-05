@@ -1,6 +1,10 @@
 ## TapGives Project
 We Make Impact is an organization that creates and manages potable water sites in rural Kenya and Uganda, in regions where drinking water is scarce or unsafe. In order to manage the distribution of water to communities in need, TapGives, in collaboration with the UBC Cloud Innovation Centre (CIC), has developed a solution that can easily connect villagers to a nearby water site for a nominal monthly fee, using only a cellular phone and USSD technology (Unstructured Supplementary Service Data).
 
+Web Application             |  USSD Application
+:-------------------------:|:-------------------------:
+<img src="./docs/images/web_infographic.png" alt="alt text" height="450"/> |<img src="./docs/images/ussd_infographic.png" alt="alt text" height="450"/>
+
 | Index                                                 | Description                                               |
 |:------------------------------------------------------|:----------------------------------------------------------| 
 | [Stack Overview](#Stack-Overview)                     | The technologies powering the project                     |
