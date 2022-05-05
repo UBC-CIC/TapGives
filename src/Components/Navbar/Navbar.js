@@ -204,7 +204,7 @@ function Navbar(props) {
                         </Grid>
                     </Paper>
 
-                    <img className={classes.logo} style={{width: "270px", height: "30px"}} src={process.env.PUBLIC_URL + './Assets/Images/logo_inverse.png'} alt="..."/>
+                    {/*<img className={classes.logo} style={{width: "270px", height: "30px"}} src={process.env.PUBLIC_URL + './Assets/Images/logo_inverse.png'} alt="..."/>*/}
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <IconButton
