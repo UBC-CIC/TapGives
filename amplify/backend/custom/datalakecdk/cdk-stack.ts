@@ -198,25 +198,25 @@ export class cdkStack extends cdk.Stack {
         prefix: 'customertransactions/!{timestamp:yyyy/MM}/',
         errorOutputPrefix: 'FirehoseFailures/!{firehose:error-output-type}/!{firehose:random-string}/',
         roleArn: firehoseRole.roleArn,
-        dynamicPartitioningConfiguration: {
-          enabled: false
-        },
-        processingConfiguration: {
-          enabled: true,
-          processors: [{
-            type: 'MetadataExtraction',
-            parameters: [
-              {
-                parameterName: "MetadataExtractionQuery",
-                parameterValue: "{siteName:.siteName}"
-              },
-              {
-                parameterName: "JsonParsingEngine",
-                parameterValue: "JQ-1.6"
-              }
-            ]
-          }],
-        },
+        // dynamicPartitioningConfiguration: {
+        //   enabled: true
+        // },
+        // processingConfiguration: {
+        //   enabled: false //true,
+        //   // processors: [{
+        //   //   type: 'MetadataExtraction',
+        //   //   parameters: [
+        //   //     {
+        //   //       parameterName: "MetadataExtractionQuery",
+        //   //       parameterValue: "{siteName:.siteName}"
+        //   //     },
+        //   //     {
+        //   //       parameterName: "JsonParsingEngine",
+        //   //       parameterValue: "JQ-1.6"
+        //   //     }
+        //   //   ]
+        //   // }],
+        // },
         dataFormatConversionConfiguration: {
           enabled: true,
           inputFormatConfiguration: {
