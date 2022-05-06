@@ -33,6 +33,8 @@ export class cdkStack extends cdk.Stack {
 
     const firehoseRole = new iam.Role(this, 'DeliveryStreamRole', {
       assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
+      managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSGlueServiceRole"),
+        iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess")]
     });
 
     firehoseRole.addToPolicy(new iam.PolicyStatement({
@@ -132,14 +134,10 @@ export class cdkStack extends cdk.Stack {
         partitionKeys: [
           {
             name: 'partition_0',
-            comment: 'site nickname',
-            type: 'string',
-          },{
-            name: 'partition_1',
             comment: 'year',
             type: 'string',
           },{
-            name: 'partition_2',
+            name: 'partition_1',
             comment: 'month',
             type: 'string',
           }],
@@ -197,28 +195,28 @@ export class cdkStack extends cdk.Stack {
       deliveryStreamName: "tapgives-customertransactions",
       extendedS3DestinationConfiguration: {
         bucketArn: s3Bucket.attrArn,
-        prefix: 'customertransactions/!{partitionKeyFromQuery:siteName}/!{timestamp:yyyy/MM}/',
+        prefix: 'customertransactions/!{timestamp:yyyy/MM}/',
         errorOutputPrefix: 'FirehoseFailures/!{firehose:error-output-type}/!{firehose:random-string}/',
         roleArn: firehoseRole.roleArn,
-        dynamicPartitioningConfiguration: {
-          enabled: true
-        },
-        processingConfiguration: {
-          enabled: true,
-          processors: [{
-            type: 'MetadataExtraction',
-            parameters: [
-              {
-                parameterName: "MetadataExtractionQuery",
-                parameterValue: "{siteName:.siteName}"
-              },
-              {
-                parameterName: "JsonParsingEngine",
-                parameterValue: "JQ-1.6"
-              }
-            ]
-          }],
-        },
+        // dynamicPartitioningConfiguration: {
+        //   enabled: true
+        // },
+        // processingConfiguration: {
+        //   enabled: false //true,
+        //   // processors: [{
+        //   //   type: 'MetadataExtraction',
+        //   //   parameters: [
+        //   //     {
+        //   //       parameterName: "MetadataExtractionQuery",
+        //   //       parameterValue: "{siteName:.siteName}"
+        //   //     },
+        //   //     {
+        //   //       parameterName: "JsonParsingEngine",
+        //   //       parameterValue: "JQ-1.6"
+        //   //     }
+        //   //   ]
+        //   // }],
+        // },
         dataFormatConversionConfiguration: {
           enabled: true,
           inputFormatConfiguration: {
