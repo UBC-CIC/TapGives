@@ -183,4 +183,12 @@ If you encounter the following error:
 ```bash
 An error occurred: <lambda /function name> - Uploaded file must be a non-empty zip ... Status Code: 400; Error Code: InvalidParameterValueException
 ```  
-the problem is most likely due to the Node version being used, as indicated in [this thread](https://github.com/serverless/serverless/issues/8794). The solution is to **downgrade to a stable version of Node**.
+the problem is most likely due to the Node version being used, as indicated in [this thread](https://github.com/serverless/serverless/issues/8794). The solution is to **downgrade to a stable version of Node**.  
+
+### Error #3
+
+If you encounter the following error: 
+```bash
+Parameters: [ssm:BucketName... ssm:GraphQLAPIEndpointOutput...] last modified date does not match with the last modified date of the retrieved parameters.
+```
+the problem has to do with CDK versioning and modifications to the Amplify demployment made when the SAM deployment is already deployed. As indicated in [this thread (workaround #2)](https://github.com/aws/aws-cdk/issues/14629), the solution is to delete the SAM stack and to re-deploy it.

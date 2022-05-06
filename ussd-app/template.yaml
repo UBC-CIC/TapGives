@@ -67,7 +67,7 @@ Resources:
   GraphQlLambdaRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: GraphQlLambdaRole
+      RoleName: !Sub 'GraphQlLambdaRole-${AWS::Region}'
       Description: Role used by lambda functions to access appsync graphql
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -193,7 +193,7 @@ Resources:
   RecordCustomerTransactionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: RecordCustomerTransactionRole
+      RoleName: !Sub 'RecordCustomerTransactionRole-${AWS::Region}'
       Description: Role used by RecordCustomerTransation to call appsync and invoke lambdas
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
@@ -236,6 +236,7 @@ Resources:
     Properties:
       FunctionName: !Sub '${ProjectName}-${EnvironmentName}-RemindAndUnsubscribe'
       CodeUri: ./lambdaFunctions/RemindAndUnsubscribe
+      Timeout: 300  # can change according to number of customers
       Description: 'Lambda triggered daily to remind and unsubscribe customers'
       Events:
         DailyTrigger:
