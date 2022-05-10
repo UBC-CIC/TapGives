@@ -64,7 +64,7 @@ Here are the instructions on how to send a message to customers registered to an
 # Part 3 Customer Search
 
 ## Search with filters
-Here you learn to use the search and filter through customers registered to Water Filtration Sites.
+Here you learn to use the search and filter through customers registered to Water Filtration Sites.  You may access customer history using the query buttom once you find a customer you're interested in.  (Note, this has an up to 24 hour delay, on the first day of every month).
 1. Click the dropdown at the top left, and select Site Customers \
 ![alt text](images/webapp21.png)
 2. Click search property, and enter the column value you wish to filter on exactly as they are shown in the table below (case and space sensitive) \
