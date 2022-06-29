@@ -44,27 +44,27 @@ function Customer(props) {
             flex: 1,
         },
         {
-            field: "partition_0",
+            field: "sitename",
             headerName: strings.siteName,
             flex: 1,
         },
         {
-            field: "partition_1",
+            field: "year",
             headerName: strings.year,
             flex: 1,
         },
         {
-            field: "partition_2",
+            field: "month",
             headerName: strings.month,
             flex: 1,
         },
         {
-            field: "partition_3",
+            field: "day",
             headerName: strings.day,
             flex: 1,
         },
         {
-            field: "partition_4",
+            field: "hour",
             headerName: strings.hour,
             flex: 1,
         },
