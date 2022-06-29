@@ -113,6 +113,12 @@ export class cdkStack extends cdk.Stack {
             },{
               name: 'hour',
               type: 'string',
+            },{
+              name: 'month',
+              type: 'string',
+            },{
+              name: 'year',
+              type: 'string',
             }
           ],
           compressed: false,
@@ -131,16 +137,16 @@ export class cdkStack extends cdk.Stack {
       databaseName: twDatabase.ref,
       tableInput: {
         name: 'customertransactions',
-        partitionKeys: [
-          {
-            name: 'partition_0',
-            comment: 'year',
-            type: 'string',
-          },{
-            name: 'partition_1',
-            comment: 'month',
-            type: 'string',
-          }],
+        // partitionKeys: [
+        //   {
+        //     name: 'partition_0',
+        //     comment: 'year',
+        //     type: 'string',
+        //   },{
+        //     name: 'partition_1',
+        //     comment: 'month',
+        //     type: 'string',
+        //   }],
         storageDescriptor: {
           columns: [
             {
@@ -177,6 +183,12 @@ export class cdkStack extends cdk.Stack {
             },{
               name: 'hour',
               type: 'string',
+            },{
+              name: 'month',
+              type: 'string',
+            },{
+              name: 'year',
+              type: 'string',
             }
           ],
 
@@ -195,7 +207,8 @@ export class cdkStack extends cdk.Stack {
       deliveryStreamName: "tapgives-customertransactions",
       extendedS3DestinationConfiguration: {
         bucketArn: s3Bucket.attrArn,
-        prefix: 'customertransactions/!{timestamp:yyyy/MM}/',
+        prefix: 'customertransactions/',
+        // prefix: 'customertransactions/!{timestamp:yyyy/MM}/',
         errorOutputPrefix: 'FirehoseFailures/!{firehose:error-output-type}/!{firehose:random-string}/',
         roleArn: firehoseRole.roleArn,
         // dynamicPartitioningConfiguration: {
@@ -237,26 +250,26 @@ export class cdkStack extends cdk.Stack {
         }
       },
     })
-    const crawlerRole = new iam.Role(this, 'GlueCrawlerRole', {
-      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
-      managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSGlueServiceRole"),
-        iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess")]
-    })
-
-    const glueCrawler = new glue.CfnCrawler(this, 'tapgivesgluecrawler', {
-      name: "tapgivesgluecrawler",
-      databaseName: twDatabase.ref,
-      role: crawlerRole.roleArn,
-      targets: {
-        s3Targets: [{
-          path: "s3://" + tapgivesBucket + "/customertransactions/"
-        }]
-      },
-      schedule: {
-        scheduleExpression: "cron(0 5 * * ? *)",
-      },
-      description: "Rescans athena table monthly"
-    })
+    // const crawlerRole = new iam.Role(this, 'GlueCrawlerRole', {
+    //   assumedBy: new iam.ServicePrincipal('glue.amazonaws.com'),
+    //   managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSGlueServiceRole"),
+    //     iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess")]
+    // })
+    //
+    // const glueCrawler = new glue.CfnCrawler(this, 'tapgivesgluecrawler', {
+    //   name: "tapgivesgluecrawler",
+    //   databaseName: twDatabase.ref,
+    //   role: crawlerRole.roleArn,
+    //   targets: {
+    //     s3Targets: [{
+    //       path: "s3://" + tapgivesBucket + "/customertransactions/"
+    //     }]
+    //   },
+    //   schedule: {
+    //     scheduleExpression: "cron(0 5 * * ? *)",
+    //   },
+    //   description: "Rescans athena table monthly"
+    // })
     kinesis.node.addDependency(firehoseRole);
 
     // Create a new SSM Parameter for firehose

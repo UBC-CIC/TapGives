@@ -37,16 +37,17 @@ exports.handler = async (event) => {
     let {userPhoneNumber, siteName, year, month, day, hour} = event.arguments
     if (userPhoneNumber == null) {
         // Making sure all inputs are 2 "digits" long
-        if (month < 10)
-            month = "0"+month
-        if (day < 10 && day >= 0)
-            day = "0"+day
-        if (hour < 10)
-            hour = "0"+hour
+        // No longer required with revision
+        // if (month < 10)
+        //     month = "0"+month
+        // if (day < 10 && day >= 0)
+        //     day = "0"+day
+        // if (hour < 10)
+        //     hour = "0"+hour
         var params = {
-            QueryString: "select hour, count(*) from customertransactions where action = 'visit' and sitename = '"
-                + siteName + "' and partition_0 = '"
-                + year + "' and partition_1 = '"
+            QueryString: "select hour, count(*) from customertransactions where sitename = '"
+                + siteName + "' and year = '"
+                + year + "' and month = '"
                 + month + ((parseInt(day) >= 0 )?"' and day = '"+ day:"")+
                 "' group by hour",
             QueryExecutionContext: {

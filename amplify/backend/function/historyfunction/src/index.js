@@ -24,30 +24,6 @@ function delay(milliseconds){
     setTimeout(resolve, milliseconds);
   });
 }
-async function checkIfRunGlue(type, model, year, month) {
-  // month is 0 indexed from javascript, 1 indexed in database
-  // Database index months with length 2 regardless of if its 1 or 2 digit
-  if (String(month).length === 1) {
-    month = "0"+String(month+1)
-  } else {
-    month = String(month+1)
-  }
-  const s3params = {
-    Bucket: "tapgivesbucket-"+bucket,
-    Prefix: type+"/"+model.siteName + "/" + year + "/" +  month + "/",
-    MaxKeys: 1
-  }
-  const hasFolder = await s3.listObjects(s3params).promise()
-  if (hasFolder.Contents.length > 0) {
-    const glueParams = {
-      Name: "tapgivesgluecrawler"
-    }
-    console.log("starting crawler")
-    const val = await glue.startCrawler(glueParams)
-    // console.log(val)
-    console.log(val.response)
-  }
-}
 exports.handler = async event => {
   let promiseList = []
   // console.log(event.Records[0].dynamodb)
@@ -91,7 +67,8 @@ exports.handler = async event => {
           }
           const dynamodbPromise = dynamodb.updateItem(params).promise()
           promiseList.push(dynamodbPromise)
-        } else if (newImage.action.S === "visit") {
+        }
+        else if (newImage.action.S === "visit") {
           const type = newImage.__typename.S.toLowerCase() // get model type
           // Clean the model of unneeded values
 
@@ -102,6 +79,8 @@ exports.handler = async event => {
           Object.assign(model, {
             day: String(d.getUTCDate()),
             hour : String(d.getUTCHours()),
+            month : String(d.getUTCMonth()),
+            year : String(d.getUTCFullYear()),
           })
           console.log(model)
           var params = {
@@ -115,7 +94,6 @@ exports.handler = async event => {
             else     console.log(data);           // successful response
           })
           promiseList.push(firehosePromise)
-          // promiseList.push( checkIfRunGlue(type, model, d.getUTCFullYear(), d.getUTCMonth()))
         }
         // return s3Promise
       } else {
