@@ -143,7 +143,10 @@ class LanguageAdministration extends React.Component {
         })
     }
     async deleteLanguage() {
-        LocalizationHelper.deleteLanguageCascade(this.state.currentLanguageCode)
+        await LocalizationHelper.deleteLanguageCascade(this.state.currentLanguageCode)
+        this.setState({
+            deleteLanguageMenu: false
+        })
     }
     async defaultLanguage() {
         // await LocalizationHelper.addMultipleLanguagePhrases(baseLanguages)

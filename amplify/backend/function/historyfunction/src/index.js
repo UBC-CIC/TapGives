@@ -79,7 +79,7 @@ exports.handler = async event => {
           Object.assign(model, {
             day: String(d.getUTCDate()),
             hour : String(d.getUTCHours()),
-            month : String(d.getUTCMonth()),
+            month : String(d.getUTCMonth())+1, // makes index 1 instead of index 0
             year : String(d.getUTCFullYear()),
           })
           console.log(model)

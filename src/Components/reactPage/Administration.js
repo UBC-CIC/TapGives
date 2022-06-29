@@ -341,18 +341,16 @@ class Administration extends React.Component {
     async broadcast() {
         for (const site in this.state.selectedSites) {
             //console.log(this.state.selectedSites[site])
-            let data = (await API.graphql({
+            API.graphql({
                 query: queries.broadcastMessage,
                 variables: {
                     siteID: this.state.selectedSites[site],
                     message: this.state.broadcastMessage,
                     customersBySite: true,
                 }
-            })).data.broadcastMessage
+            })
         }
-        this.setState({
-            broadcastMessageMenu: false
-        })
+        this.setState({broadcastMessageMenu: false})
     }
     render() {
         return (

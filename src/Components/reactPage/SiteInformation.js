@@ -216,7 +216,7 @@ class SiteInformation extends React.Component {
             variables: {
                 siteName: this.state.siteData.name,
                 year: parseInt(this.state.date.getFullYear()),
-                month: parseInt(this.state.date.getMonth()), //date returns index 0, and athena uses index 1
+                month: parseInt(this.state.date.getMonth())+1, //date returns index 0, and athena uses index 1
                 day: -1,
                 hour: -1,
             }
